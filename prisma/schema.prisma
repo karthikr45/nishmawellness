@@ -47,6 +47,12 @@ model User {
   therapistContinuity   ContinuityScore[] @relation("TherapistContinuity")
   patientContinuity     ContinuityScore[] @relation("PatientContinuity")
   orgMemberships        OrgMember[]
+  journalEntries        JournalEntry[]
+  assessments           Assessment[]
+  lessonProgress        LessonProgress[]
+  exerciseLogs          ExerciseLog[]
+  groupSessionMembers   GroupSessionMember[]
+  hostedGroupSessions   GroupSession[]   @relation("HostedGroupSessions")
 }
 
 model Appointment {
@@ -84,6 +90,7 @@ model Program {
 
   enrollments Enrollment[]
   orgPrograms OrgProgram[]
+  lessons     Lesson[]
 }
 
 model Enrollment {
@@ -186,6 +193,152 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Lesson Content System
+// ============================================
+
+model Lesson {
+  id          String   @id @default(uuid())
+  programId   String
+  title       String
+  description String   @default("")
+  order       Int      @default(0)
+  type        String   @default("VIDEO") // VIDEO, AUDIO, TEXT, EXERCISE, QUIZ
+  content     String   @default("{}") // JSON: varies by type
+  duration    Int      @default(15) // minutes
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  program  Program          @relation(fields: [programId], references: [id])
+  progress LessonProgress[]
+}
+
+model LessonProgress {
+  id          String    @id @default(uuid())
+  userId      String
+  lessonId    String
+  status      String    @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, COMPLETED
+  timeSpent   Int       @default(0) // seconds
+  quizScore   Float?    // For quiz lessons
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  lesson Lesson @relation(fields: [lessonId], references: [id])
+
+  @@unique([userId, lessonId])
+}
+
+// ============================================
+// FEATURE: Wellness Assessments (PHQ-9, GAD-7)
+// ============================================
+
+model Assessment {
+  id          String   @id @default(uuid())
+  userId      String
+  type        String   // PHQ9, GAD7, PSS, WHODAS, CUSTOM
+  responses   String   // JSON array of answers
+  score       Int
+  severity    String   // MINIMAL, MILD, MODERATE, MODERATELY_SEVERE, SEVERE
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Daily Check-in Journal
+// ============================================
+
+model JournalEntry {
+  id          String   @id @default(uuid())
+  userId      String
+  mood        Int      // 1-10
+  energy      Int      // 1-10
+  anxiety     Int      // 1-10
+  sleep       Int      // 1-10 quality
+  gratitude   String   @default("") // What are you grateful for
+  highlight   String   @default("") // Best part of the day
+  challenge   String   @default("") // Biggest challenge
+  freeWrite   String   @default("") // Open journaling
+  tags        String   @default("[]") // JSON array of tags
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Guided Exercises (Meditation, Breathing)
+// ============================================
+
+model GuidedExercise {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  category    String   // BREATHING, MEDITATION, BODY_SCAN, VISUALIZATION, GROUNDING, PMR
+  duration    Int      // seconds
+  steps       String   // JSON array of steps with timing
+  difficulty  String   @default("BEGINNER") // BEGINNER, INTERMEDIATE, ADVANCED
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  logs ExerciseLog[]
+}
+
+model ExerciseLog {
+  id          String   @id @default(uuid())
+  userId      String
+  exerciseId  String
+  completed   Boolean  @default(false)
+  duration    Int      @default(0) // actual seconds spent
+  rating      Int?     // 1-5 how helpful
+  createdAt   DateTime @default(now())
+
+  user     User           @relation(fields: [userId], references: [id])
+  exercise GuidedExercise @relation(fields: [exerciseId], references: [id])
+}
+
+// ============================================
+// FEATURE: Group Therapy Sessions / Workshops
+// ============================================
+
+model GroupSession {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  hostId       String   // Therapist hosting
+  category     String   // SUPPORT_GROUP, WORKSHOP, WEBINAR, MEDITATION_CIRCLE
+  dateTime     DateTime
+  duration     Int      @default(60) // minutes
+  maxParticipants Int   @default(20)
+  price        Float    @default(0) // 0 = free
+  isRecurring  Boolean  @default(false)
+  recurrence   String?  // WEEKLY, BIWEEKLY, MONTHLY
+  meetingUrl   String?
+  status       String   @default("SCHEDULED") // SCHEDULED, LIVE, COMPLETED, CANCELLED
+  tags         String   @default("[]") // JSON array
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  host    User                 @relation("HostedGroupSessions", fields: [hostId], references: [id])
+  members GroupSessionMember[]
+}
+
+model GroupSessionMember {
+  id             String   @id @default(uuid())
+  groupSessionId String
+  userId         String
+  status         String   @default("REGISTERED") // REGISTERED, ATTENDED, NO_SHOW, CANCELLED
+  joinedAt       DateTime @default(now())
+
+  groupSession GroupSession @relation(fields: [groupSessionId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@unique([groupSessionId, userId])
 }
 
 // ============================================

@@ -348,6 +348,246 @@ async function main() {
     },
   });
 
+  // ======== LESSONS for first program (Mindfulness Meditation) ========
+  const meditationProgram = allPrograms[0];
+  if (meditationProgram) {
+    const lessonData = [
+      { title: "What is Mindfulness?", description: "Understanding the foundations of mindfulness practice and its benefits for mental health.", order: 1, type: "TEXT", duration: 10,
+        content: JSON.stringify({ body: "# What is Mindfulness?\n\nMindfulness is the practice of paying attention to the present moment, without judgment. It involves observing your thoughts, feelings, and sensations as they arise, without trying to change them.\n\n## Key Principles\n\n1. **Present Moment Awareness** - Focus on what's happening right now\n2. **Non-Judgment** - Observe without labeling experiences as good or bad\n3. **Acceptance** - Allow things to be as they are\n4. **Beginner's Mind** - Approach each moment with curiosity\n\n## Benefits\n\n- Reduced stress and anxiety\n- Improved focus and concentration\n- Better emotional regulation\n- Enhanced self-awareness\n- Improved sleep quality\n\n## Getting Started\n\nYou don't need any special equipment or training to begin. Start with just 5 minutes a day, sitting quietly and focusing on your breath." }) },
+      { title: "Your First Breath Meditation", description: "A guided 10-minute breath awareness meditation for complete beginners.", order: 2, type: "AUDIO", duration: 10,
+        content: JSON.stringify({ instructions: "Find a comfortable seated position. Close your eyes gently. Begin to notice your natural breathing pattern without trying to change it.", steps: ["Settle into position (1 min)", "Notice natural breath (2 min)", "Count breaths 1-10 (3 min)", "Release counting, just observe (3 min)", "Slowly return awareness (1 min)"] }) },
+      { title: "Body Scan Practice", description: "Learn the body scan technique to release tension and increase body awareness.", order: 3, type: "EXERCISE", duration: 15,
+        content: JSON.stringify({ instructions: "Lie down comfortably. Starting from the top of your head, slowly move your attention through each part of your body.", bodyParts: ["Head & Face", "Neck & Shoulders", "Arms & Hands", "Chest & Upper Back", "Abdomen & Lower Back", "Hips & Pelvis", "Thighs & Knees", "Calves & Feet"], timePerPart: 90 }) },
+      { title: "Walking Meditation", description: "Transform your daily walk into a mindfulness practice.", order: 4, type: "VIDEO", duration: 12,
+        content: JSON.stringify({ videoDescription: "In this lesson, we explore how to bring mindfulness to movement. Walking meditation is perfect for those who find sitting still challenging.", keyPoints: ["Focus on the sensation of each step", "Notice the contact between foot and ground", "Coordinate breath with steps", "Practice outdoors or indoors"] }) },
+      { title: "Mindful Eating Exercise", description: "Practice eating with full awareness and appreciation.", order: 5, type: "EXERCISE", duration: 20,
+        content: JSON.stringify({ instructions: "Choose a small piece of food (a raisin works well). We will spend 15 minutes experiencing this food with all our senses.", steps: ["Look at the food closely (2 min)", "Feel its texture (2 min)", "Smell it deeply (2 min)", "Place in mouth without chewing (2 min)", "Chew very slowly (3 min)", "Notice the experience of swallowing (2 min)", "Reflect on the experience (2 min)"] }) },
+      { title: "Mindfulness Knowledge Check", description: "Test your understanding of mindfulness concepts.", order: 6, type: "QUIZ", duration: 5,
+        content: JSON.stringify({ questions: [
+          { q: "What is the primary goal of mindfulness?", options: ["Stopping all thoughts", "Paying attention to the present moment without judgment", "Achieving a state of bliss", "Controlling your emotions"], correct: 1 },
+          { q: "Which is NOT a principle of mindfulness?", options: ["Non-judgment", "Present moment awareness", "Perfectionism", "Acceptance"], correct: 2 },
+          { q: "How long should beginners meditate?", options: ["At least 1 hour", "30-45 minutes", "Start with 5 minutes and build up", "Only during a full moon"], correct: 2 },
+          { q: "What should you do when your mind wanders during meditation?", options: ["Get frustrated and start over", "Gently bring attention back to the breath", "Stop meditating immediately", "Try harder to focus"], correct: 1 },
+          { q: "Which is a benefit of regular mindfulness practice?", options: ["Never feeling negative emotions", "Reduced stress and improved focus", "Ability to read minds", "Instant happiness"], correct: 1 },
+        ] }) },
+    ];
+
+    for (const lesson of lessonData) {
+      await prisma.lesson.create({
+        data: { ...lesson, programId: meditationProgram.id },
+      });
+    }
+  }
+
+  // ======== GUIDED EXERCISES ========
+  const exercises = [
+    {
+      title: "4-7-8 Breathing",
+      description: "A calming breathing technique to reduce anxiety and promote relaxation. Breathe in for 4, hold for 7, exhale for 8.",
+      category: "BREATHING",
+      duration: 300,
+      difficulty: "BEGINNER",
+      steps: JSON.stringify([
+        { instruction: "Find a comfortable seated position and relax your shoulders.", duration: 10 },
+        { instruction: "Exhale completely through your mouth, making a whoosh sound.", duration: 5 },
+        { instruction: "Close your mouth. Inhale quietly through your nose for 4 counts.", duration: 4, type: "INHALE" },
+        { instruction: "Hold your breath for 7 counts.", duration: 7, type: "HOLD" },
+        { instruction: "Exhale completely through your mouth for 8 counts.", duration: 8, type: "EXHALE" },
+        { instruction: "This is one cycle. Repeat 3 more times.", duration: 0, type: "REPEAT", repeatFrom: 2, repeatCount: 3 },
+        { instruction: "Notice how your body feels. Let your breathing return to normal.", duration: 15 },
+      ]),
+    },
+    {
+      title: "Box Breathing",
+      description: "Used by Navy SEALs to stay calm under pressure. Equal counts of inhale, hold, exhale, and hold.",
+      category: "BREATHING",
+      duration: 240,
+      difficulty: "BEGINNER",
+      steps: JSON.stringify([
+        { instruction: "Sit upright with feet flat on the floor. Rest your hands on your lap.", duration: 10 },
+        { instruction: "Slowly inhale through your nose for 4 counts.", duration: 4, type: "INHALE" },
+        { instruction: "Hold your breath for 4 counts.", duration: 4, type: "HOLD" },
+        { instruction: "Exhale slowly through your mouth for 4 counts.", duration: 4, type: "EXHALE" },
+        { instruction: "Hold empty for 4 counts.", duration: 4, type: "HOLD" },
+        { instruction: "Repeat the cycle 5 more times.", duration: 0, type: "REPEAT", repeatFrom: 1, repeatCount: 5 },
+        { instruction: "Return to natural breathing. Notice the calm.", duration: 10 },
+      ]),
+    },
+    {
+      title: "5-4-3-2-1 Grounding",
+      description: "A sensory awareness exercise that grounds you in the present moment. Perfect for anxiety and panic.",
+      category: "GROUNDING",
+      duration: 300,
+      difficulty: "BEGINNER",
+      steps: JSON.stringify([
+        { instruction: "Take a deep breath. Look around you.", duration: 10 },
+        { instruction: "Name 5 things you can SEE. Look for details — colors, shapes, textures.", duration: 40 },
+        { instruction: "Name 4 things you can TOUCH. Feel the texture of your clothes, the chair, the air.", duration: 35 },
+        { instruction: "Name 3 things you can HEAR. Listen carefully — distant sounds, nearby sounds.", duration: 30 },
+        { instruction: "Name 2 things you can SMELL. Breathe in deeply.", duration: 25 },
+        { instruction: "Name 1 thing you can TASTE. Notice the taste in your mouth right now.", duration: 20 },
+        { instruction: "Take a final deep breath. You are here. You are present. You are safe.", duration: 15 },
+      ]),
+    },
+    {
+      title: "Progressive Muscle Relaxation",
+      description: "Systematically tense and release muscle groups to release physical tension and stress.",
+      category: "PMR",
+      duration: 600,
+      difficulty: "BEGINNER",
+      steps: JSON.stringify([
+        { instruction: "Lie down or sit comfortably. Close your eyes. Take 3 deep breaths.", duration: 20 },
+        { instruction: "Tense your FEET — curl your toes tightly. Hold for 5 seconds.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Feel the tension melting away from your feet.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your CALVES — point your toes toward your shins. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Notice the difference between tension and relaxation.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your THIGHS — squeeze them tightly. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Feel warmth spreading through your legs.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your ABDOMEN — tighten your stomach muscles. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Let your belly be soft and relaxed.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your HANDS — make tight fists. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Spread your fingers and feel them relax.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your SHOULDERS — raise them to your ears. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Let your shoulders drop completely.", duration: 15, type: "RELEASE" },
+        { instruction: "Tense your FACE — scrunch everything tightly. Hold.", duration: 5, type: "TENSE" },
+        { instruction: "Release. Smooth your forehead, relax your jaw.", duration: 15, type: "RELEASE" },
+        { instruction: "Scan your body. Breathe naturally. Enjoy the feeling of total relaxation.", duration: 30 },
+      ]),
+    },
+    {
+      title: "Loving-Kindness Meditation",
+      description: "Cultivate feelings of compassion and love toward yourself and others.",
+      category: "MEDITATION",
+      duration: 600,
+      difficulty: "INTERMEDIATE",
+      steps: JSON.stringify([
+        { instruction: "Sit comfortably. Close your eyes. Take a few deep breaths.", duration: 20 },
+        { instruction: "Bring to mind someone you love deeply. Picture them clearly.", duration: 15 },
+        { instruction: "Silently repeat: 'May you be happy. May you be healthy. May you be safe. May you live with ease.'", duration: 60 },
+        { instruction: "Now direct these wishes toward yourself: 'May I be happy. May I be healthy. May I be safe. May I live with ease.'", duration: 60 },
+        { instruction: "Think of a neutral person — someone you neither like nor dislike. Send them the same wishes.", duration: 60 },
+        { instruction: "Now think of someone you find difficult. Try to send them these wishes too.", duration: 60 },
+        { instruction: "Expand your awareness to include all beings everywhere: 'May all beings be happy. May all beings be safe.'", duration: 60 },
+        { instruction: "Rest in this feeling of boundless compassion for a moment.", duration: 30 },
+        { instruction: "Gently return your awareness to the room. Open your eyes when ready.", duration: 15 },
+      ]),
+    },
+    {
+      title: "Quick Body Scan",
+      description: "A 5-minute body awareness exercise to check in with physical sensations.",
+      category: "BODY_SCAN",
+      duration: 300,
+      difficulty: "BEGINNER",
+      steps: JSON.stringify([
+        { instruction: "Close your eyes. Take 3 deep breaths to settle in.", duration: 15 },
+        { instruction: "Bring attention to the top of your head. Notice any sensations.", duration: 20 },
+        { instruction: "Move awareness to your face — forehead, eyes, jaw. Release any tension.", duration: 25 },
+        { instruction: "Notice your neck and shoulders. Let them soften.", duration: 20 },
+        { instruction: "Feel your chest and upper back. Notice the rhythm of your breathing.", duration: 25 },
+        { instruction: "Bring awareness to your belly and lower back.", duration: 20 },
+        { instruction: "Notice your hips, legs, and feet. Feel grounded.", duration: 25 },
+        { instruction: "Now feel your entire body as one. Breathe into any areas of tension.", duration: 30 },
+        { instruction: "Take a final deep breath. Open your eyes gently.", duration: 10 },
+      ]),
+    },
+  ];
+
+  for (const exercise of exercises) {
+    await prisma.guidedExercise.create({ data: exercise });
+  }
+
+  // ======== GROUP SESSIONS ========
+  const nextMonday = new Date(now);
+  nextMonday.setDate(nextMonday.getDate() + ((1 + 7 - nextMonday.getDay()) % 7 || 7));
+  nextMonday.setHours(18, 0, 0, 0);
+
+  const nextWednesday = new Date(now);
+  nextWednesday.setDate(nextWednesday.getDate() + ((3 + 7 - nextWednesday.getDay()) % 7 || 7));
+  nextWednesday.setHours(19, 0, 0, 0);
+
+  const nextSaturday = new Date(now);
+  nextSaturday.setDate(nextSaturday.getDate() + ((6 + 7 - nextSaturday.getDay()) % 7 || 7));
+  nextSaturday.setHours(10, 0, 0, 0);
+
+  await prisma.groupSession.create({
+    data: {
+      title: "Anxiety Support Circle",
+      description: "A safe, supportive space to share experiences with anxiety and learn coping strategies together. Led by Dr. Sarah Johnson.",
+      hostId: therapist1.id,
+      category: "SUPPORT_GROUP",
+      dateTime: nextMonday,
+      duration: 60,
+      maxParticipants: 12,
+      price: 0,
+      isRecurring: true,
+      recurrence: "WEEKLY",
+      tags: JSON.stringify(["anxiety", "support", "coping"]),
+    },
+  });
+
+  await prisma.groupSession.create({
+    data: {
+      title: "Mindful Movement Workshop",
+      description: "Combine gentle yoga with mindfulness techniques. No experience needed. Focus on the mind-body connection.",
+      hostId: therapist2.id,
+      category: "WORKSHOP",
+      dateTime: nextWednesday,
+      duration: 75,
+      maxParticipants: 20,
+      price: 15,
+      isRecurring: true,
+      recurrence: "WEEKLY",
+      tags: JSON.stringify(["yoga", "mindfulness", "movement"]),
+    },
+  });
+
+  await prisma.groupSession.create({
+    data: {
+      title: "Saturday Morning Meditation",
+      description: "Start your weekend with a guided group meditation session. Perfect for beginners and experienced practitioners alike.",
+      hostId: therapist4.id,
+      category: "MEDITATION_CIRCLE",
+      dateTime: nextSaturday,
+      duration: 45,
+      maxParticipants: 30,
+      price: 0,
+      isRecurring: true,
+      recurrence: "WEEKLY",
+      tags: JSON.stringify(["meditation", "weekend", "relaxation"]),
+    },
+  });
+
+  await prisma.groupSession.create({
+    data: {
+      title: "Stress Management for Professionals",
+      description: "Learn evidence-based techniques for managing workplace stress. Interactive workshop with practical tools you can use immediately.",
+      hostId: therapist3.id,
+      category: "WEBINAR",
+      dateTime: new Date(nextWednesday.getTime() + 7 * 24 * 60 * 60 * 1000),
+      duration: 90,
+      maxParticipants: 50,
+      price: 25,
+      isRecurring: false,
+      tags: JSON.stringify(["stress", "workplace", "professional"]),
+    },
+  });
+
+  // ======== SAMPLE JOURNAL ENTRY ========
+  await prisma.journalEntry.create({
+    data: {
+      userId: patient1.id,
+      mood: 7,
+      energy: 6,
+      anxiety: 4,
+      sleep: 7,
+      gratitude: "Grateful for a good conversation with my friend today.",
+      highlight: "Completed my morning meditation without getting distracted.",
+      challenge: "Work deadline causing some stress, but I managed it better than usual.",
+      freeWrite: "Today was a mixed day. The morning started well — I did my meditation and felt centered. Work got intense in the afternoon but I used the breathing techniques from my program. Feeling proud of the progress.",
+      tags: JSON.stringify(["meditation", "work", "progress"]),
+    },
+  });
+
   console.log("Database seeded successfully!");
   console.log("\nTest Accounts:");
   console.log("  Admin:     admin@nishmawellness.com / password123");
