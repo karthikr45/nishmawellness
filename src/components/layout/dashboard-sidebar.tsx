@@ -8,6 +8,7 @@ import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
+  Award, Building2,
 } from "lucide-react";
 
 interface NavItem {
@@ -31,11 +32,13 @@ const therapistNav: NavItem[] = [
   { label: "Dashboard", href: "/therapist", icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: "Appointments", href: "/therapist/appointments", icon: <Calendar className="w-5 h-5" /> },
   { label: "My Patients", href: "/therapist/patients", icon: <Users className="w-5 h-5" /> },
+  { label: "Patient Brief", href: "/therapist/patient-brief", icon: <FileText className="w-5 h-5" /> },
   { label: "Session Notes", href: "/therapist/notes", icon: <FileText className="w-5 h-5" /> },
   { label: "Messages", href: "/therapist/messages", icon: <MessageSquare className="w-5 h-5" /> },
   { label: "Availability", href: "/therapist/availability", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Reviews", href: "/therapist/reviews", icon: <Star className="w-5 h-5" /> },
   { label: "AI TwinClone", href: "/therapist/twinclone", icon: <Brain className="w-5 h-5" /> },
+  { label: "Continuity Score", href: "/therapist/continuity", icon: <Award className="w-5 h-5" /> },
   { label: "Profile", href: "/therapist/profile", icon: <Settings className="w-5 h-5" /> },
 ];
 
@@ -45,6 +48,7 @@ const adminNav: NavItem[] = [
   { label: "Therapists", href: "/admin/therapists", icon: <UserPlus className="w-5 h-5" /> },
   { label: "Programs", href: "/admin/programs", icon: <BookOpen className="w-5 h-5" /> },
   { label: "Appointments", href: "/admin/appointments", icon: <Calendar className="w-5 h-5" /> },
+  { label: "Organizations", href: "/admin/organizations", icon: <Building2 className="w-5 h-5" /> },
   { label: "Analytics", href: "/admin/analytics", icon: <BarChart3 className="w-5 h-5" /> },
   { label: "Notifications", href: "/admin/notifications", icon: <Bell className="w-5 h-5" /> },
   { label: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },

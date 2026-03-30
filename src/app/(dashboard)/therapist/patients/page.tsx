@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Users, Calendar, MessageSquare } from "lucide-react";
+import Link from "next/link";
+import { Users, Calendar, MessageSquare, FileText } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 
@@ -87,7 +88,11 @@ export default function TherapistPatients() {
                 <Button size="sm" variant="outline" className="flex-1">
                   <MessageSquare className="w-4 h-4 mr-1" /> Message
                 </Button>
-                <Button size="sm" className="flex-1">View Details</Button>
+                <Link href={`/therapist/patient-brief?patientId=${patient.id}`} className="flex-1">
+                  <Button size="sm" className="w-full">
+                    <FileText className="w-4 h-4 mr-1" /> Patient Brief
+                  </Button>
+                </Link>
               </div>
             </Card>
           ))}

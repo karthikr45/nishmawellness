@@ -24,6 +24,9 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
+  organizationId String?  // If user belongs to a corporate org
+  lastLoginAt    DateTime? // Track last login for return experience
+
   // Relations
   patientAppointments   Appointment[]   @relation("PatientAppointments")
   therapistAppointments Appointment[]   @relation("TherapistAppointments")
@@ -37,6 +40,13 @@ model User {
   reviews               Review[]        @relation("PatientReviews")
   therapistReviews      Review[]        @relation("TherapistReviews")
   notifications         Notification[]
+  patientContexts       PatientContext[] @relation("PatientContexts")
+  therapistContexts     PatientContext[] @relation("TherapistContexts")
+  aiMemories            AIMemory[]
+  userActivities        UserActivity[]
+  therapistContinuity   ContinuityScore[] @relation("TherapistContinuity")
+  patientContinuity     ContinuityScore[] @relation("PatientContinuity")
+  orgMemberships        OrgMember[]
 }
 
 model Appointment {
@@ -73,6 +83,7 @@ model Program {
   updatedAt   DateTime @updatedAt
 
   enrollments Enrollment[]
+  orgPrograms OrgProgram[]
 }
 
 model Enrollment {
@@ -175,4 +186,141 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Patient Context & Memory System
+// ============================================
+
+model PatientContext {
+  id            String   @id @default(uuid())
+  patientId     String
+  therapistId   String
+  keyTopics     String   @default("[]")  // JSON array of recurring themes
+  lifeEvents    String   @default("[]")  // JSON array of significant events
+  copingTools   String   @default("[]")  // What works for this patient
+  triggers      String   @default("[]")  // Known triggers
+  preferences   String   @default("[]")  // Communication preferences
+  summary       String   @default("")    // Running summary of patient journey
+  lastUpdated   DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  patient   User @relation("PatientContexts", fields: [patientId], references: [id])
+  therapist User @relation("TherapistContexts", fields: [therapistId], references: [id])
+
+  @@unique([patientId, therapistId])
+}
+
+// AI Memory - stores extracted themes from conversations
+model AIMemory {
+  id        String   @id @default(uuid())
+  userId    String
+  category  String   // TOPIC, EVENT, PREFERENCE, GOAL, TRIGGER, COPING
+  content   String
+  source    String   // AI_CHAT, SESSION_NOTE, SELF_REPORTED
+  weight    Float    @default(1.0) // Importance/recency weight
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// User Activity tracking for personalized return experience
+model UserActivity {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String   // LOGIN, CHAT, SESSION, PROGRAM, MOOD_LOG
+  metadata  String   @default("{}") // JSON with context
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Therapist Continuity Score
+model ContinuityScore {
+  id                String   @id @default(uuid())
+  therapistId       String
+  patientId         String
+  score             Float    @default(0) // 0-100
+  contextUsage      Float    @default(0) // How often therapist views context
+  noteCompleteness  Float    @default(0) // Session note quality
+  followUpRate      Float    @default(0) // References previous sessions
+  patientRetention  Float    @default(0) // Patient keeps coming back
+  lastCalculated    DateTime @default(now())
+
+  therapist User @relation("TherapistContinuity", fields: [therapistId], references: [id])
+  patient   User @relation("PatientContinuity", fields: [patientId], references: [id])
+
+  @@unique([therapistId, patientId])
+}
+
+// ============================================
+// FEATURE: Corporate/Organization Module
+// ============================================
+
+model Organization {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  domain          String?  // For SSO email domain matching
+  logo            String?
+  industry        String?
+  size            String?  // SMALL, MEDIUM, LARGE, ENTERPRISE
+  contactEmail    String
+  contactName     String
+  plan            String   @default("STANDARD") // BASIC, STANDARD, PREMIUM, ENTERPRISE
+  maxEmployees    Int      @default(100)
+  sessionsPerEmployee Int  @default(12) // Per year
+  isActive        Boolean  @default(true)
+  features        String   @default("{}") // JSON feature flags
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  members         OrgMember[]
+  programs        OrgProgram[]
+  analytics       OrgAnalytics[]
+}
+
+model OrgMember {
+  id             String   @id @default(uuid())
+  organizationId String
+  userId         String
+  role           String   @default("EMPLOYEE") // EMPLOYEE, ORG_ADMIN, HR_MANAGER
+  department     String?
+  isAnonymous    Boolean  @default(true) // Privacy: org can't see individual data
+  sessionsUsed   Int      @default(0)
+  joinedAt       DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@unique([organizationId, userId])
+}
+
+// Custom programs assigned to organizations
+model OrgProgram {
+  id             String @id @default(uuid())
+  organizationId String
+  programId      String
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  program      Program      @relation(fields: [programId], references: [id])
+
+  @@unique([organizationId, programId])
+}
+
+// Aggregated anonymous analytics for organizations
+model OrgAnalytics {
+  id               String   @id @default(uuid())
+  organizationId   String
+  period           String   // "2024-03", "2024-W12"
+  totalSessions    Int      @default(0)
+  uniqueUsers      Int      @default(0)
+  avgMoodScore     Float?
+  avgSatisfaction  Float?
+  topCategories    String   @default("[]") // JSON array
+  engagementRate   Float    @default(0) // % of employees using platform
+  department       String?  // If null, it's org-wide
+  createdAt        DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
