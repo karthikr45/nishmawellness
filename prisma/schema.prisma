@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(uuid())
+  email          String    @unique
+  password       String
+  name           String
+  role           String    @default("PATIENT") // PATIENT, THERAPIST, ADMIN
+  phone          String?
+  avatar         String?
+  bio            String?
+  specialization String?   // For therapists
+  licenseNumber  String?   // For therapists
+  experience     Int?      // Years of experience for therapists
+  hourlyRate     Float?    // For therapists
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  patientAppointments   Appointment[]   @relation("PatientAppointments")
+  therapistAppointments Appointment[]   @relation("TherapistAppointments")
+  enrollments           Enrollment[]
+  sentMessages          Message[]       @relation("SentMessages")
+  receivedMessages      Message[]       @relation("ReceivedMessages")
+  aiChats               AIChat[]
+  sessionNotes          SessionNote[]
+  availability          Availability[]
+  progressRecords       Progress[]
+  reviews               Review[]        @relation("PatientReviews")
+  therapistReviews      Review[]        @relation("TherapistReviews")
+  notifications         Notification[]
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  patientId   String
+  therapistId String
+  dateTime    DateTime
+  duration    Int      @default(60) // minutes
+  type        String   @default("VIDEO") // VIDEO, IN_PERSON, AI_SESSION
+  status      String   @default("SCHEDULED") // SCHEDULED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
+  notes       String?
+  meetingUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  patient     User     @relation("PatientAppointments", fields: [patientId], references: [id])
+  therapist   User     @relation("TherapistAppointments", fields: [therapistId], references: [id])
+  sessionNote SessionNote?
+  review      Review?
+}
+
+model Program {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  category    String   // YOGA, MEDITATION, FITNESS, NUTRITION, MENTAL_HEALTH, STRESS_MANAGEMENT
+  duration    String   // e.g., "8 weeks"
+  level       String   // BEGINNER, INTERMEDIATE, ADVANCED
+  price       Float
+  image       String?
+  modules     String   // JSON string of modules
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  enrollments Enrollment[]
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  userId     String
+  programId  String
+  progress   Float    @default(0) // percentage 0-100
+  status     String   @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED
+  startedAt  DateTime @default(now())
+  completedAt DateTime?
+
+  user    User    @relation(fields: [userId], references: [id])
+  program Program @relation(fields: [programId], references: [id])
+
+  @@unique([userId, programId])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model AIChat {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String   // "user" or "assistant"
+  content   String
+  sessionId String   // Groups messages in a conversation
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model SessionNote {
+  id            String   @id @default(uuid())
+  appointmentId String   @unique
+  therapistId   String
+  content       String
+  mood          String?  // Patient mood assessment
+  progress      String?
+  homework      String?  // Assigned homework/exercises
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  therapist   User        @relation(fields: [therapistId], references: [id])
+}
+
+model Availability {
+  id          String @id @default(uuid())
+  therapistId String
+  dayOfWeek   Int    // 0=Sunday, 6=Saturday
+  startTime   String // "09:00"
+  endTime     String // "17:00"
+  isAvailable Boolean @default(true)
+
+  therapist User @relation(fields: [therapistId], references: [id])
+}
+
+model Progress {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String   // MOOD, SLEEP, EXERCISE, NUTRITION, MINDFULNESS
+  value     Float
+  note      String?
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Review {
+  id            String   @id @default(uuid())
+  appointmentId String   @unique
+  patientId     String
+  therapistId   String
+  rating        Int      // 1-5
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  patient     User        @relation("PatientReviews", fields: [patientId], references: [id])
+  therapist   User        @relation("TherapistReviews", fields: [therapistId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // APPOINTMENT, MESSAGE, PROGRAM, SYSTEM
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
