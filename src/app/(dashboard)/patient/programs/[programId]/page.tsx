@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import VideoPlayer from "@/components/video/video-player";
 import Link from "next/link";
 
 interface Lesson {
@@ -142,15 +143,14 @@ export default function ProgramLessons({ params }: { params: Promise<{ programId
           {/* VIDEO content */}
           {activeLesson.type === "VIDEO" && (
             <div>
-              <div className="bg-gray-900 rounded-2xl aspect-video flex items-center justify-center mb-6">
-                <div className="text-center text-white">
-                  <Video className="w-16 h-16 mx-auto mb-3 opacity-50" />
-                  <p className="text-lg font-medium">Video Lesson</p>
-                  <p className="text-sm text-gray-400 mt-1">{content.videoDescription}</p>
-                </div>
-              </div>
+              <VideoPlayer
+                title={activeLesson.title}
+                description={content.videoDescription}
+                duration={activeLesson.duration * 60}
+                onComplete={() => markComplete(activeLesson.id)}
+              />
               {content.keyPoints && (
-                <div className="p-4 bg-primary-50 rounded-xl">
+                <div className="p-4 bg-primary-50 rounded-xl mt-6">
                   <p className="font-medium text-gray-900 mb-2">Key Takeaways:</p>
                   {content.keyPoints.map((point: string, i: number) => (
                     <p key={i} className="text-sm text-gray-700 flex items-start mb-1">

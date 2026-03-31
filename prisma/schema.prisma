@@ -24,8 +24,11 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  organizationId String?  // If user belongs to a corporate org
-  lastLoginAt    DateTime? // Track last login for return experience
+  organizationId    String?  // If user belongs to a corporate org
+  lastLoginAt       DateTime? // Track last login for return experience
+  onboardingDone    Boolean  @default(false)  // Has completed onboarding questionnaire
+  familyId          String?  // Family group ID
+  familyRole        String?  // PRIMARY, SPOUSE, CHILD, PARENT, SIBLING
 
   // Relations
   patientAppointments   Appointment[]   @relation("PatientAppointments")
@@ -53,6 +56,9 @@ model User {
   exerciseLogs          ExerciseLog[]
   groupSessionMembers   GroupSessionMember[]
   hostedGroupSessions   GroupSession[]   @relation("HostedGroupSessions")
+  onboardingResponse    OnboardingResponse?
+  familyGroup           FamilyGroup?     @relation("FamilyOwner")
+  familyMemberships     FamilyMember[]
 }
 
 model Appointment {
@@ -193,6 +199,60 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Onboarding Questionnaire
+// ============================================
+
+model OnboardingResponse {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  responses       String   // JSON: all answers
+  primaryGoals    String   @default("[]") // JSON array
+  stressLevel     Int?     // 1-10
+  sleepQuality    Int?     // 1-10
+  exerciseFreq    String?  // NEVER, RARELY, WEEKLY, DAILY
+  therapyHistory  String?  // NEVER, PAST, CURRENT
+  preferredStyle  String?  // CBT, MINDFULNESS, HOLISTIC, TALK_THERAPY, UNSURE
+  concerns        String   @default("[]") // JSON array of presenting concerns
+  emergencyContact String? // JSON { name, phone, relationship }
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Family Wellness Module
+// ============================================
+
+model FamilyGroup {
+  id          String   @id @default(uuid())
+  name        String   // e.g. "The Thompson Family"
+  ownerId     String   @unique
+  plan        String   @default("FAMILY_BASIC") // FAMILY_BASIC, FAMILY_PLUS, FAMILY_PREMIUM
+  maxMembers  Int      @default(5)
+  sharedGoals String   @default("[]") // JSON array of shared family goals
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner   User           @relation("FamilyOwner", fields: [ownerId], references: [id])
+  members FamilyMember[]
+}
+
+model FamilyMember {
+  id            String   @id @default(uuid())
+  familyGroupId String
+  userId        String
+  role          String   @default("MEMBER") // PRIMARY, SPOUSE, CHILD, PARENT, SIBLING, MEMBER
+  canViewProgress Boolean @default(false) // Can see shared wellness metrics
+  isMinor       Boolean  @default(false)
+  joinedAt      DateTime @default(now())
+
+  familyGroup FamilyGroup @relation(fields: [familyGroupId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@unique([familyGroupId, userId])
 }
 
 // ============================================

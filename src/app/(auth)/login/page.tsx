@@ -36,12 +36,18 @@ function LoginForm() {
         return;
       }
 
-      // Fetch session to get role
+      // Fetch session and user profile to check onboarding
       const res = await fetch("/api/auth/session");
       const session = await res.json();
 
+      // Check if user needs onboarding
+      const profileRes = await fetch("/api/users/profile");
+      const profile = await profileRes.json();
+
       if (callbackUrl) {
         router.push(callbackUrl);
+      } else if (!profile.onboardingDone && session?.user?.role === "PATIENT") {
+        router.push("/onboarding");
       } else if (session?.user?.role === "THERAPIST") {
         router.push("/therapist");
       } else if (session?.user?.role === "ADMIN") {

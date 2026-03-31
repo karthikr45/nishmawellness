@@ -59,7 +59,7 @@ function RegisterForm() {
         return;
       }
 
-      setSuccess(data.message);
+      setSuccess(data.message + " Redirecting to login...");
       setTimeout(() => router.push("/login"), 2000);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -243,6 +243,15 @@ function RegisterForm() {
               Therapist accounts require admin verification before activation.
             </p>
           )}
+
+          <div className="mt-6 p-4 bg-secondary-50 rounded-xl text-center">
+            <p className="text-sm text-gray-600">
+              Joining through your employer?{" "}
+              <Link href="/onboarding/corporate" className="text-secondary-600 font-medium hover:underline">
+                Corporate Wellness Setup
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

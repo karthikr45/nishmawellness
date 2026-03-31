@@ -22,6 +22,9 @@ export async function GET() {
       experience: true,
       hourlyRate: true,
       createdAt: true,
+      onboardingDone: true,
+      familyId: true,
+      familyRole: true,
     },
   });
 

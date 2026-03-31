@@ -28,6 +28,7 @@ const patientNav: NavItem[] = [
   { label: "Assessments", href: "/patient/assessments", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Exercises", href: "/patient/exercises", icon: <Wind className="w-5 h-5" /> },
   { label: "Group Sessions", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
+  { label: "Family", href: "/patient/family", icon: <Users className="w-5 h-5" /> },
   { label: "Video Sessions", href: "/patient/video", icon: <Video className="w-5 h-5" /> },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },
 ];
