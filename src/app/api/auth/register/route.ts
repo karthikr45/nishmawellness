@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, welcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -48,6 +49,10 @@ export async function POST(req: NextRequest) {
         });
       }
     }
+
+    // Send welcome email
+    const welcome = welcomeEmail(user.name);
+    sendEmail({ to: user.email, ...welcome }).catch(console.error);
 
     return NextResponse.json({
       message: userRole === "THERAPIST"

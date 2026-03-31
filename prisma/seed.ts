@@ -4,7 +4,26 @@ import { hash } from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Clear existing data
+  // Clear existing data (order matters for foreign keys)
+  await prisma.exerciseLog.deleteMany();
+  await prisma.guidedExercise.deleteMany();
+  await prisma.groupSessionMember.deleteMany();
+  await prisma.groupSession.deleteMany();
+  await prisma.journalEntry.deleteMany();
+  await prisma.assessment.deleteMany();
+  await prisma.lessonProgress.deleteMany();
+  await prisma.lesson.deleteMany();
+  await prisma.onboardingResponse.deleteMany();
+  await prisma.familyMember.deleteMany();
+  await prisma.familyGroup.deleteMany();
+  await prisma.orgAnalytics.deleteMany();
+  await prisma.orgProgram.deleteMany();
+  await prisma.orgMember.deleteMany();
+  await prisma.organization.deleteMany();
+  await prisma.continuityScore.deleteMany();
+  await prisma.userActivity.deleteMany();
+  await prisma.aIMemory.deleteMany();
+  await prisma.patientContext.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.review.deleteMany();
   await prisma.progress.deleteMany();

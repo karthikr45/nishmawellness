@@ -24,6 +24,8 @@ interface Therapist {
   rating: number;
   reviewCount: number;
   availability: { dayOfWeek: number; startTime: string; endTime: string; isAvailable: boolean }[];
+  matchScore?: number;
+  matchReasons?: string[];
 }
 
 export default function BookPage() {
@@ -38,8 +40,11 @@ export default function BookPage() {
   const [booked, setBooked] = useState(false);
 
   useEffect(() => {
-    fetch("/api/users/therapists").then((r) => r.json()).then(setTherapists).catch(console.error);
-  }, []);
+    // Use therapist-match API for logged-in users (personalized matching)
+    // Falls back to regular therapists API for guests
+    const endpoint = session ? "/api/therapist-match" : "/api/users/therapists";
+    fetch(endpoint).then((r) => r.json()).then(setTherapists).catch(console.error);
+  }, [session]);
 
   const filteredTherapists = therapists.filter(
     (t) => t.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -108,8 +113,20 @@ export default function BookPage() {
                   {therapist.name.split(" ").map((n) => n[0]).join("")}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">{therapist.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900">{therapist.name}</h3>
+                    {therapist.matchScore && (
+                      <Badge variant="success" className="text-xs">{therapist.matchScore}% Match</Badge>
+                    )}
+                  </div>
                   <p className="text-sm text-primary-600 font-medium">{therapist.specialization}</p>
+                  {therapist.matchReasons && therapist.matchReasons.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {therapist.matchReasons.slice(0, 2).map((reason, i) => (
+                        <span key={i} className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{reason}</span>
+                      ))}
+                    </div>
+                  )}
                   <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
                     <span className="flex items-center">
                       <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
