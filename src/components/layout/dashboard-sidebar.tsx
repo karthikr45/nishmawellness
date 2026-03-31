@@ -8,7 +8,7 @@ import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
-  Award, Building2, PenLine, Wind, Heart,
+  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign,
 } from "lucide-react";
 
 interface NavItem {
@@ -30,6 +30,7 @@ const patientNav: NavItem[] = [
   { label: "Group Sessions", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
   { label: "Family", href: "/patient/family", icon: <Users className="w-5 h-5" /> },
   { label: "Video Sessions", href: "/patient/video", icon: <Video className="w-5 h-5" /> },
+  { label: "Billing", href: "/patient/billing", icon: <CreditCard className="w-5 h-5" /> },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },
 ];
 
@@ -44,6 +45,7 @@ const therapistNav: NavItem[] = [
   { label: "Reviews", href: "/therapist/reviews", icon: <Star className="w-5 h-5" /> },
   { label: "AI TwinClone", href: "/therapist/twinclone", icon: <Brain className="w-5 h-5" /> },
   { label: "Continuity Score", href: "/therapist/continuity", icon: <Award className="w-5 h-5" /> },
+  { label: "Earnings", href: "/therapist/earnings", icon: <DollarSign className="w-5 h-5" /> },
   { label: "Profile", href: "/therapist/profile", icon: <Settings className="w-5 h-5" /> },
 ];
 
@@ -55,6 +57,7 @@ const adminNav: NavItem[] = [
   { label: "Appointments", href: "/admin/appointments", icon: <Calendar className="w-5 h-5" /> },
   { label: "Organizations", href: "/admin/organizations", icon: <Building2 className="w-5 h-5" /> },
   { label: "Analytics", href: "/admin/analytics", icon: <BarChart3 className="w-5 h-5" /> },
+  { label: "Blog", href: "/admin/blog", icon: <FileText className="w-5 h-5" /> },
   { label: "Notifications", href: "/admin/notifications", icon: <Bell className="w-5 h-5" /> },
   { label: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
 ];

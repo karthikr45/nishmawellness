@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Nishma Wellness - Holistic Health & Therapy Platform",
   description:
     "Connect with licensed therapists, access AI-powered wellness support, and join transformative training programs for your mental and physical well-being.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Nishma Wellness",
+  },
 };
 
 export default function RootLayout({

@@ -155,6 +155,12 @@ function LoginForm() {
             <Button type="submit" loading={loading} className="w-full" size="lg">
               Sign In <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
+
+            <div className="text-right mt-2">
+              <Link href="/forgot-password" className="text-sm text-primary-600 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </form>
 
           <div className="mt-8 p-4 bg-gray-50 rounded-xl">

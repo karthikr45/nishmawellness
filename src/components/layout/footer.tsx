@@ -62,9 +62,14 @@ export default function Footer() {
           <p className="text-gray-500">
             &copy; {new Date().getFullYear()} Nishma Wellness. All rights reserved.
           </p>
-          <p className="flex items-center mt-2 md:mt-0 text-gray-500">
-            Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> for your well-being
-          </p>
+          <div className="flex items-center space-x-6 mt-2 md:mt-0 text-gray-500">
+            <Link href="/privacy" className="hover:text-primary-400 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-primary-400 transition-colors">Terms</Link>
+            <Link href="/blog" className="hover:text-primary-400 transition-colors">Blog</Link>
+            <p className="flex items-center">
+              Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> for your well-being
+            </p>
+          </div>
         </div>
       </div>
     </footer>
