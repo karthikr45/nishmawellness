@@ -59,6 +59,9 @@ model User {
   onboardingResponse    OnboardingResponse?
   familyGroup           FamilyGroup?     @relation("FamilyOwner")
   familyMemberships     FamilyMember[]
+  twinCloneProfile      TwinCloneProfile? @relation("TwinCloneOwner")
+  handoffsAsTherapist   SessionHandoff[]  @relation("HandoffTherapist")
+  handoffsAsPatient     SessionHandoff[]  @relation("HandoffPatient")
 }
 
 model Appointment {
@@ -127,12 +130,13 @@ model Message {
 }
 
 model AIChat {
-  id        String   @id @default(uuid())
-  userId    String
-  role      String   // "user" or "assistant"
-  content   String
-  sessionId String   // Groups messages in a conversation
-  createdAt DateTime @default(now())
+  id           String   @id @default(uuid())
+  userId       String
+  role         String   // "user" or "assistant"
+  content      String
+  sessionId    String   // Groups messages in a conversation
+  therapistId  String?  // Which therapist's clone was used (null = generic AI)
+  createdAt    DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }
@@ -199,6 +203,68 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Digital TwinClone System
+// ============================================
+
+model TwinCloneProfile {
+  id              String   @id @default(uuid())
+  therapistId     String   @unique
+  isActive        Boolean  @default(true)
+  personality     String   @default("empathetic") // empathetic, professional, casual, motivational
+  approach        String   @default("")  // CBT, Mindfulness, Holistic, etc.
+  tone            String   @default("warm") // warm, professional, casual
+  greeting        String   @default("")  // Custom greeting message
+  focusAreas      String   @default("[]") // JSON array
+  boundaries      String   @default("")  // Safety boundaries
+  sampleResponses String   @default("[]") // JSON array of {question, answer} pairs
+  knowledgeBase   String   @default("[]") // JSON array of {topic, content} entries
+  techniques      String   @default("[]") // JSON array of therapeutic techniques
+  phrases         String   @default("[]") // JSON array of signature phrases
+  voiceStyle      String   @default("calm") // calm, energetic, soothing
+  avatarStyle     String   @default("default") // avatar appearance preset
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  therapist       User     @relation("TwinCloneOwner", fields: [therapistId], references: [id])
+  reviews         TwinCloneReview[]
+}
+
+// Therapist reviews AI clone conversations
+model TwinCloneReview {
+  id              String   @id @default(uuid())
+  twinCloneId     String
+  sessionId       String   // AI chat session ID
+  therapistId     String
+  patientId       String
+  status          String   @default("PENDING") // PENDING, REVIEWED, FLAGGED
+  feedback        String?  // Therapist feedback on AI responses
+  accuracy        Int?     // 1-5 rating of how accurate the clone was
+  corrections     String   @default("[]") // JSON array of corrections
+  createdAt       DateTime @default(now())
+
+  twinClone       TwinCloneProfile @relation(fields: [twinCloneId], references: [id])
+}
+
+// Handoff summary: AI prepares brief for therapist before real session
+model SessionHandoff {
+  id              String   @id @default(uuid())
+  therapistId     String
+  patientId       String
+  appointmentId   String?  // Linked upcoming appointment
+  aiSummary       String   // AI-generated summary of recent chats
+  keyTopics       String   @default("[]") // JSON array
+  moodTrend       String?  // improving, stable, declining
+  riskFlags       String   @default("[]") // JSON array of concerns
+  suggestedFocus  String   @default("[]") // JSON array of suggested session topics
+  chatCount       Int      @default(0)    // Number of AI chats since last session
+  isRead          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  therapist       User     @relation("HandoffTherapist", fields: [therapistId], references: [id])
+  patient         User     @relation("HandoffPatient", fields: [patientId], references: [id])
 }
 
 // ============================================

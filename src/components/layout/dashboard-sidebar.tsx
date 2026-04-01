@@ -8,7 +8,7 @@ import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
-  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles,
+  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles, Eye,
 } from "lucide-react";
 
 interface NavItem {
@@ -22,6 +22,7 @@ const patientNav: NavItem[] = [
   { label: "Appointments", href: "/patient/appointments", icon: <Calendar className="w-5 h-5" /> },
   { label: "AI Wellness Chat", href: "/patient/ai-chat", icon: <Brain className="w-5 h-5" /> },
   { label: "AI Avatar Session", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
+  { label: "TwinClone Chat", href: "/patient/twinclone", icon: <Users className="w-5 h-5" /> },
   { label: "Programs", href: "/patient/programs", icon: <BookOpen className="w-5 h-5" /> },
   { label: "Messages", href: "/patient/messages", icon: <MessageSquare className="w-5 h-5" /> },
   { label: "My Progress", href: "/patient/progress", icon: <BarChart3 className="w-5 h-5" /> },
@@ -44,7 +45,8 @@ const therapistNav: NavItem[] = [
   { label: "Messages", href: "/therapist/messages", icon: <MessageSquare className="w-5 h-5" /> },
   { label: "Availability", href: "/therapist/availability", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Reviews", href: "/therapist/reviews", icon: <Star className="w-5 h-5" /> },
-  { label: "AI TwinClone", href: "/therapist/twinclone", icon: <Brain className="w-5 h-5" /> },
+  { label: "TwinClone Studio", href: "/therapist/twinclone", icon: <Brain className="w-5 h-5" /> },
+  { label: "Clone Oversight", href: "/therapist/twinclone-reviews", icon: <Eye className="w-5 h-5" /> },
   { label: "Continuity Score", href: "/therapist/continuity", icon: <Award className="w-5 h-5" /> },
   { label: "Earnings", href: "/therapist/earnings", icon: <DollarSign className="w-5 h-5" /> },
   { label: "Profile", href: "/therapist/profile", icon: <Settings className="w-5 h-5" /> },
