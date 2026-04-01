@@ -8,7 +8,7 @@ import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
-  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign,
+  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles,
 } from "lucide-react";
 
 interface NavItem {
@@ -21,6 +21,7 @@ const patientNav: NavItem[] = [
   { label: "Dashboard", href: "/patient", icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: "Appointments", href: "/patient/appointments", icon: <Calendar className="w-5 h-5" /> },
   { label: "AI Wellness Chat", href: "/patient/ai-chat", icon: <Brain className="w-5 h-5" /> },
+  { label: "AI Avatar Session", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
   { label: "Programs", href: "/patient/programs", icon: <BookOpen className="w-5 h-5" /> },
   { label: "Messages", href: "/patient/messages", icon: <MessageSquare className="w-5 h-5" /> },
   { label: "My Progress", href: "/patient/progress", icon: <BarChart3 className="w-5 h-5" /> },
