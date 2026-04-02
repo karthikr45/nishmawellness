@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LanguageSelector from "@/components/shared/language-selector";
 import { useSession, signOut } from "next-auth/react";
 import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
-  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles, Eye,
+  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles, Eye, Sun, Moon, Clock,
 } from "lucide-react";
 
 interface NavItem {
@@ -30,7 +31,10 @@ const patientNav: NavItem[] = [
   { label: "Assessments", href: "/patient/assessments", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Exercises", href: "/patient/exercises", icon: <Wind className="w-5 h-5" /> },
   { label: "Group Sessions", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
-  { label: "Family", href: "/patient/family", icon: <Users className="w-5 h-5" /> },
+  { label: "Community", href: "/patient/community", icon: <Users className="w-5 h-5" /> },
+  { label: "Sleep & Sounds", href: "/patient/sleep", icon: <Moon className="w-5 h-5" /> },
+  { label: "Focus Timer", href: "/patient/focus", icon: <Clock className="w-5 h-5" /> },
+  { label: "Family", href: "/patient/family", icon: <Heart className="w-5 h-5" /> },
   { label: "Video Sessions", href: "/patient/video", icon: <Video className="w-5 h-5" /> },
   { label: "Billing", href: "/patient/billing", icon: <CreditCard className="w-5 h-5" /> },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },
@@ -64,6 +68,28 @@ const adminNav: NavItem[] = [
   { label: "Notifications", href: "/admin/notifications", icon: <Bell className="w-5 h-5" /> },
   { label: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
 ];
+
+function DarkModeToggle({ collapsed }: { collapsed: boolean }) {
+  const [dark, setDark] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem("nishma-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDark(saved === "dark" || (!saved && prefersDark));
+  }, []);
+  const toggle = () => {
+    const newDark = !dark;
+    setDark(newDark);
+    document.documentElement.classList.toggle("dark", newDark);
+    localStorage.setItem("nishma-theme", newDark ? "dark" : "light");
+  };
+  return (
+    <button onClick={toggle}
+      className={`flex items-center ${collapsed ? "justify-center" : ""} w-full px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors`}>
+      {dark ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5" />}
+      {!collapsed && <span className="ml-3">{dark ? "Light Mode" : "Dark Mode"}</span>}
+    </button>
+  );
+}
 
 export default function DashboardSidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -122,10 +148,12 @@ export default function DashboardSidebar() {
         ))}
       </nav>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t dark:border-gray-800 space-y-2">
+        {!collapsed && <LanguageSelector />}
+        <DarkModeToggle collapsed={collapsed} />
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className={`flex items-center ${collapsed ? "justify-center" : ""} w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors`}
+          className={`flex items-center ${collapsed ? "justify-center" : ""} w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition-colors`}
         >
           <LogOut className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Sign Out</span>}
