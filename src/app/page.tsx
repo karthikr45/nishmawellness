@@ -1,374 +1,306 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import {
-  Brain, Calendar, Video, BookOpen, Shield, Heart, Building2,
-  Star, ArrowRight, CheckCircle, Sparkles, Users, Clock,
+  Brain, ArrowRight, Building2, Sparkles, Shield,
+  Heart, Star, CheckCircle, Clock, Users, Video, ChevronRight,
 } from "lucide-react";
 import Button from "@/components/ui/button";
-import Card from "@/components/ui/card";
 
-const features = [
-  {
-    icon: <Brain className="w-6 h-6" />,
-    title: "AI TwinClone Therapy",
-    description: "Chat with an AI version of your therapist between sessions. Available 24/7 for support and guidance.",
-    color: "bg-purple-100 text-purple-600",
-  },
-  {
-    icon: <Video className="w-6 h-6" />,
-    title: "Video Sessions",
-    description: "Face-to-face therapy from the comfort of your home with licensed professionals.",
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    icon: <BookOpen className="w-6 h-6" />,
-    title: "Training Programs",
-    description: "Structured wellness programs in yoga, meditation, fitness, nutrition, and mental health.",
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    icon: <Calendar className="w-6 h-6" />,
-    title: "Easy Scheduling",
-    description: "Book appointments instantly with real-time availability. Flexible rescheduling options.",
-    color: "bg-orange-100 text-orange-600",
-  },
-  {
-    icon: <Shield className="w-6 h-6" />,
-    title: "Private & Secure",
-    description: "HIPAA-compliant platform with end-to-end encryption for all your sessions and data.",
-    color: "bg-red-100 text-red-600",
-  },
-  {
-    icon: <Heart className="w-6 h-6" />,
-    title: "Holistic Approach",
-    description: "Integrated care combining therapy, nutrition, fitness, and mindfulness practices.",
-    color: "bg-pink-100 text-pink-600",
-  },
-];
-
-const therapists = [
-  {
-    name: "Dr. Sarah Johnson",
-    specialty: "Clinical Psychology, CBT",
-    experience: "15 years",
-    rating: 4.9,
-  },
-  {
-    name: "Dr. Michael Chen",
-    specialty: "Integrative Psychiatry",
-    experience: "12 years",
-    rating: 4.8,
-  },
-  {
-    name: "Dr. Emily Rivera",
-    specialty: "Family Therapy, Trauma",
-    experience: "10 years",
-    rating: 4.9,
-  },
-  {
-    name: "Dr. James Patel",
-    specialty: "Sports Psychology",
-    experience: "8 years",
-    rating: 4.7,
-  },
-];
-
-const testimonials = [
-  {
-    name: "Sarah M.",
-    text: "The AI TwinClone feature is incredible. Having access to support between sessions has been a game-changer for my anxiety management.",
-    rating: 5,
-  },
-  {
-    name: "David K.",
-    text: "The meditation program combined with regular therapy sessions has helped me find a balance I never thought possible.",
-    rating: 5,
-  },
-  {
-    name: "Lisa R.",
-    text: "Booking sessions is so easy, and the video quality is excellent. My therapist is wonderful and the platform makes it all seamless.",
-    rating: 5,
-  },
-];
-
-const stats = [
-  { value: "10,000+", label: "Active Members" },
-  { value: "200+", label: "Licensed Therapists" },
-  { value: "50,000+", label: "Sessions Completed" },
-  { value: "4.9/5", label: "Average Rating" },
-];
+// Scroll reveal hook
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+    ref.current?.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
 
 export default function HomePage() {
+  const containerRef = useScrollReveal();
+
   return (
-    <main>
+    <main ref={containerRef}>
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-20 overflow-hidden">
-        <div className="absolute inset-0 gradient-bg opacity-5" />
-        <div className="absolute top-40 right-0 w-96 h-96 bg-primary-200 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-secondary-200 rounded-full blur-3xl opacity-30" />
+      {/* HERO — One powerful statement */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-50/50 via-white to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950" />
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary-200/30 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-secondary-200/20 rounded-full blur-[120px]" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto pt-16">
-            <div className="inline-flex items-center px-4 py-2 bg-primary-50 rounded-full text-primary-700 text-sm font-medium mb-6">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-32 pb-20">
+          <div className="animate-fade-in-up">
+            <div className="inline-flex items-center px-4 py-2 bg-primary-50 dark:bg-primary-950 border border-primary-200 dark:border-primary-800 rounded-full text-primary-700 dark:text-primary-300 text-sm font-medium mb-8">
               <Sparkles className="w-4 h-4 mr-2" />
               AI-Powered Wellness Platform
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Your Path to
-              <span className="gradient-text"> Holistic </span>
-              Wellness
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[0.95]">
+              Your AI Therapist
+              <br />
+              <span className="gradient-text">Remembers You.</span>
             </h1>
 
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Connect with licensed therapists, access AI-powered support 24/7,
-              and join transformative training programs for your mental and physical well-being.
+            <p className="mt-8 text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
+              Other apps treat every session like your first.
+              <br className="hidden sm:block" />
+              Nishma treats it like your forty-seventh.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
               <Link href="/register">
-                <Button size="lg" variant="primary" className="text-base">
-                  Start Your Journey <ArrowRight className="w-5 h-5 ml-2" />
+                <Button size="lg" className="text-base px-8 py-4 rounded-2xl shadow-xl shadow-primary-200/50">
+                  Start Free <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
-              <Link href="/ai-chat">
-                <Button size="lg" variant="outline" className="text-base">
-                  <Brain className="w-5 h-5 mr-2" /> Try AI Wellness Chat
+              <Link href="/company-signup">
+                <Button size="lg" variant="outline" className="text-base px-8 py-4 rounded-2xl">
+                  <Building2 className="w-5 h-5 mr-2" /> For Companies
                 </Button>
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <p className="text-3xl font-bold gradient-text">{stat.value}</p>
-                  <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
+            <p className="mt-6 text-sm text-gray-400">
+              Have a company code? <Link href="/join-company" className="text-primary-600 hover:underline font-medium">Join your company&apos;s program</Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-gray-300 dark:border-gray-600 rounded-full flex items-start justify-center pt-2">
+            <div className="w-1.5 h-3 bg-gray-400 rounded-full" />
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need for <span className="gradient-text">Wellness</span>
+      {/* SECTION: Session 47 Comparison — THE KEY USP */}
+      <section className="py-32 bg-white dark:bg-gray-950">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="reveal text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              Every session feels <span className="gradient-text">personal.</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              A comprehensive platform combining therapy, AI support, and holistic programs
+            <p className="mt-6 text-xl text-gray-500 max-w-2xl mx-auto">
+              Our AI remembers your story, your struggles, your progress — and picks up exactly where you left off.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <Card key={feature.title} hover className="p-8">
-                <div className={`w-12 h-12 rounded-xl ${feature.color} flex items-center justify-center mb-5`}>
-                  {feature.icon}
+          <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Other apps */}
+            <div className="bg-red-50/50 dark:bg-red-950/20 border border-red-200/50 dark:border-red-800/30 rounded-3xl p-8">
+              <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-6">Every Other App — Session 47</p>
+              <div className="space-y-4">
+                <div className="chat-bubble-ai bg-white dark:bg-gray-800 p-4 shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Hi! How can I help you today?</p>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How <span className="gradient-text">Nishma</span> Works
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { step: "01", title: "Create Your Profile", desc: "Sign up and tell us about your wellness goals. Get matched with the right therapist.", icon: <Users className="w-8 h-8" /> },
-              { step: "02", title: "Book or Chat", desc: "Schedule video sessions with therapists or start an AI wellness chat instantly.", icon: <Calendar className="w-8 h-8" /> },
-              { step: "03", title: "Transform & Track", desc: "Follow personalized programs, track progress, and achieve your wellness goals.", icon: <Heart className="w-8 h-8" /> },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-6 text-white">
-                  {item.icon}
+                <div className="chat-bubble-user bg-gray-200 dark:bg-gray-700 p-4 max-w-[85%] ml-auto">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">I told you last week about my boss. The meeting happened.</p>
                 </div>
-                <div className="text-xs font-bold text-primary-600 mb-2">STEP {item.step}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600 text-sm">{item.desc}</p>
+                <div className="chat-bubble-ai bg-white dark:bg-gray-800 p-4 shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">I&apos;m sorry, I don&apos;t have context from previous conversations. Could you tell me more?</p>
+                </div>
               </div>
-            ))}
+              <p className="text-sm text-red-500 font-semibold mt-6">Starts over. Every. Single. Time.</p>
+            </div>
+
+            {/* Nishma */}
+            <div className="bg-primary-50/50 dark:bg-primary-950/20 border border-primary-200/50 dark:border-primary-800/30 rounded-3xl p-8">
+              <p className="text-xs font-bold text-primary-500 uppercase tracking-wider mb-6">Nishma — Session 47</p>
+              <div className="space-y-4">
+                <div className="chat-bubble-ai bg-white dark:bg-gray-800 p-4 shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">Last week, you said you were going to have that conversation with your manager Sarah. You&apos;d avoided it twice before. Did you have it?</p>
+                </div>
+                <div className="chat-bubble-user bg-primary-600 text-white p-4 max-w-[85%] ml-auto">
+                  <p className="text-sm">It actually went better than I expected.</p>
+                </div>
+                <div className="chat-bubble-ai bg-white dark:bg-gray-800 p-4 shadow-sm max-w-[85%]">
+                  <p className="text-sm text-gray-700 dark:text-gray-300">That matters. Two weeks ago you told me you were most scared of her reaction. What was it like in reality versus what you imagined?</p>
+                </div>
+              </div>
+              <p className="text-sm text-primary-600 font-semibold mt-6">Sees the pattern. Tracks the progress. Helps you resolve.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Therapists */}
-      <section id="therapists" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Meet Our <span className="gradient-text">Expert Therapists</span>
-            </h2>
-            <p className="text-lg text-gray-600">Licensed professionals dedicated to your well-being</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {therapists.map((therapist) => (
-              <Card key={therapist.name} hover className="p-6 text-center">
-                <div className="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                  {therapist.name.split(" ").map(n => n[0]).join("")}
-                </div>
-                <h3 className="font-semibold text-gray-900">{therapist.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">{therapist.specialty}</p>
-                <div className="flex items-center justify-center mt-3 space-x-3 text-sm">
-                  <span className="flex items-center text-yellow-500">
-                    <Star className="w-4 h-4 fill-current mr-1" /> {therapist.rating}
-                  </span>
-                  <span className="text-gray-400">|</span>
-                  <span className="flex items-center text-gray-500">
-                    <Clock className="w-4 h-4 mr-1" /> {therapist.experience}
-                  </span>
-                </div>
-                <Link href="/book" className="block mt-4">
-                  <Button variant="outline" size="sm" className="w-full">
-                    Book Session
-                  </Button>
-                </Link>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* AI TwinClone Feature */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* SECTION: For Companies — Burnout Prediction */}
+      <section className="py-32 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="inline-flex items-center px-3 py-1 bg-secondary-100 rounded-full text-secondary-700 text-sm font-medium mb-4">
-                <Sparkles className="w-4 h-4 mr-1" /> Powered by AI
+              <div className="inline-flex items-center px-3 py-1.5 bg-accent-100 dark:bg-accent-950 rounded-full text-accent-700 dark:text-accent-300 text-sm font-medium mb-6">
+                <Building2 className="w-4 h-4 mr-2" /> For Companies
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Meet Your AI <span className="gradient-text">TwinClone</span> Therapist
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+                Predict burnout
+                <br />
+                <span className="gradient-text">before it happens.</span>
               </h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Our revolutionary TwinClone AI creates a digital twin of your therapist,
-                available 24/7 for support between sessions. Get personalized guidance
-                that matches your therapist&apos;s approach and style.
+              <p className="mt-6 text-lg text-gray-500 leading-relaxed">
+                Our AI analyzes mood patterns, engagement drops, and wellness signals to
+                identify at-risk teams weeks before burnout hits — saving you $15-30K per employee.
               </p>
-              <ul className="space-y-4 mb-8">
+              <ul className="mt-8 space-y-4">
                 {[
-                  "Available 24/7 for immediate support",
-                  "Learns from your therapist's approach",
-                  "Provides coping strategies in real-time",
-                  "Seamlessly bridges between live sessions",
-                  "Complete privacy and confidentiality",
+                  "Department wellness heatmap (red/yellow/green)",
+                  "Automatic incident alerts for HR",
+                  "Team leaderboards that drive engagement",
+                  "100% anonymized — individual data never exposed",
                 ].map((item) => (
-                  <li key={item} className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0" />
-                    <span className="text-gray-700">{item}</span>
+                  <li key={item} className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-600 dark:text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="/ai-chat">
-                <Button size="lg">
-                  <Brain className="w-5 h-5 mr-2" /> Try AI Chat Now
+              <Link href="/company-signup" className="inline-block mt-8">
+                <Button size="lg" className="rounded-2xl">
+                  Set Up Your Company <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
             </div>
 
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-sm mx-auto">
-                <div className="flex items-center space-x-3 mb-6 pb-4 border-b">
-                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
-                    <Brain className="w-5 h-5 text-white" />
+            {/* Heatmap visual */}
+            <div className="reveal bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8">
+              <p className="text-sm font-semibold text-gray-500 mb-6">Wellness Heatmap — Live</p>
+              <div className="space-y-3">
+                {[
+                  { dept: "Engineering", mood: 78, status: "HEALTHY", color: "bg-green-500" },
+                  { dept: "Sales", mood: 52, status: "MODERATE", color: "bg-yellow-500" },
+                  { dept: "Customer Support", mood: 34, status: "CONCERNING", color: "bg-orange-500" },
+                  { dept: "Compliance", mood: 22, status: "CRITICAL", color: "bg-red-500" },
+                  { dept: "Marketing", mood: 71, status: "HEALTHY", color: "bg-green-500" },
+                ].map((d) => (
+                  <div key={d.dept} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${d.color}`} />
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{d.dept}</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-24 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                        <div className={`${d.color} h-2 rounded-full`} style={{ width: `${d.mood}%` }} />
+                      </div>
+                      <span className="text-xs text-gray-500 w-8">{d.mood}%</span>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">AI TwinClone</p>
-                    <p className="text-xs text-green-500">Online</p>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="chat-bubble-ai bg-gray-100 p-3 max-w-[85%]">
-                    <p className="text-sm text-gray-700">Hello! How are you feeling today? I&apos;m here to help you work through anything on your mind.</p>
-                  </div>
-                  <div className="chat-bubble-user bg-primary-600 text-white p-3 max-w-[85%] ml-auto">
-                    <p className="text-sm">I&apos;ve been feeling anxious about work lately.</p>
-                  </div>
-                  <div className="chat-bubble-ai bg-gray-100 p-3 max-w-[85%]">
-                    <p className="text-sm text-gray-700">I understand. Let&apos;s try a quick grounding exercise together. Can you name 5 things you can see right now?</p>
-                  </div>
-                </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 bg-red-50 dark:bg-red-950 rounded-xl border border-red-200 dark:border-red-800">
+                <p className="text-xs text-red-700 dark:text-red-300 font-medium">
+                  Alert: Compliance team showing critical burnout risk. 3 of 8 employees at risk.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our <span className="gradient-text">Members Say</span>
+      {/* SECTION: Features Grid */}
+      <section className="py-32 bg-white dark:bg-gray-950">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="reveal text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              Everything you need.
+              <br />
+              <span className="gradient-text">Nothing you don&apos;t.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
-              <Card key={t.name} className="p-8">
-                <div className="flex mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: <Brain className="w-6 h-6" />, title: "AI TwinClone", desc: "Your therapist's digital twin. Available 24/7. Remembers everything.", color: "bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-400" },
+              { icon: <Video className="w-6 h-6" />, title: "Video Therapy", desc: "Face-to-face sessions with licensed therapists from anywhere.", color: "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400" },
+              { icon: <Heart className="w-6 h-6" />, title: "Guided Exercises", desc: "Breathing, meditation, body scan — with interactive timers.", color: "bg-pink-50 text-pink-600 dark:bg-pink-950 dark:text-pink-400" },
+              { icon: <Shield className="w-6 h-6" />, title: "HIPAA Compliant", desc: "End-to-end encryption. Your data stays yours.", color: "bg-green-50 text-green-600 dark:bg-green-950 dark:text-green-400" },
+              { icon: <Users className="w-6 h-6" />, title: "Family & Groups", desc: "Family wellness plans. Group therapy sessions. Community forum.", color: "bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400" },
+              { icon: <Clock className="w-6 h-6" />, title: "Progress Tracking", desc: "Weekly reports, mood charts, achievements. See your growth.", color: "bg-accent-50 text-accent-600 dark:bg-accent-950 dark:text-accent-400" },
+            ].map((feature) => (
+              <div key={feature.title} className="reveal hover-lift bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-8">
+                <div className={`w-12 h-12 rounded-2xl ${feature.color} flex items-center justify-center mb-5`}>
+                  {feature.icon}
                 </div>
-                <p className="text-gray-600 mb-6 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-medium">
-                    {t.name[0]}
-                  </div>
-                  <p className="ml-3 font-medium text-gray-900">{t.name}</p>
-                </div>
-              </Card>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">{feature.title}</h3>
+                <p className="mt-2 text-gray-500 text-sm leading-relaxed">{feature.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="gradient-bg rounded-3xl p-12 text-center text-white relative overflow-hidden">
+      {/* SECTION: Social Proof */}
+      <section className="py-32 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="reveal text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              What people <span className="gradient-text">say.</span>
+            </h2>
+          </div>
+
+          <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { name: "Sarah M.", role: "Patient", text: "The AI remembers my boss's name, my sleep problems, even the breathing exercise that helped. It's like talking to someone who actually knows me.", rating: 5 },
+              { name: "Dr. Priya K.", role: "Therapist", text: "The Patient Brief feature means I walk into every session prepared. My patients notice the difference — they feel heard.", rating: 5 },
+              { name: "Rajesh T.", role: "HR Director", text: "The burnout prediction alerted us about our QA team 3 weeks before anyone would have noticed. That saved us 4 resignations.", rating: 5 },
+            ].map((t) => (
+              <div key={t.name} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div className="flex mb-4">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-accent-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
+                <div className="mt-6 flex items-center space-x-3">
+                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 dark:text-white text-sm">{t.name}</p>
+                    <p className="text-xs text-gray-400">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: CTA */}
+      <section className="py-32 bg-white dark:bg-gray-950">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="reveal gradient-bg rounded-[2rem] p-16 text-center text-white relative overflow-hidden">
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white animate-float" />
               <div className="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-white animate-float" style={{ animationDelay: "3s" }} />
             </div>
             <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Life?</h2>
-              <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
-                Join Nishma Wellness today and take the first step towards a healthier, happier you.
+              <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+                Start your journey today.
+              </h2>
+              <p className="mt-6 text-xl text-white/70 max-w-lg mx-auto">
+                Free to start. No credit card required. Your AI therapist is waiting.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
                 <Link href="/register">
-                  <Button size="lg" className="bg-white text-primary-700 hover:bg-gray-100 shadow-none">
+                  <Button size="lg" className="bg-white text-primary-700 hover:bg-gray-100 shadow-none rounded-2xl text-base px-8">
                     Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
                 <Link href="/company-signup">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-2xl text-base px-8">
                     <Building2 className="w-5 h-5 mr-2" /> For Companies
                   </Button>
                 </Link>
               </div>
-              <p className="mt-4 text-sm text-white/60">
-                Have a company code? <Link href="/join-company" className="underline text-white/80 hover:text-white">Join your company&apos;s program</Link>
-              </p>
             </div>
           </div>
         </div>

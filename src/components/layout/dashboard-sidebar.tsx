@@ -18,32 +18,40 @@ interface NavItem {
   label: string;
   href: string;
   icon: React.ReactNode;
+  section?: string; // Group header
 }
 
 const patientNav: NavItem[] = [
-  { label: "Dashboard", href: "/patient", icon: <LayoutDashboard className="w-5 h-5" /> },
-  { label: "Appointments", href: "/patient/appointments", icon: <Calendar className="w-5 h-5" /> },
-  { label: "AI Wellness Chat", href: "/patient/ai-chat", icon: <Brain className="w-5 h-5" /> },
-  { label: "AI Avatar Session", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
-  { label: "TwinClone Chat", href: "/patient/twinclone", icon: <Users className="w-5 h-5" /> },
-  { label: "Programs", href: "/patient/programs", icon: <BookOpen className="w-5 h-5" /> },
+  { label: "Home", href: "/patient", icon: <LayoutDashboard className="w-5 h-5" /> },
+  // Therapy
+  { label: "Therapy", href: "", icon: <></>, section: "THERAPY" },
+  { label: "Book Session", href: "/patient/appointments", icon: <Calendar className="w-5 h-5" /> },
+  { label: "AI Chat", href: "/patient/ai-chat", icon: <Brain className="w-5 h-5" /> },
+  { label: "AI Avatar", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
+  { label: "TwinClone", href: "/patient/twinclone", icon: <Users className="w-5 h-5" /> },
   { label: "Messages", href: "/patient/messages", icon: <MessageSquare className="w-5 h-5" /> },
-  { label: "My Progress", href: "/patient/progress", icon: <BarChart3 className="w-5 h-5" /> },
-  { label: "Insights", href: "/patient/insights", icon: <TrendingUp className="w-5 h-5" /> },
-  { label: "Achievements", href: "/patient/achievements", icon: <Award className="w-5 h-5" /> },
-  { label: "Journal", href: "/patient/journal", icon: <PenLine className="w-5 h-5" /> },
-  { label: "Assessments", href: "/patient/assessments", icon: <ClipboardList className="w-5 h-5" /> },
+  // Wellness
+  { label: "Wellness", href: "", icon: <></>, section: "WELLNESS" },
+  { label: "Programs", href: "/patient/programs", icon: <BookOpen className="w-5 h-5" /> },
   { label: "Exercises", href: "/patient/exercises", icon: <Wind className="w-5 h-5" /> },
-  { label: "Group Sessions", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
-  { label: "Community", href: "/patient/community", icon: <Users className="w-5 h-5" /> },
+  { label: "Journal", href: "/patient/journal", icon: <PenLine className="w-5 h-5" /> },
   { label: "Sleep & Sounds", href: "/patient/sleep", icon: <Moon className="w-5 h-5" /> },
   { label: "Focus Timer", href: "/patient/focus", icon: <Clock className="w-5 h-5" /> },
-  { label: "Academic Wellness", href: "/patient/academic", icon: <BookOpen className="w-5 h-5" /> },
+  // Progress
+  { label: "Progress", href: "", icon: <></>, section: "PROGRESS" },
+  { label: "Insights", href: "/patient/insights", icon: <TrendingUp className="w-5 h-5" /> },
+  { label: "Assessments", href: "/patient/assessments", icon: <ClipboardList className="w-5 h-5" /> },
+  { label: "Achievements", href: "/patient/achievements", icon: <Award className="w-5 h-5" /> },
+  // Community
+  { label: "Connect", href: "", icon: <></>, section: "CONNECT" },
+  { label: "Groups", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
+  { label: "Community", href: "/patient/community", icon: <Users className="w-5 h-5" /> },
   { label: "Family", href: "/patient/family", icon: <Heart className="w-5 h-5" /> },
-  { label: "Video Sessions", href: "/patient/video", icon: <Video className="w-5 h-5" /> },
-  { label: "Billing", href: "/patient/billing", icon: <CreditCard className="w-5 h-5" /> },
-  { label: "Data & Privacy", href: "/patient/data-privacy", icon: <Lock className="w-5 h-5" /> },
+  // Settings
+  { label: "Settings", href: "", icon: <></>, section: "SETTINGS" },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },
+  { label: "Billing", href: "/patient/billing", icon: <CreditCard className="w-5 h-5" /> },
+  { label: "Privacy", href: "/patient/data-privacy", icon: <Lock className="w-5 h-5" /> },
 ];
 
 const therapistNav: NavItem[] = [
@@ -171,13 +179,23 @@ export default function DashboardSidebar() {
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
-        {navItems.map((item) => (
+      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+        {navItems.map((item) => {
+          // Section header
+          if (item.section) {
+            if (collapsed) return null;
+            return (
+              <div key={item.section} className="pt-5 pb-1 px-3 first:pt-0">
+                <p className="text-[10px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">{item.section}</p>
+              </div>
+            );
+          }
+          return (
           <Link
             key={item.href + item.label}
             href={item.href}
             onClick={() => setMobileOpen(false)}
-            className={`flex items-center ${collapsed ? "justify-center" : ""} px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+            className={`flex items-center ${collapsed ? "justify-center" : ""} px-3 py-2 rounded-xl text-sm font-medium transition-all ${
               isActive(item.href)
                 ? "bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300"
                 : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
@@ -186,7 +204,8 @@ export default function DashboardSidebar() {
             <span className={isActive(item.href) ? "text-primary-600 dark:text-primary-400" : ""}>{item.icon}</span>
             {!collapsed && <span className="ml-3">{item.label}</span>}
           </Link>
-        ))}
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t dark:border-gray-800 space-y-2">
