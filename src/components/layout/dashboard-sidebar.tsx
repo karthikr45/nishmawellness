@@ -79,15 +79,13 @@ const adminNav: NavItem[] = [
 // Company Admin sees ONLY company management
 const orgAdminNav: NavItem[] = [
   { label: "Dashboard", href: "/company", icon: <LayoutDashboard className="w-5 h-5" /> },
-  { label: "Locations", href: "/company", icon: <MapPin className="w-5 h-5" /> },
-  { label: "Employees", href: "/company", icon: <Users className="w-5 h-5" /> },
+  { label: "Locations", href: "/company/locations", icon: <MapPin className="w-5 h-5" /> },
+  { label: "Employees", href: "/company/employees", icon: <Users className="w-5 h-5" /> },
   { label: "Analytics", href: "/hr", icon: <BarChart3 className="w-5 h-5" /> },
-  { label: "Challenges", href: "/company", icon: <Target className="w-5 h-5" /> },
-  { label: "Pulse Surveys", href: "/company", icon: <ClipboardList className="w-5 h-5" /> },
-  { label: "Feedback", href: "/company", icon: <MessageSquare className="w-5 h-5" /> },
-  { label: "Programs", href: "/company", icon: <BookOpen className="w-5 h-5" /> },
-  { label: "Billing", href: "/company", icon: <CreditCard className="w-5 h-5" /> },
-  { label: "Settings", href: "/company", icon: <Settings className="w-5 h-5" /> },
+  { label: "Challenges", href: "/company/challenges", icon: <Target className="w-5 h-5" /> },
+  { label: "Pulse Surveys", href: "/company/surveys", icon: <ClipboardList className="w-5 h-5" /> },
+  { label: "Feedback", href: "/company/feedback", icon: <MessageSquare className="w-5 h-5" /> },
+  { label: "Settings", href: "/company/settings", icon: <Settings className="w-5 h-5" /> },
 ];
 
 // HR Manager sees analytics only
