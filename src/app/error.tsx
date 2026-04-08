@@ -15,7 +15,7 @@ export default function Error({
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-50 to-white">
       <div className="text-center px-4">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo-square.png" alt="Nishma" className="w-9 h-9 rounded-xl" />
+          <img src="/logo-square.png" alt="Nishma" className="w-12 h-12 rounded-xl" />
           <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
         </div>
 
