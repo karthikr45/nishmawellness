@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Leaf, Mail, Phone, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -35,11 +35,8 @@ export default function Footer() {
         <div className="py-16 grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-4">
-            <div className="flex items-center space-x-2.5 mb-5">
-              <div className="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center">
-                <Leaf className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-white tracking-tight">Nishma Wellness</span>
+            <div className="mb-5">
+              <img src="/logo.png" alt="Nishma Wellness" className="h-10 object-contain brightness-0 invert" />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               AI-powered wellness platform that remembers your journey.

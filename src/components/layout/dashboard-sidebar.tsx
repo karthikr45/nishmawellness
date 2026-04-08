@@ -167,12 +167,13 @@ export default function DashboardSidebar() {
   const sidebar = (
     <div className={`flex flex-col h-full bg-white dark:bg-gray-900 border-r dark:border-gray-800 ${collapsed ? "w-16" : "w-64"} transition-all duration-300`}>
       <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
-        {!collapsed && (
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-              <Leaf className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-bold gradient-text">Nishma</span>
+        {!collapsed ? (
+          <Link href="/" className="flex items-center">
+            <img src="/logo.png" alt="Nishma" className="h-9 object-contain" />
+          </Link>
+        ) : (
+          <Link href="/">
+            <img src="/logo-square.png" alt="Nishma" className="w-8 h-8 rounded-lg" />
           </Link>
         )}
         <button

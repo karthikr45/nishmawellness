@@ -51,9 +51,7 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo-square.png" alt="Nishma" className="w-9 h-9 rounded-xl" />
           <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
         </div>
 

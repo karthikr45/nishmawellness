@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { Menu, X, Leaf, ChevronDown, LogOut, User, LayoutDashboard, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, User, LayoutDashboard, ArrowRight } from "lucide-react";
+import Logo from "@/components/ui/logo";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -37,14 +38,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2.5 group">
-            <div className="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-shadow">
-              <Leaf className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-              Nishma<span className="text-primary-600">.</span>
-            </span>
-          </Link>
+          <Logo size="md" href="/" />
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-1">

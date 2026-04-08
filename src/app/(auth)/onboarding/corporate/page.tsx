@@ -74,9 +74,7 @@ export default function CorporateOnboarding() {
     <div className="min-h-screen bg-gradient-to-b from-secondary-50 to-white flex items-center justify-center p-4">
       <div className="w-full max-w-2xl">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo-square.png" alt="Nishma" className="w-9 h-9 rounded-xl" />
           <span className="text-lg font-bold gradient-text">Nishma Wellness</span>
           <span className="text-gray-400 mx-2">|</span>
           <Building2 className="w-5 h-5 text-secondary-600" />

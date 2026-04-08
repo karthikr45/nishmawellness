@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Leaf, Home, ArrowLeft } from "lucide-react";
+import { Home, ArrowLeft } from "lucide-react";
 import Button from "@/components/ui/button";
 
 export default function NotFound() {
@@ -9,9 +9,7 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white">
       <div className="text-center px-4">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo-square.png" alt="Nishma" className="w-9 h-9 rounded-xl" />
           <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
         </div>
 

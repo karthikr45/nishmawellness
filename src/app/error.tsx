@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaf, RefreshCw, Home } from "lucide-react";
+import { RefreshCw, Home } from "lucide-react";
 import Button from "@/components/ui/button";
 import Link from "next/link";
 
@@ -15,9 +15,7 @@ export default function Error({
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-50 to-white">
       <div className="text-center px-4">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo-square.png" alt="Nishma" className="w-9 h-9 rounded-xl" />
           <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
         </div>
 
@@ -28,7 +26,6 @@ export default function Error({
         <h2 className="text-2xl font-bold text-gray-900 mb-3">Something Went Wrong</h2>
         <p className="text-gray-500 max-w-md mx-auto mb-8">
           We encountered an unexpected error. Don&apos;t worry, your data is safe.
-          Please try again or contact support if the issue persists.
         </p>
 
         <div className="flex items-center justify-center space-x-4">
