@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { v4 as uuid } from "uuid";
 import { checkMessageSafety } from "@/lib/ai-safety";
 import { extractDeepMemories, getMemoryContext, generateProactiveOpening, enrichResponseWithMemory } from "@/lib/deep-memory";
+import { getCulturalEnrichment, getStudentEnrichment } from "@/lib/cultural-context";
 
 // Extract key topics from user messages and store as memories
 async function extractAndStoreMemories(userId: string, message: string) {
@@ -348,6 +349,20 @@ export async function POST(req: NextRequest) {
       aiResponse = await generateContextAwareResponse(session.user.id, message);
       // Enrich with deep memory references
       aiResponse = enrichResponseWithMemory(aiResponse, memoryCtx, message);
+
+      // Add cultural context based on user's region
+      const userRegion = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { region: true, userType: true },
+      });
+      const culturalAddition = getCulturalEnrichment(message, userRegion?.region || "US");
+      if (culturalAddition) aiResponse += culturalAddition;
+
+      // Add student-specific context
+      if (userRegion?.userType === "STUDENT") {
+        const studentAddition = getStudentEnrichment(message);
+        if (studentAddition) aiResponse += studentAddition;
+      }
     }
   }
 

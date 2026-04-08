@@ -65,6 +65,9 @@ model User {
   aiConsent             AIConsent?
   auditLogs             AuditLog[]
   moderationFlags       ModerationFlag[]
+  campusMemberships     CampusMember[]
+  region                String?   @default("US") // US, IN, etc.
+  userType              String?   // INDIVIDUAL, STUDENT, EMPLOYEE
 }
 
 model Appointment {
@@ -566,6 +569,7 @@ model Organization {
   members         OrgMember[]
   programs        OrgProgram[]
   analytics       OrgAnalytics[]
+  surveys         PulseSurvey[]
 }
 
 model OrgMember {
@@ -611,6 +615,74 @@ model OrgAnalytics {
   createdAt        DateTime @default(now())
 
   organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+// ============================================
+// FEATURE: Campus / Student Module
+// ============================================
+
+model Campus {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  type            String   @default("UNIVERSITY") // UNIVERSITY, COLLEGE, SCHOOL, INSTITUTE
+  domain          String?
+  contactEmail    String
+  contactName     String
+  studentCount    Int      @default(0)
+  plan            String   @default("CAMPUS_BASIC")
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  students        CampusMember[]
+  surveys         PulseSurvey[]
+}
+
+model CampusMember {
+  id           String   @id @default(uuid())
+  campusId     String
+  userId       String
+  role         String   @default("STUDENT")
+  department   String?
+  year         String?
+  isAnonymous  Boolean  @default(true)
+  joinedAt     DateTime @default(now())
+
+  campus  Campus @relation(fields: [campusId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([campusId, userId])
+}
+
+// ============================================
+// FEATURE: Pulse Surveys (HR + Campus)
+// ============================================
+
+model PulseSurvey {
+  id              String   @id @default(uuid())
+  title           String
+  organizationId  String?
+  campusId        String?
+  questions       String
+  isActive        Boolean  @default(true)
+  frequency       String   @default("WEEKLY")
+  createdAt       DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+  campus       Campus?       @relation(fields: [campusId], references: [id])
+  responses    PulseSurveyResponse[]
+}
+
+model PulseSurveyResponse {
+  id         String   @id @default(uuid())
+  surveyId   String
+  userId     String
+  answers    String
+  anonymous  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  survey PulseSurvey @relation(fields: [surveyId], references: [id])
 }
 
 // ============================================
