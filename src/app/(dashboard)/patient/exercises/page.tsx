@@ -230,7 +230,7 @@ export default function PatientExercises() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((ex) => (
           <Card key={ex.id} hover className="p-6 cursor-pointer" onClick={() => { setActiveExercise(ex); resetExercise(); }}>
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${categoryColors[ex.category] || "bg-gray-100"}`}>
+            <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 ${categoryColors[ex.category] || "bg-gray-100"}`}>
               {categoryIcons[ex.category] || <Sparkles className="w-6 h-6" />}
             </div>
             <h3 className="text-lg font-semibold text-gray-900">{ex.title}</h3>

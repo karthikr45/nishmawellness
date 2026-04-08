@@ -94,7 +94,7 @@ function RegisterForm() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center space-x-2 mb-8">
-            <img src="/logo-square.png" alt="Nishma" className="w-12 h-12 rounded-xl" />
+            <img src="/logo-square.png" alt="Nishma" className="w-14 h-14 rounded-xl" />
             <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
           </div>
 

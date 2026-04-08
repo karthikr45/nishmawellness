@@ -43,7 +43,7 @@ export default function JoinCampusPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-secondary-50 to-white dark:from-gray-950 dark:to-gray-950 p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo-square.png" alt="Nishma" className="w-12 h-12 rounded-xl" />
+          <img src="/logo-square.png" alt="Nishma" className="w-14 h-14 rounded-xl" />
           <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
         </div>
 

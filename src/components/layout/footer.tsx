@@ -36,7 +36,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4">
             <div className="mb-5">
-              <img src="/logo.png" alt="Nishma Wellness" className="h-14 object-contain" />
+              <img src="/logo.png" alt="Nishma Wellness" className="h-16 w-auto object-contain" />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               AI-powered wellness platform that remembers your journey.

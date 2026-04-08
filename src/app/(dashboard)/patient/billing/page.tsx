@@ -90,7 +90,7 @@ export default function PatientBilling() {
       <Card className="p-6 border-2 border-primary-200 bg-primary-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${planColors[currentPlan] || "bg-gray-100"}`}>
+            <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${planColors[currentPlan] || "bg-gray-100"}`}>
               {planIcons[currentPlan] || <Shield className="w-6 h-6" />}
             </div>
             <div>

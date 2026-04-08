@@ -36,10 +36,10 @@ export default function Navbar() {
         : "bg-transparent"
     }`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[72px]">
+        <div className="flex items-center justify-between h-[80px]">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma Wellness" className="h-12 object-contain" />
+            <img src="/logo.png" alt="Nishma Wellness" className="h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Nav */}
