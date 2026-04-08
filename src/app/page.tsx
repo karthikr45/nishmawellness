@@ -31,13 +31,13 @@ export default function HomePage() {
     <main ref={containerRef}>
       <Navbar />
 
-      {/* HERO — Premium corporate feel with real content */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0f1a]">
-        {/* Rich dark gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1a] via-[#0d1425] to-[#0a1628]" />
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-600/8 rounded-full blur-[150px]" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary-600/6 rounded-full blur-[150px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent-500/4 rounded-full blur-[120px]" />
+      {/* HERO — Moon Dust theme */}
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#1a1832]">
+        {/* Moon Dust gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1832] via-[#1e1d3a] to-[#141830]" />
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#80A8FF]/10 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#CEB5FF]/8 rounded-full blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#8EC1DE]/6 rounded-full blur-[120px]" />
 
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
@@ -56,7 +56,7 @@ export default function HomePage() {
                 <br />
                 platform that
                 <br />
-                <span className="bg-gradient-to-r from-primary-400 via-accent-400 to-secondary-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#80A8FF] via-[#CEB5FF] to-[#8EC1DE] bg-clip-text text-transparent">
                   never forgets.
                 </span>
               </h1>
@@ -67,7 +67,7 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row items-start gap-4 mt-10">
                 <Link href="/register"
-                  className="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-bold text-base rounded-2xl hover:from-primary-600 hover:to-primary-700 transition-all shadow-2xl shadow-primary-500/25 flex items-center">
+                  className="px-8 py-4 bg-gradient-to-r from-[#6690f5] to-[#8560d4] text-white font-bold text-base rounded-2xl hover:from-[#4d73e0] hover:to-[#6d48b8] transition-all shadow-2xl shadow-[#80A8FF]/25 flex items-center">
                   Start Free — No Card Required <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
                 <Link href="/company-signup"

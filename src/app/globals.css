@@ -3,41 +3,41 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Primary: Deep Teal — Trust, calm, health */
-  --color-primary-50: #f0fdfa;
-  --color-primary-100: #ccfbf1;
-  --color-primary-200: #99f6e4;
-  --color-primary-300: #5eead4;
-  --color-primary-400: #2dd4bf;
-  --color-primary-500: #14b8a6;
-  --color-primary-600: #0d9488;
-  --color-primary-700: #0f766e;
-  --color-primary-800: #115e59;
-  --color-primary-900: #134e4a;
+  /* Primary: Periwinkle Blue — from Moon Dust #80A8FF */
+  --color-primary-50: #f0f4ff;
+  --color-primary-100: #dbe4ff;
+  --color-primary-200: #baccff;
+  --color-primary-300: #9bb5ff;
+  --color-primary-400: #80a8ff;
+  --color-primary-500: #6690f5;
+  --color-primary-600: #4d73e0;
+  --color-primary-700: #3b5cc4;
+  --color-primary-800: #2d479e;
+  --color-primary-900: #1e3178;
 
-  /* Secondary: Rich Indigo — Depth, professionalism */
-  --color-secondary-50: #eef2ff;
-  --color-secondary-100: #e0e7ff;
-  --color-secondary-200: #c7d2fe;
-  --color-secondary-300: #a5b4fc;
-  --color-secondary-400: #818cf8;
-  --color-secondary-500: #6366f1;
-  --color-secondary-600: #4f46e5;
-  --color-secondary-700: #4338ca;
-  --color-secondary-800: #3730a3;
-  --color-secondary-900: #312e81;
+  /* Secondary: Lavender Purple — from Moon Dust #CEB5FF */
+  --color-secondary-50: #f8f5ff;
+  --color-secondary-100: #efe8ff;
+  --color-secondary-200: #ddd0ff;
+  --color-secondary-300: #ceb5ff;
+  --color-secondary-400: #b89bf5;
+  --color-secondary-500: #a07de8;
+  --color-secondary-600: #8560d4;
+  --color-secondary-700: #6d48b8;
+  --color-secondary-800: #553899;
+  --color-secondary-900: #3e2a75;
 
-  /* Accent: Warm Amber — Energy, CTAs, warmth */
-  --color-accent-50: #fffbeb;
-  --color-accent-100: #fef3c7;
-  --color-accent-200: #fde68a;
-  --color-accent-300: #fcd34d;
-  --color-accent-400: #fbbf24;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
-  --color-accent-700: #b45309;
-  --color-accent-800: #92400e;
-  --color-accent-900: #78350f;
+  /* Accent: Soft Sky Blue — from Moon Dust #8EC1DE */
+  --color-accent-50: #f0f8fc;
+  --color-accent-100: #d9eef7;
+  --color-accent-200: #b8ddef;
+  --color-accent-300: #8ec1de;
+  --color-accent-400: #6badc9;
+  --color-accent-500: #4d95b5;
+  --color-accent-600: #3a7d9e;
+  --color-accent-700: #2d6382;
+  --color-accent-800: #234d66;
+  --color-accent-900: #1a3a4d;
 }
 
 body {
@@ -47,13 +47,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Premium gradient */
+/* Moon Dust gradient */
 .gradient-bg {
-  background: linear-gradient(135deg, #0d9488, #4f46e5);
+  background: linear-gradient(135deg, #6690f5, #8560d4);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #0d9488, #4f46e5);
+  background: linear-gradient(135deg, #4d73e0, #8560d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -194,7 +194,7 @@ html {
   background: #374151;
 }
 
-/* Selection color */
+/* Selection color — Moon Dust */
 ::selection {
-  background: rgba(13, 148, 136, 0.2);
+  background: rgba(128, 168, 255, 0.25);
 }
