@@ -545,47 +545,125 @@ model ContinuityScore {
 }
 
 // ============================================
-// FEATURE: Corporate/Organization Module
+// FEATURE: Universal Company Module
+// Works for ANY industry: Banks, Hospitals, IT, Manufacturing, Retail, Govt
 // ============================================
 
 model Organization {
   id              String   @id @default(uuid())
   name            String
   slug            String   @unique
-  domain          String?  // For SSO email domain matching
+  domain          String?  // Email domain for auto-matching (@acme.com)
+  domains         String   @default("[]") // JSON array of allowed domains
   logo            String?
-  industry        String?
-  size            String?  // SMALL, MEDIUM, LARGE, ENTERPRISE
+  industry        String?  // BANKING, HEALTHCARE, IT, MANUFACTURING, RETAIL, EDUCATION, GOVERNMENT, OTHER
+  size            String?  // STARTUP, SMALL, MEDIUM, LARGE, ENTERPRISE
+  country         String   @default("US")
+  currency        String   @default("USD")
   contactEmail    String
   contactName     String
-  plan            String   @default("STANDARD") // BASIC, STANDARD, PREMIUM, ENTERPRISE
+  contactPhone    String?
+  plan            String   @default("STANDARD") // STARTER, STANDARD, PREMIUM, ENTERPRISE
   maxEmployees    Int      @default(100)
   sessionsPerEmployee Int  @default(12) // Per year
   isActive        Boolean  @default(true)
   features        String   @default("{}") // JSON feature flags
+  joinCode        String?  @unique // Self-registration code for employees
+  welcomeMessage  String?  // Custom welcome message for employees
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  locations       OrgLocation[]
   members         OrgMember[]
   programs        OrgProgram[]
   analytics       OrgAnalytics[]
   surveys         PulseSurvey[]
+  challenges      WellnessChallenge[]
+  feedbacks       AnonFeedback[]
+  invites         OrgInvite[]
+}
+
+// Physical locations (branches, offices, plants, clinics)
+model OrgLocation {
+  id             String   @id @default(uuid())
+  organizationId String
+  name           String   // "Mumbai HQ", "Delhi Branch", "Pune Plant"
+  type           String   @default("OFFICE") // OFFICE, BRANCH, PLANT, HOSPITAL, STORE, WAREHOUSE, CAMPUS
+  address        String?
+  city           String?
+  state          String?
+  country        String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  divisions    OrgDivision[]
+  members      OrgMember[]
+}
+
+// Divisions / Business Units within a location
+model OrgDivision {
+  id             String   @id @default(uuid())
+  locationId     String
+  name           String   // "Technology", "Operations", "Clinical", "Production"
+  head           String?  // User ID of division head
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  location    OrgLocation    @relation(fields: [locationId], references: [id])
+  departments OrgDepartment[]
+}
+
+// Departments within a division
+model OrgDepartment {
+  id          String   @id @default(uuid())
+  divisionId  String
+  name        String   // "Engineering", "Nursing", "Assembly", "Accounts"
+  head        String?  // User ID of department head/manager
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  division OrgDivision @relation(fields: [divisionId], references: [id])
+  members  OrgMember[]
 }
 
 model OrgMember {
   id             String   @id @default(uuid())
   organizationId String
   userId         String
-  role           String   @default("EMPLOYEE") // EMPLOYEE, ORG_ADMIN, HR_MANAGER
-  department     String?
-  isAnonymous    Boolean  @default(true) // Privacy: org can't see individual data
+  locationId     String?
+  departmentId   String?
+  role           String   @default("EMPLOYEE") // EMPLOYEE, MANAGER, HR_MANAGER, DEPT_HEAD, UNIT_HEAD, ORG_ADMIN
+  employeeId     String?  // Company employee ID
+  designation    String?  // Job title
+  isAnonymous    Boolean  @default(true)
   sessionsUsed   Int      @default(0)
+  sessionsAllowed Int     @default(12) // Per year
+  isActive       Boolean  @default(true)
   joinedAt       DateTime @default(now())
 
-  organization Organization @relation(fields: [organizationId], references: [id])
-  user         User         @relation(fields: [userId], references: [id])
+  organization Organization    @relation(fields: [organizationId], references: [id])
+  user         User             @relation(fields: [userId], references: [id])
+  location     OrgLocation?     @relation(fields: [locationId], references: [id])
+  department   OrgDepartment?   @relation(fields: [departmentId], references: [id])
 
   @@unique([organizationId, userId])
+}
+
+// Invite system for employee onboarding
+model OrgInvite {
+  id             String   @id @default(uuid())
+  organizationId String
+  email          String
+  role           String   @default("EMPLOYEE")
+  locationId     String?
+  departmentId   String?
+  status         String   @default("PENDING") // PENDING, ACCEPTED, EXPIRED
+  invitedBy      String   // User ID who sent the invite
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
 
 // Custom programs assigned to organizations
@@ -600,19 +678,69 @@ model OrgProgram {
   @@unique([organizationId, programId])
 }
 
-// Aggregated anonymous analytics for organizations
+// Aggregated anonymous analytics
 model OrgAnalytics {
   id               String   @id @default(uuid())
   organizationId   String
   period           String   // "2024-03", "2024-W12"
+  locationId       String?
+  departmentId     String?
   totalSessions    Int      @default(0)
   uniqueUsers      Int      @default(0)
   avgMoodScore     Float?
   avgSatisfaction  Float?
-  topCategories    String   @default("[]") // JSON array
-  engagementRate   Float    @default(0) // % of employees using platform
-  department       String?  // If null, it's org-wide
+  topCategories    String   @default("[]")
+  engagementRate   Float    @default(0)
   createdAt        DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+// Company-wide wellness challenges
+model WellnessChallenge {
+  id              String   @id @default(uuid())
+  organizationId  String
+  title           String
+  description     String
+  type            String   @default("STEPS") // STEPS, MEDITATION, JOURNAL, EXERCISE, CUSTOM
+  target          Int      @default(0) // Target value (e.g., 10000 steps, 7 journal entries)
+  unit            String   @default("") // "steps", "minutes", "entries"
+  startDate       DateTime
+  endDate         DateTime
+  prize           String?  // Description of reward
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  organization    Organization @relation(fields: [organizationId], references: [id])
+  participants    ChallengeParticipant[]
+}
+
+model ChallengeParticipant {
+  id           String   @id @default(uuid())
+  challengeId  String
+  userId       String
+  progress     Float    @default(0)
+  isCompleted  Boolean  @default(false)
+  joinedAt     DateTime @default(now())
+
+  challenge WellnessChallenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([challengeId, userId])
+}
+
+// Anonymous employee feedback to HR
+model AnonFeedback {
+  id             String   @id @default(uuid())
+  organizationId String
+  category       String   // WORKPLACE_STRESS, MANAGEMENT, WORKLOAD, CULTURE, HARASSMENT, SUGGESTION, OTHER
+  message        String
+  severity       String   @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  status         String   @default("NEW") // NEW, ACKNOWLEDGED, IN_PROGRESS, RESOLVED
+  adminNotes     String?
+  locationId     String?
+  departmentId   String?
+  createdAt      DateTime @default(now())
+  resolvedAt     DateTime?
 
   organization Organization @relation(fields: [organizationId], references: [id])
 }

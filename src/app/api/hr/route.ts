@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
   const org = await prisma.organization.findUnique({
     where: { id: orgId },
-    include: { members: { include: { user: { select: { id: true } } } } },
+    include: { members: { include: { user: { select: { id: true } }, department: { select: { name: true } } } } },
   });
 
   if (!org) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
   // Department breakdown
   const departments: Record<string, { count: number; sessionsUsed: number }> = {};
   for (const m of org.members) {
-    const dept = m.department || "Unassigned";
+    const dept = m.department?.name || "Unassigned";
     if (!departments[dept]) departments[dept] = { count: 0, sessionsUsed: 0 };
     departments[dept].count++;
     departments[dept].sessionsUsed += m.sessionsUsed;

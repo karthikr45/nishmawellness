@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 
   const org = await prisma.organization.findUnique({
     where: { id: orgId },
-    include: { members: { include: { user: { select: { id: true } } } } },
+    include: { members: { include: { user: { select: { id: true } }, department: { select: { name: true } } } } },
   });
 
   if (!org) {
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
   // Department breakdown (anonymous)
   const departmentStats: Record<string, { count: number; sessionsUsed: number }> = {};
   for (const member of org.members) {
-    const dept = member.department || "Unassigned";
+    const dept = member.department?.name || "Unassigned";
     if (!departmentStats[dept]) {
       departmentStats[dept] = { count: 0, sessionsUsed: 0 };
     }

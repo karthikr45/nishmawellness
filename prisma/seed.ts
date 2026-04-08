@@ -22,9 +22,16 @@ async function main() {
   await prisma.onboardingResponse.deleteMany();
   await prisma.familyMember.deleteMany();
   await prisma.familyGroup.deleteMany();
+  await prisma.challengeParticipant.deleteMany();
+  await prisma.wellnessChallenge.deleteMany();
+  await prisma.anonFeedback.deleteMany();
+  await prisma.orgInvite.deleteMany();
   await prisma.orgAnalytics.deleteMany();
   await prisma.orgProgram.deleteMany();
   await prisma.orgMember.deleteMany();
+  await prisma.orgDepartment.deleteMany();
+  await prisma.orgDivision.deleteMany();
+  await prisma.orgLocation.deleteMany();
   await prisma.organization.deleteMany();
   await prisma.continuityScore.deleteMany();
   await prisma.userActivity.deleteMany();
