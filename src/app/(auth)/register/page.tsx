@@ -244,13 +244,23 @@ function RegisterForm() {
             </p>
           )}
 
-          <div className="mt-6 p-4 bg-secondary-50 rounded-xl text-center">
-            <p className="text-sm text-gray-600">
-              Joining through your employer?{" "}
-              <Link href="/onboarding/corporate" className="text-secondary-600 font-medium hover:underline">
-                Corporate Wellness Setup
-              </Link>
-            </p>
+          <div className="mt-6 space-y-3">
+            <div className="p-4 bg-blue-50 rounded-xl text-center">
+              <p className="text-sm text-gray-600">
+                Have a company join code?{" "}
+                <Link href="/join-company" className="text-blue-600 font-medium hover:underline">
+                  Join your company
+                </Link>
+              </p>
+            </div>
+            <div className="p-4 bg-secondary-50 rounded-xl text-center">
+              <p className="text-sm text-gray-600">
+                Setting up for your organization?{" "}
+                <Link href="/company-signup" className="text-secondary-600 font-medium hover:underline">
+                  Company Registration
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

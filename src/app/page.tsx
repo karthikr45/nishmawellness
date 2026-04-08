@@ -2,7 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import {
-  Brain, Calendar, Video, BookOpen, Shield, Heart,
+  Brain, Calendar, Video, BookOpen, Shield, Heart, Building2,
   Star, ArrowRight, CheckCircle, Sparkles, Users, Clock,
 } from "lucide-react";
 import Button from "@/components/ui/button";
@@ -360,12 +360,15 @@ export default function HomePage() {
                     Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
-                <Link href="/programs">
+                <Link href="/company-signup">
                   <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                    Browse Programs
+                    <Building2 className="w-5 h-5 mr-2" /> For Companies
                   </Button>
                 </Link>
               </div>
+              <p className="mt-4 text-sm text-white/60">
+                Have a company code? <Link href="/join-company" className="underline text-white/80 hover:text-white">Join your company&apos;s program</Link>
+              </p>
             </div>
           </div>
         </div>

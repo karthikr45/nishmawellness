@@ -20,6 +20,8 @@ export default async function middleware(req: NextRequest) {
     "/contact",
     "/faq",
     "/forgot-password",
+    "/company-signup",
+    "/join-company",
     "/reset-password",
     "/onboarding",
     "/onboarding/corporate",
@@ -27,6 +29,8 @@ export default async function middleware(req: NextRequest) {
 
   const isPublic = publicPaths.some((p) => pathname === p) ||
     pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/company/register") ||
+    pathname.startsWith("/api/company/join") ||
     pathname.startsWith("/api/programs") && req.method === "GET" ||
     pathname.startsWith("/api/users/therapists") && req.method === "GET" ||
     pathname.startsWith("/api/exercises") && req.method === "GET" ||
