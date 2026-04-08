@@ -581,6 +581,10 @@ model Organization {
   challenges      WellnessChallenge[]
   feedbacks       AnonFeedback[]
   invites         OrgInvite[]
+  burnoutRisks    BurnoutRisk[]    @relation("BurnoutRisks")
+  incidents       CriticalIncident[] @relation("Incidents")
+  recognitions    PeerRecognition[] @relation("Recognitions")
+  teamScores      TeamWellnessScore[] @relation("TeamScores")
 }
 
 // Physical locations (branches, offices, plants, clinics)
@@ -743,6 +747,76 @@ model AnonFeedback {
   resolvedAt     DateTime?
 
   organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+// Burnout prediction scores
+model BurnoutRisk {
+  id              String   @id @default(uuid())
+  organizationId  String
+  departmentId    String?
+  locationId      String?
+  riskScore       Float    // 0-100
+  riskLevel       String   // LOW, MODERATE, HIGH, CRITICAL
+  factors         String   @default("[]") // JSON: contributing factors
+  employeeCount   Int      @default(0)
+  atRiskCount     Int      @default(0)
+  trend           String?  // IMPROVING, STABLE, WORSENING
+  calculatedAt    DateTime @default(now())
+
+  organization Organization @relation("BurnoutRisks", fields: [organizationId], references: [id])
+}
+
+// Critical incident tracking
+model CriticalIncident {
+  id              String   @id @default(uuid())
+  organizationId  String
+  type            String   // CRISIS_DETECTED, SEVERE_ASSESSMENT, BURNOUT_ALERT, ABSENCE_PATTERN
+  severity        String   // LOW, MEDIUM, HIGH, CRITICAL
+  description     String
+  departmentId    String?
+  locationId      String?
+  status          String   @default("NEW") // NEW, ACKNOWLEDGED, INTERVENING, RESOLVED, ESCALATED
+  assignedTo      String?  // HR person handling this
+  actionsTaken    String   @default("[]") // JSON array of actions
+  isAnonymous     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  resolvedAt      DateTime?
+
+  organization Organization @relation("Incidents", fields: [organizationId], references: [id])
+}
+
+// Peer recognition
+model PeerRecognition {
+  id              String   @id @default(uuid())
+  organizationId  String
+  fromUserId      String
+  toUserId        String
+  message         String
+  category        String   // SUPPORT, KINDNESS, TEAMWORK, MENTORING, POSITIVITY, RESILIENCE
+  isAnonymous     Boolean  @default(true)
+  likes           Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  organization Organization @relation("Recognitions", fields: [organizationId], references: [id])
+}
+
+// Team leaderboard scores
+model TeamWellnessScore {
+  id              String   @id @default(uuid())
+  organizationId  String
+  departmentId    String?
+  locationId      String?
+  teamName        String
+  score           Float    @default(0) // Composite wellness score
+  participation   Float    @default(0) // % of team participating
+  streak          Int      @default(0) // Consecutive active weeks
+  exercisePoints  Int      @default(0)
+  journalPoints   Int      @default(0)
+  moodPoints      Int      @default(0)
+  period          String   // "2026-W14" or "2026-03"
+  calculatedAt    DateTime @default(now())
+
+  organization Organization @relation("TeamScores", fields: [organizationId], references: [id])
 }
 
 // ============================================

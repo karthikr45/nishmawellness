@@ -11,7 +11,7 @@ import {
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
   Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign,
   Sparkles, Eye, Sun, Moon, Clock, TrendingUp, Lock, MapPin,
-  Target, Send, Shield,
+  Target, Send, Shield, AlertTriangle,
 } from "lucide-react";
 
 interface NavItem {
@@ -81,10 +81,15 @@ const orgAdminNav: NavItem[] = [
   { label: "Dashboard", href: "/company", icon: <LayoutDashboard className="w-5 h-5" /> },
   { label: "Locations", href: "/company/locations", icon: <MapPin className="w-5 h-5" /> },
   { label: "Employees", href: "/company/employees", icon: <Users className="w-5 h-5" /> },
-  { label: "Analytics", href: "/hr", icon: <BarChart3 className="w-5 h-5" /> },
+  { label: "Wellness Heatmap", href: "/company/heatmap", icon: <BarChart3 className="w-5 h-5" /> },
+  { label: "Burnout Prediction", href: "/hr", icon: <AlertTriangle className="w-5 h-5" /> },
+  { label: "Incidents", href: "/company/incidents", icon: <Shield className="w-5 h-5" /> },
+  { label: "Leaderboard", href: "/company/leaderboard", icon: <Award className="w-5 h-5" /> },
+  { label: "Recognition Wall", href: "/company/recognition", icon: <Heart className="w-5 h-5" /> },
   { label: "Challenges", href: "/company/challenges", icon: <Target className="w-5 h-5" /> },
-  { label: "Pulse Surveys", href: "/company/surveys", icon: <ClipboardList className="w-5 h-5" /> },
+  { label: "Manager Toolkit", href: "/company/manager-toolkit", icon: <BookOpen className="w-5 h-5" /> },
   { label: "Feedback", href: "/company/feedback", icon: <MessageSquare className="w-5 h-5" /> },
+  { label: "Surveys", href: "/company/surveys", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Settings", href: "/company/settings", icon: <Settings className="w-5 h-5" /> },
 ];
 
