@@ -44,8 +44,17 @@ function LoginForm() {
       const profileRes = await fetch("/api/users/profile");
       const profile = await profileRes.json();
 
+      // Check if user has an org role
+      const orgRes = await fetch("/api/organization").catch(() => null);
+      const orgData = orgRes ? await orgRes.json() : null;
+      const orgRole = orgData?.role;
+
       if (callbackUrl) {
         router.push(callbackUrl);
+      } else if (orgRole === "ORG_ADMIN") {
+        router.push("/company");
+      } else if (orgRole === "HR_MANAGER") {
+        router.push("/hr");
       } else if (!profile.onboardingDone && session?.user?.role === "PATIENT") {
         router.push("/onboarding");
       } else if (session?.user?.role === "THERAPIST") {

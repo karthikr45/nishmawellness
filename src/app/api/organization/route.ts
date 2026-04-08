@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-// GET: List organizations (admin) or get user's org
+// GET: List organizations (admin) or get user's org membership
 export async function GET() {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Always check org membership first (for role-based routing)
+  const membership = await prisma.orgMember.findFirst({
+    where: { userId: session.user.id },
+    include: { organization: true },
+  });
+
+  // If user has org membership, return it with role
+  if (membership) {
+    return NextResponse.json(membership);
+  }
+
+  // Platform admin with no org membership: return org list
   if (session.user.role === "ADMIN") {
     const orgs = await prisma.organization.findMany({
       include: { _count: { select: { members: true } } },
@@ -17,15 +29,7 @@ export async function GET() {
     return NextResponse.json(orgs);
   }
 
-  // Regular user: get their org
-  const membership = await prisma.orgMember.findFirst({
-    where: { userId: session.user.id },
-    include: {
-      organization: true,
-    },
-  });
-
-  return NextResponse.json(membership);
+  return NextResponse.json(null);
 }
 
 // POST: Create a new organization (admin only)
