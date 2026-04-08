@@ -290,15 +290,13 @@ export default function HomePage() {
                 Free to start. No credit card required. Your AI therapist is waiting.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-                <Link href="/register">
-                  <Button size="lg" className="bg-white text-primary-700 hover:bg-gray-100 shadow-none rounded-2xl text-base px-8">
-                    Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
+                <Link href="/register"
+                  className="px-8 py-4 bg-white text-gray-900 font-bold text-base rounded-2xl hover:bg-gray-100 transition-colors flex items-center shadow-xl">
+                  Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                <Link href="/company-signup">
-                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-2xl text-base px-8">
-                    <Building2 className="w-5 h-5 mr-2" /> For Companies
-                  </Button>
+                <Link href="/company-signup"
+                  className="px-8 py-4 border-2 border-white/40 text-white font-bold text-base rounded-2xl hover:bg-white/10 transition-colors flex items-center">
+                  <Building2 className="w-5 h-5 mr-2" /> For Companies
                 </Link>
               </div>
             </div>
