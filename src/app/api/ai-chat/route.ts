@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { v4 as uuid } from "uuid";
 import { checkMessageSafety } from "@/lib/ai-safety";
+import { extractDeepMemories, getMemoryContext, generateProactiveOpening, enrichResponseWithMemory } from "@/lib/deep-memory";
 
 // Extract key topics from user messages and store as memories
 async function extractAndStoreMemories(userId: string, message: string) {
@@ -330,10 +331,24 @@ export async function POST(req: NextRequest) {
   if (safetyResult.redirectResponse) {
     aiResponse = safetyResult.redirectResponse;
   } else {
-    // Extract memories from user message (runs in background)
+    // DEEP MEMORY: Extract rich memories from this message
+    extractDeepMemories(session.user.id, message, sessionId).catch(console.error);
+    // Also run legacy extraction for backward compatibility
     extractAndStoreMemories(session.user.id, message).catch(console.error);
-    // Generate context-aware AI response
-    aiResponse = await generateContextAwareResponse(session.user.id, message);
+
+    // Get full memory context
+    const memoryCtx = await getMemoryContext(session.user.id);
+
+    // Check if this is the first message of a new session — use proactive opening
+    const sessionMessages = await prisma.aIChat.count({ where: { sessionId } });
+    if (sessionMessages <= 1 && message.toLowerCase().match(/^(hi|hello|hey|good|start|begin)/)) {
+      aiResponse = generateProactiveOpening(memoryCtx);
+    } else {
+      // Generate context-aware AI response
+      aiResponse = await generateContextAwareResponse(session.user.id, message);
+      // Enrich with deep memory references
+      aiResponse = enrichResponseWithMemory(aiResponse, memoryCtx, message);
+    }
   }
 
   // Log activity

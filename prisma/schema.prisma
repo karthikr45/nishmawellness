@@ -495,13 +495,19 @@ model PatientContext {
 
 // AI Memory - stores extracted themes from conversations
 model AIMemory {
-  id        String   @id @default(uuid())
-  userId    String
-  category  String   // TOPIC, EVENT, PREFERENCE, GOAL, TRIGGER, COPING
-  content   String
-  source    String   // AI_CHAT, SESSION_NOTE, SELF_REPORTED
-  weight    Float    @default(1.0) // Importance/recency weight
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  userId      String
+  category    String   // TOPIC, EVENT, COMMITMENT, DETAIL, PERSON, PATTERN, MILESTONE, TRIGGER, COPING, PREFERENCE
+  content     String   // The actual memory content
+  context     String   @default("") // Full sentence/context when this was mentioned
+  source      String   // AI_CHAT, SESSION_NOTE, SELF_REPORTED, JOURNAL
+  sessionId   String?  // Which chat session this came from
+  weight      Float    @default(1.0) // Importance/recency weight
+  mentionCount Int     @default(1)  // How many times this has come up
+  lastMentioned DateTime @default(now()) // When it was last referenced
+  isResolved  Boolean  @default(false) // For commitments/goals that are completed
+  linkedMemoryId String? // Link related memories together
+  createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }
