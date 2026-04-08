@@ -124,33 +124,15 @@ function DarkModeToggle({ collapsed }: { collapsed: boolean }) {
 export default function DashboardSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [orgRole, setOrgRole] = useState<string | null>(null);
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  // Check if user has an org role (ORG_ADMIN, HR_MANAGER, etc.)
-  useEffect(() => {
-    if (session?.user?.id) {
-      fetch("/api/organization")
-        .then((r) => r.json())
-        .then((data) => {
-          // If data has a role field from OrgMember, use it
-          if (data?.role) {
-            setOrgRole(data.role);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [session]);
-
-  // Determine which nav to show
+  // Determine which nav to show based on session role (set at login time)
   const getNavItems = (): NavItem[] => {
-    // Org roles take priority for org pages
-    if (pathname?.startsWith("/company") && orgRole === "ORG_ADMIN") return orgAdminNav;
-    if (pathname?.startsWith("/hr") && (orgRole === "HR_MANAGER" || orgRole === "ORG_ADMIN")) return hrManagerNav;
-
-    // Standard role-based nav
-    switch (session?.user?.role) {
+    const role = session?.user?.role;
+    switch (role) {
+      case "ORG_ADMIN": return orgAdminNav;
+      case "HR_MANAGER": return hrManagerNav;
       case "THERAPIST": return therapistNav;
       case "ADMIN": return adminNav;
       default: return patientNav;

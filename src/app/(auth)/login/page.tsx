@@ -36,31 +36,27 @@ function LoginForm() {
         return;
       }
 
-      // Fetch session and user profile to check onboarding
+      // Fetch session to get role (org role is baked into session at login)
       const res = await fetch("/api/auth/session");
       const session = await res.json();
+      const role = session?.user?.role;
 
       // Check if user needs onboarding
       const profileRes = await fetch("/api/users/profile");
       const profile = await profileRes.json();
 
-      // Check if user has an org role
-      const orgRes = await fetch("/api/organization").catch(() => null);
-      const orgData = orgRes ? await orgRes.json() : null;
-      const orgRole = orgData?.role;
-
       if (callbackUrl) {
         router.push(callbackUrl);
-      } else if (orgRole === "ORG_ADMIN") {
+      } else if (role === "ORG_ADMIN") {
         router.push("/company");
-      } else if (orgRole === "HR_MANAGER") {
+      } else if (role === "HR_MANAGER") {
         router.push("/hr");
-      } else if (!profile.onboardingDone && session?.user?.role === "PATIENT") {
-        router.push("/onboarding");
-      } else if (session?.user?.role === "THERAPIST") {
+      } else if (role === "THERAPIST") {
         router.push("/therapist");
-      } else if (session?.user?.role === "ADMIN") {
+      } else if (role === "ADMIN") {
         router.push("/admin");
+      } else if (!profile.onboardingDone) {
+        router.push("/onboarding");
       } else {
         router.push("/patient");
       }

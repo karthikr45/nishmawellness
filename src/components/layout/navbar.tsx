@@ -14,6 +14,8 @@ export default function Navbar() {
   const getDashboardLink = () => {
     if (!session) return "/login";
     switch (session.user.role) {
+      case "ORG_ADMIN": return "/company";
+      case "HR_MANAGER": return "/hr";
       case "THERAPIST": return "/therapist";
       case "ADMIN": return "/admin";
       default: return "/patient";

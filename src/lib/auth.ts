@@ -33,12 +33,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
+        // Check org membership for role
+        const orgMembership = await prisma.orgMember.findFirst({
+          where: { userId: user.id },
+          select: { role: true, organizationId: true },
+        });
+
+        // Determine effective role:
+        // If user is ORG_ADMIN or HR_MANAGER, that takes priority
+        let effectiveRole = user.role;
+        if (orgMembership?.role === "ORG_ADMIN") effectiveRole = "ORG_ADMIN";
+        else if (orgMembership?.role === "HR_MANAGER") effectiveRole = "HR_MANAGER";
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role: effectiveRole,
           image: user.avatar,
+          orgRole: orgMembership?.role || null,
+          organizationId: orgMembership?.organizationId || null,
         };
       },
     }),
@@ -48,6 +62,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.role = user.role;
         token.id = user.id;
+        token.orgRole = (user as Record<string, unknown>).orgRole || null;
+        token.organizationId = (user as Record<string, unknown>).organizationId || null;
       }
       return token;
     },

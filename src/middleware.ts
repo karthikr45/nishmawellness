@@ -55,17 +55,35 @@ export default async function middleware(req: NextRequest) {
 
   const role = session.user.role;
 
+  // Map role to home path for redirects
+  const roleHome: Record<string, string> = {
+    PATIENT: "/patient",
+    THERAPIST: "/therapist",
+    ADMIN: "/admin",
+    ORG_ADMIN: "/company",
+    HR_MANAGER: "/hr",
+  };
+  const home = roleHome[role || ""] || "/patient";
+
   // Role-based route protection
-  if (pathname.startsWith("/patient") && role !== "PATIENT" && role !== "ADMIN") {
-    return NextResponse.redirect(new URL(`/${role?.toLowerCase() || "login"}`, req.url));
+  if (pathname.startsWith("/patient") && role !== "PATIENT" && role !== "ADMIN" && role !== "ORG_ADMIN") {
+    return NextResponse.redirect(new URL(home, req.url));
   }
 
   if (pathname.startsWith("/therapist") && role !== "THERAPIST" && role !== "ADMIN") {
-    return NextResponse.redirect(new URL(`/${role?.toLowerCase() || "login"}`, req.url));
+    return NextResponse.redirect(new URL(home, req.url));
   }
 
   if (pathname.startsWith("/admin") && role !== "ADMIN") {
-    return NextResponse.redirect(new URL(`/${role?.toLowerCase() || "login"}`, req.url));
+    return NextResponse.redirect(new URL(home, req.url));
+  }
+
+  if (pathname.startsWith("/company") && role !== "ORG_ADMIN" && role !== "ADMIN") {
+    return NextResponse.redirect(new URL(home, req.url));
+  }
+
+  if (pathname.startsWith("/hr") && role !== "HR_MANAGER" && role !== "ORG_ADMIN" && role !== "ADMIN") {
+    return NextResponse.redirect(new URL(home, req.url));
   }
 
   return NextResponse.next();
