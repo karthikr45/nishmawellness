@@ -9,8 +9,7 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white">
       <div className="text-center px-4">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo-square.png" alt="Nishma" className="w-14 h-14 rounded-xl" />
-          <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
+          <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
         </div>
 
         <h1 className="text-8xl font-bold gradient-text mb-4">404</h1>

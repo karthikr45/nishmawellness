@@ -39,7 +39,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-[80px]">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma Wellness" className="h-16 w-auto object-contain" />
+            <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
           </Link>
 
           {/* Desktop Nav */}

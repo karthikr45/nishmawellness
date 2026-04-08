@@ -134,8 +134,7 @@ export default function OnboardingPage() {
         {/* Progress */}
         <div className="mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <img src="/logo-square.png" alt="Nishma" className="w-14 h-14 rounded-xl" />
-            <span className="text-lg font-bold gradient-text">Nishma Wellness</span>
+            <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
           </div>
           <div className="flex items-center justify-center space-x-1">
             {STEPS.map((_, i) => (

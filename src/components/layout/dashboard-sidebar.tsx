@@ -169,11 +169,11 @@ export default function DashboardSidebar() {
       <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
         {!collapsed ? (
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma" className="h-14 w-auto object-contain" />
+            <img src="/logo.png" alt="Nishma" className="h-12 max-w-[180px] object-contain" />
           </Link>
         ) : (
           <Link href="/">
-            <img src="/logo-square.png" alt="Nishma" className="w-11 h-11 rounded-xl" />
+            <img src="/logo-square.png" alt="Nishma" className="w-10 h-10 rounded-xl object-cover" />
           </Link>
         )}
         <button
