@@ -31,47 +31,139 @@ export default function HomePage() {
     <main ref={containerRef}>
       <Navbar />
 
-      {/* HERO — One powerful statement */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-50/50 via-white to-white dark:from-gray-950 dark:via-gray-950 dark:to-gray-950" />
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary-200/30 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-secondary-200/20 rounded-full blur-[120px]" />
+      {/* HERO — Premium corporate feel with real content */}
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0f1a]">
+        {/* Rich dark gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1a] via-[#0d1425] to-[#0a1628]" />
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary-600/8 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary-600/6 rounded-full blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-accent-500/4 rounded-full blur-[120px]" />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center pt-32 pb-20">
-          <div className="animate-fade-in-up">
-            <div className="inline-flex items-center px-4 py-2 bg-primary-50 dark:bg-primary-950 border border-primary-200 dark:border-primary-800 rounded-full text-primary-700 dark:text-primary-300 text-sm font-medium mb-8">
-              <Sparkles className="w-4 h-4 mr-2" />
-              AI-Powered Wellness Platform
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left — Text */}
+            <div className="animate-fade-in-up">
+              <div className="inline-flex items-center px-4 py-2 bg-white/5 border border-white/10 rounded-full text-primary-400 text-sm font-medium mb-8 backdrop-blur-sm">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Trusted by 200+ organizations worldwide
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05]">
+                The wellness
+                <br />
+                platform that
+                <br />
+                <span className="bg-gradient-to-r from-primary-400 via-accent-400 to-secondary-400 bg-clip-text text-transparent">
+                  never forgets.
+                </span>
+              </h1>
+
+              <p className="mt-8 text-lg md:text-xl text-gray-400 max-w-lg leading-relaxed">
+                AI therapy that remembers every conversation. Burnout prediction that saves companies millions. Wellness that actually works.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-start gap-4 mt-10">
+                <Link href="/register"
+                  className="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-bold text-base rounded-2xl hover:from-primary-600 hover:to-primary-700 transition-all shadow-2xl shadow-primary-500/25 flex items-center">
+                  Start Free — No Card Required <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+                <Link href="/company-signup"
+                  className="px-8 py-4 border border-white/20 text-white font-semibold text-base rounded-2xl hover:bg-white/5 transition-all flex items-center backdrop-blur-sm">
+                  <Building2 className="w-5 h-5 mr-2 text-primary-400" /> For Companies
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-8 mt-12">
+                {[
+                  { value: "10K+", label: "Active Users" },
+                  { value: "200+", label: "Companies" },
+                  { value: "98%", label: "Satisfaction" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <p className="text-2xl font-extrabold text-white">{stat.value}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[0.95]">
-              Your AI Therapist
-              <br />
-              <span className="gradient-text">Remembers You.</span>
-            </h1>
+            {/* Right — App Preview */}
+            <div className="animate-fade-in-up hidden lg:block" style={{ animationDelay: "0.3s" }}>
+              <div className="relative">
+                {/* Glow behind the card */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-3xl blur-3xl" />
 
-            <p className="mt-8 text-xl md:text-2xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-              Other apps treat every session like your first.
-              <br className="hidden sm:block" />
-              Nishma treats it like your forty-seventh.
-            </p>
+                {/* Main preview card */}
+                <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl">
+                  {/* Mini app header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                    </div>
+                    <span className="text-xs text-gray-500 font-mono">nishma wellness</span>
+                  </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-              <Link href="/register">
-                <Button size="lg" className="text-base px-8 py-4 rounded-2xl shadow-xl shadow-primary-200/50">
-                  Start Free <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/company-signup">
-                <Button size="lg" variant="outline" className="text-base px-8 py-4 rounded-2xl">
-                  <Building2 className="w-5 h-5 mr-2" /> For Companies
-                </Button>
-              </Link>
+                  {/* Chat preview showing memory */}
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
+                        <Brain className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="bg-white/10 rounded-2xl rounded-tl-md p-4 max-w-[85%]">
+                        <p className="text-sm text-gray-200 leading-relaxed">
+                          Welcome back, Priya. Last session you mentioned the deadline with your manager Rahul was stressing you out. You committed to trying the breathing exercise. How did it go?
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end">
+                      <div className="bg-primary-600 rounded-2xl rounded-tr-md p-4 max-w-[75%]">
+                        <p className="text-sm text-white leading-relaxed">
+                          It actually helped! I did the 4-7-8 breathing before the meeting and felt much calmer.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
+                        <Brain className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="bg-white/10 rounded-2xl rounded-tl-md p-4 max-w-[85%]">
+                        <p className="text-sm text-gray-200 leading-relaxed">
+                          That&apos;s wonderful progress! I&apos;ve noticed anxiety has come up in 5 of our conversations. But your coping is getting stronger each time. 💪
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom stats bar */}
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-primary-400">47</p>
+                        <p className="text-[10px] text-gray-500">Sessions</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-green-400">↑ 23%</p>
+                        <p className="text-[10px] text-gray-500">Mood</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-lg font-bold text-accent-400">12</p>
+                        <p className="text-[10px] text-gray-500">Day Streak</p>
+                      </div>
+                    </div>
+                    <div className="px-3 py-1.5 bg-green-500/20 text-green-400 rounded-full text-xs font-semibold">
+                      Mood: Improving
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <p className="mt-6 text-sm text-gray-400">
-              Have a company code? <Link href="/join-company" className="text-primary-600 hover:underline font-medium">Join your company&apos;s program</Link>
-            </p>
           </div>
         </div>
 

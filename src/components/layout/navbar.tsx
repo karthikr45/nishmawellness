@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { Menu, X, Leaf, ChevronDown, LogOut, User, LayoutDashboard } from "lucide-react";
-import Button from "@/components/ui/button";
+import { Menu, X, Leaf, ChevronDown, LogOut, User, LayoutDashboard, ArrowRight } from "lucide-react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const getDashboardLink = () => {
     if (!session) return "/login";
@@ -23,105 +29,120 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-effect">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled
+        ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm"
+        : "bg-transparent"
+    }`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[72px]">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2.5 group">
+            <div className="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20 group-hover:shadow-primary-500/40 transition-shadow">
               <Leaf className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold gradient-text">Nishma Wellness</span>
+            <span className="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+              Nishma<span className="text-primary-600">.</span>
+            </span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/programs" className="text-gray-600 hover:text-primary-600 font-medium transition-colors">
-              Programs
-            </Link>
-            <Link href="/book" className="text-gray-600 hover:text-primary-600 font-medium transition-colors">
-              Book Session
-            </Link>
-            <Link href="/ai-chat" className="text-gray-600 hover:text-primary-600 font-medium transition-colors">
-              AI Wellness
-            </Link>
-            <Link href="/#about" className="text-gray-600 hover:text-primary-600 font-medium transition-colors">
-              About
-            </Link>
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-1">
+            {[
+              { label: "Platform", href: "/programs" },
+              { label: "For Companies", href: "/company-signup" },
+              { label: "For Students", href: "/student-signup" },
+              { label: "Pricing", href: "/programs" },
+              { label: "Blog", href: "/blog" },
+            ].map((link) => (
+              <Link key={link.label} href={link.href}
+                className="px-4 py-2 text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100/50 dark:hover:bg-gray-800/50">
+                {link.label}
+              </Link>
+            ))}
           </div>
 
+          {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-3">
             {session ? (
               <div className="relative">
-                <button
-                  onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-xl hover:bg-gray-100 transition-colors"
-                >
-                  <div className="w-8 h-8 gradient-bg rounded-full flex items-center justify-center text-white text-sm font-medium">
+                <button onClick={() => setProfileOpen(!profileOpen)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                  <div className="w-8 h-8 gradient-bg rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
                     {session.user.name?.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm font-medium text-gray-700">{session.user.name}</span>
-                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{session.user.name}</span>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
                 </button>
 
                 {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border py-1 z-50">
-                    <Link
-                      href={getDashboardLink()}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      <LayoutDashboard className="w-4 h-4 mr-2" /> Dashboard
+                  <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border dark:border-gray-800 py-2 z-50">
+                    <Link href={getDashboardLink()}
+                      className="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      onClick={() => setProfileOpen(false)}>
+                      <LayoutDashboard className="w-4 h-4 mr-3" /> Dashboard
                     </Link>
-                    <Link
-                      href={`${getDashboardLink()}/profile`}
-                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                      onClick={() => setProfileOpen(false)}
-                    >
-                      <User className="w-4 h-4 mr-2" /> Profile
+                    <Link href={`${getDashboardLink()}/profile`}
+                      className="flex items-center px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                      onClick={() => setProfileOpen(false)}>
+                      <User className="w-4 h-4 mr-3" /> Profile
                     </Link>
-                    <hr className="my-1" />
-                    <button
-                      onClick={() => signOut({ callbackUrl: "/" })}
-                      className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      <LogOut className="w-4 h-4 mr-2" /> Sign Out
+                    <hr className="my-2 dark:border-gray-800" />
+                    <button onClick={() => signOut({ callbackUrl: "/" })}
+                      className="flex items-center w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950">
+                      <LogOut className="w-4 h-4 mr-3" /> Sign Out
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <>
-                <Link href="/login">
-                  <Button variant="ghost">Sign In</Button>
+                <Link href="/login"
+                  className="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                  Sign In
                 </Link>
-                <Link href="/register">
-                  <Button variant="primary">Get Started</Button>
+                <Link href="/register"
+                  className="px-5 py-2.5 gradient-bg text-white text-sm font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary-500/25 flex items-center">
+                  Get Started <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Link>
               </>
             )}
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setMobileOpen(!mobileOpen)}>
+          {/* Mobile menu button */}
+          <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t">
-          <div className="px-4 py-4 space-y-3">
-            <Link href="/programs" className="block py-2 text-gray-600 font-medium" onClick={() => setMobileOpen(false)}>Programs</Link>
-            <Link href="/book" className="block py-2 text-gray-600 font-medium" onClick={() => setMobileOpen(false)}>Book Session</Link>
-            <Link href="/ai-chat" className="block py-2 text-gray-600 font-medium" onClick={() => setMobileOpen(false)}>AI Wellness</Link>
-            <hr />
+        <div className="md:hidden bg-white dark:bg-gray-950 border-t dark:border-gray-800">
+          <div className="px-6 py-6 space-y-1">
+            {[
+              { label: "Platform", href: "/programs" },
+              { label: "For Companies", href: "/company-signup" },
+              { label: "For Students", href: "/student-signup" },
+              { label: "Pricing", href: "/programs" },
+              { label: "Blog", href: "/blog" },
+            ].map((link) => (
+              <Link key={link.label} href={link.href}
+                className="block py-3 text-gray-700 dark:text-gray-300 font-semibold text-base"
+                onClick={() => setMobileOpen(false)}>
+                {link.label}
+              </Link>
+            ))}
+            <hr className="my-3 dark:border-gray-800" />
             {session ? (
               <>
-                <Link href={getDashboardLink()} className="block py-2 text-gray-600 font-medium" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-                <button onClick={() => signOut({ callbackUrl: "/" })} className="block py-2 text-red-600 font-medium">Sign Out</button>
+                <Link href={getDashboardLink()} className="block py-3 text-gray-700 dark:text-gray-300 font-semibold" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+                <button onClick={() => signOut({ callbackUrl: "/" })} className="block py-3 text-red-600 font-semibold">Sign Out</button>
               </>
             ) : (
-              <div className="flex space-x-3 pt-2">
-                <Link href="/login" className="flex-1"><Button variant="outline" className="w-full">Sign In</Button></Link>
-                <Link href="/register" className="flex-1"><Button variant="primary" className="w-full">Get Started</Button></Link>
+              <div className="flex space-x-3 pt-3">
+                <Link href="/login" className="flex-1 text-center py-3 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-xl">Sign In</Link>
+                <Link href="/register" className="flex-1 text-center py-3 gradient-bg text-white font-semibold rounded-xl">Get Started</Link>
               </div>
             )}
           </div>
