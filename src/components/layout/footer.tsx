@@ -1,74 +1,153 @@
 import Link from "next/link";
-import { Leaf, Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Leaf, Mail, Phone, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+    <footer className="relative bg-gray-950 text-gray-400 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[300px] bg-primary-600/5 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[250px] bg-secondary-600/5 rounded-full blur-[120px]" />
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Top section — CTA strip */}
+        <div className="py-12 border-b border-gray-800/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                Ready to transform well-being?
+              </h3>
+              <p className="text-gray-500 mt-1">Start free. No credit card required.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link href="/register"
+                className="px-6 py-3 gradient-bg text-white rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity flex items-center">
+                Get Started <ArrowUpRight className="w-4 h-4 ml-2" />
+              </Link>
+              <Link href="/company-signup"
+                className="px-6 py-3 border border-gray-700 text-gray-300 rounded-xl font-semibold text-sm hover:border-gray-500 hover:text-white transition-all">
+                For Companies
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Main footer grid */}
+        <div className="py-16 grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-12">
+          {/* Brand */}
+          <div className="col-span-2 md:col-span-4">
+            <div className="flex items-center space-x-2.5 mb-5">
+              <div className="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center">
                 <Leaf className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">Nishma Wellness</span>
+              <span className="text-xl font-bold text-white tracking-tight">Nishma Wellness</span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Your holistic wellness companion. Connecting you with licensed therapists,
-              AI-powered support, and transformative programs.
+            <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
+              AI-powered wellness platform that remembers your journey.
+              Therapy, exercises, and support — all in one place.
             </p>
+            <div className="flex items-center space-x-4 mt-6">
+              {["X", "in", "ig", "yt"].map((social) => (
+                <div key={social}
+                  className="w-9 h-9 border border-gray-800 rounded-lg flex items-center justify-center text-gray-500 hover:text-white hover:border-gray-600 transition-all cursor-pointer text-xs font-bold">
+                  {social}
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div>
-            <h3 className="text-white font-semibold mb-4">Services</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/book" className="hover:text-primary-400 transition-colors">Therapy Sessions</Link></li>
-              <li><Link href="/ai-chat" className="hover:text-primary-400 transition-colors">AI Wellness Chat</Link></li>
-              <li><Link href="/programs" className="hover:text-primary-400 transition-colors">Training Programs</Link></li>
-              <li><Link href="/programs" className="hover:text-primary-400 transition-colors">Meditation & Yoga</Link></li>
+          {/* Platform */}
+          <div className="col-span-1 md:col-span-2">
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Platform</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "AI Therapy", href: "/ai-chat" },
+                { label: "Video Sessions", href: "/book" },
+                { label: "Programs", href: "/programs" },
+                { label: "Exercises", href: "/register" },
+                { label: "AI Avatar", href: "/register" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/#about" className="hover:text-primary-400 transition-colors">About Us</Link></li>
-              <li><Link href="/#therapists" className="hover:text-primary-400 transition-colors">Our Therapists</Link></li>
-              <li><Link href="/#testimonials" className="hover:text-primary-400 transition-colors">Testimonials</Link></li>
-              <li><Link href="/register?role=therapist" className="hover:text-primary-400 transition-colors">Join as Therapist</Link></li>
+          {/* For Business */}
+          <div className="col-span-1 md:col-span-2">
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">For Business</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Corporate Wellness", href: "/company-signup" },
+                { label: "Burnout Prediction", href: "/company-signup" },
+                { label: "HR Dashboard", href: "/company-signup" },
+                { label: "Campus Plans", href: "/company-signup" },
+                { label: "Pricing", href: "/company-signup" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-white font-semibold mb-4">Contact</h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-primary-400" />
+          {/* Company */}
+          <div className="col-span-1 md:col-span-2">
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Company</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "About", href: "/#about" },
+                { label: "Blog", href: "/blog" },
+                { label: "Careers", href: "/register" },
+                { label: "Privacy", href: "/privacy" },
+                { label: "Terms", href: "/terms" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="col-span-1 md:col-span-2">
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Contact</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center space-x-2.5 text-sm">
+                <Mail className="w-4 h-4 text-primary-500 flex-shrink-0" />
                 <span>hello@nishmawellness.com</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 text-primary-400" />
+              <li className="flex items-center space-x-2.5 text-sm">
+                <Phone className="w-4 h-4 text-primary-500 flex-shrink-0" />
                 <span>+1 (555) 123-4567</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <MapPin className="w-4 h-4 text-primary-400" />
+              <li className="flex items-center space-x-2.5 text-sm">
+                <MapPin className="w-4 h-4 text-primary-500 flex-shrink-0" />
                 <span>San Francisco, CA</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between text-sm">
-          <p className="text-gray-500">
-            &copy; {new Date().getFullYear()} Nishma Wellness. All rights reserved.
-          </p>
-          <div className="flex items-center space-x-6 mt-2 md:mt-0 text-gray-500">
-            <Link href="/privacy" className="hover:text-primary-400 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-primary-400 transition-colors">Terms</Link>
-            <Link href="/blog" className="hover:text-primary-400 transition-colors">Blog</Link>
-            <p className="flex items-center">
-              Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> for your well-being
+        {/* Bottom bar */}
+        <div className="py-8 border-t border-gray-800/50">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-gray-600">
+              &copy; {new Date().getFullYear()} Nishma Wellness. All rights reserved.
             </p>
+            <div className="flex items-center space-x-1.5 text-xs text-gray-600">
+              <span>Powered by</span>
+              <span className="font-bold text-gray-400 flex items-center">
+                <Sparkles className="w-3 h-3 mr-1 text-primary-500" />
+                MK Tech Monk
+              </span>
+            </div>
           </div>
         </div>
       </div>
