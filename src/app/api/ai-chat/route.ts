@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { v4 as uuid } from "uuid";
+import { checkMessageSafety } from "@/lib/ai-safety";
 
 // Extract key topics from user messages and store as memories
 async function extractAndStoreMemories(userId: string, message: string) {
@@ -278,6 +279,42 @@ export async function POST(req: NextRequest) {
   const { message, sessionId: existingSessionId } = await req.json();
   const sessionId = existingSessionId || uuid();
 
+  // Check user profile for minor status
+  const userProfile = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { familyRole: true },
+  });
+  const isMinor = userProfile?.familyRole === "CHILD";
+
+  // ========== SAFETY CHECK ==========
+  const safetyResult = checkMessageSafety(message, { isMinor });
+
+  // Audit log every message
+  await prisma.auditLog.create({
+    data: {
+      userId: session.user.id,
+      sessionId,
+      action: safetyResult.redirectResponse ? "SAFETY_REDIRECT" : "NORMAL",
+      category: safetyResult.category || null,
+      severity: safetyResult.severity || null,
+      messageSnippet: message.substring(0, 200),
+      metadata: JSON.stringify({ flags: safetyResult.flags }),
+    },
+  });
+
+  // Create moderation flag for HIGH/CRITICAL severity
+  if (safetyResult.severity === "HIGH" || safetyResult.severity === "CRITICAL") {
+    await prisma.moderationFlag.create({
+      data: {
+        userId: session.user.id,
+        sessionId,
+        reason: safetyResult.category || "UNKNOWN",
+        severity: safetyResult.severity,
+        messageSnippet: message.substring(0, 200),
+      },
+    });
+  }
+
   // Save user message
   await prisma.aIChat.create({
     data: {
@@ -288,20 +325,25 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  // Extract memories from user message (runs in background)
-  extractAndStoreMemories(session.user.id, message).catch(console.error);
+  // If safety check provides a redirect response, use that instead of AI
+  let aiResponse: string;
+  if (safetyResult.redirectResponse) {
+    aiResponse = safetyResult.redirectResponse;
+  } else {
+    // Extract memories from user message (runs in background)
+    extractAndStoreMemories(session.user.id, message).catch(console.error);
+    // Generate context-aware AI response
+    aiResponse = await generateContextAwareResponse(session.user.id, message);
+  }
 
   // Log activity
   await prisma.userActivity.create({
     data: {
       userId: session.user.id,
       type: "CHAT",
-      metadata: JSON.stringify({ sessionId }),
+      metadata: JSON.stringify({ sessionId, safety: safetyResult.category }),
     },
   });
-
-  // Generate context-aware AI response
-  const aiResponse = await generateContextAwareResponse(session.user.id, message);
 
   const aiMessage = await prisma.aIChat.create({
     data: {
@@ -312,5 +354,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ sessionId, message: aiMessage });
+  return NextResponse.json({ sessionId, message: aiMessage, safetyFlag: safetyResult.category || null });
 }

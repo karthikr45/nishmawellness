@@ -9,7 +9,7 @@ import {
   Leaf, LayoutDashboard, Calendar, MessageSquare, Brain,
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
-  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles, Eye, Sun, Moon, Clock, TrendingUp,
+  Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign, Sparkles, Eye, Sun, Moon, Clock, TrendingUp, Lock,
 } from "lucide-react";
 
 interface NavItem {
@@ -39,6 +39,7 @@ const patientNav: NavItem[] = [
   { label: "Family", href: "/patient/family", icon: <Heart className="w-5 h-5" /> },
   { label: "Video Sessions", href: "/patient/video", icon: <Video className="w-5 h-5" /> },
   { label: "Billing", href: "/patient/billing", icon: <CreditCard className="w-5 h-5" /> },
+  { label: "Data & Privacy", href: "/patient/data-privacy", icon: <Lock className="w-5 h-5" /> },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },
 ];
 
@@ -67,6 +68,7 @@ const adminNav: NavItem[] = [
   { label: "Organizations", href: "/admin/organizations", icon: <Building2 className="w-5 h-5" /> },
   { label: "Analytics", href: "/admin/analytics", icon: <BarChart3 className="w-5 h-5" /> },
   { label: "Blog", href: "/admin/blog", icon: <FileText className="w-5 h-5" /> },
+  { label: "Moderation", href: "/admin/moderation", icon: <Eye className="w-5 h-5" /> },
   { label: "Notifications", href: "/admin/notifications", icon: <Bell className="w-5 h-5" /> },
   { label: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
 ];

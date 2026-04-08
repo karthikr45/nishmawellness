@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Clear existing data (order matters for foreign keys)
+  await prisma.moderationFlag.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.aIConsent.deleteMany();
   await prisma.sessionHandoff.deleteMany();
   await prisma.twinCloneReview.deleteMany();
   await prisma.twinCloneProfile.deleteMany();
