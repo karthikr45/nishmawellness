@@ -76,15 +76,21 @@ export default function CompanyDashboard() {
     }
   }, [org]);
 
+  const refreshOrg = async () => {
+    const res = await fetch("/api/company");
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) setOrg(data[0]);
+    else if (data && data.id) setOrg(data);
+  };
+
   const createOrg = async () => {
     setSaving(true);
-    const res = await fetch("/api/company", {
+    await fetch("/api/company", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...orgForm, maxEmployees: parseInt(orgForm.maxEmployees) }),
     });
-    const data = await res.json();
-    setOrg({ ...data, locations: [], _count: { members: 1 } });
+    await refreshOrg();
     setShowCreateOrg(false);
     setSaving(false);
   };
@@ -97,11 +103,7 @@ export default function CompanyDashboard() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...locationForm, organizationId: org.id }),
     });
-    // Refresh org
-    const res = await fetch("/api/company");
-    const data = await res.json();
-    if (Array.isArray(data)) setOrg(data[0]);
-    else setOrg(data);
+    await refreshOrg();
     setShowAddLocation(false);
     setLocationForm({ name: "", type: "OFFICE", city: "", state: "", country: "" });
     setSaving(false);
