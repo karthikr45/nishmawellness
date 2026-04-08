@@ -5,7 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import {
-  Brain, ArrowRight, Building2, Sparkles, Shield,
+  Brain, ArrowRight, Building2, Sparkles, Shield, GraduationCap,
   Heart, Star, CheckCircle, Clock, Users, Video, ChevronRight,
 } from "lucide-react";
 import Button from "@/components/ui/button";
@@ -205,8 +205,86 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION: Features Grid */}
+      {/* SECTION: For Students */}
       <section className="py-32 bg-white dark:bg-gray-950">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Visual */}
+            <div className="reveal bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-950 dark:to-primary-950 rounded-3xl p-8 order-2 lg:order-1">
+              <p className="text-sm font-semibold text-secondary-600 mb-4">Career Explorer Results</p>
+              <div className="space-y-3">
+                {[
+                  { name: "Technology & Engineering", pct: 87, color: "bg-primary-500" },
+                  { name: "Science & Research", pct: 72, color: "bg-secondary-500" },
+                  { name: "Creative & Design", pct: 65, color: "bg-accent-500" },
+                  { name: "Business & Finance", pct: 48, color: "bg-blue-500" },
+                ].map((r) => (
+                  <div key={r.name}>
+                    <div className="flex items-center justify-between text-sm mb-1">
+                      <span className="text-gray-700 dark:text-gray-300 font-medium">{r.name}</span>
+                      <span className="font-bold text-gray-900 dark:text-white">{r.pct}%</span>
+                    </div>
+                    <div className="w-full bg-white/60 dark:bg-gray-800 rounded-full h-2.5">
+                      <div className={`${r.color} h-2.5 rounded-full`} style={{ width: `${r.pct}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm">
+                <p className="text-xs text-gray-500 mb-2">Suggested Careers:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {["Software Engineer", "Data Scientist", "UX Designer", "Research Analyst"].map((c) => (
+                    <span key={c} className="px-2.5 py-1 bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300 rounded-full text-xs font-medium">{c}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="order-1 lg:order-2">
+              <div className="inline-flex items-center px-3 py-1.5 bg-secondary-100 dark:bg-secondary-950 rounded-full text-secondary-700 dark:text-secondary-300 text-sm font-medium mb-6">
+                <GraduationCap className="w-4 h-4 mr-2" /> For Students
+              </div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+                Confused about
+                <br />
+                <span className="gradient-text">your career?</span>
+              </h2>
+              <p className="mt-6 text-lg text-gray-500 leading-relaxed">
+                Take our career interest assessment, get AI-powered guidance,
+                manage exam stress, and prepare for interviews — all with mental
+                health support built in.
+              </p>
+              <ul className="mt-8 space-y-4">
+                {[
+                  "Career interest assessment with 8 career clusters",
+                  "AI chat that understands exam pressure & placement anxiety",
+                  "Interview prep wellness — from 1 week before to the moment of",
+                  "Student pricing from ₹149/month — or free with campus plan",
+                ].map((item) => (
+                  <li key={item} className="flex items-start space-x-3">
+                    <CheckCircle className="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-600 dark:text-gray-300">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center gap-4 mt-8">
+                <Link href="/student-signup">
+                  <Button size="lg" className="rounded-2xl">
+                    Student Signup <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+                <Link href="/join-campus" className="text-sm text-primary-600 hover:underline font-medium">
+                  My campus has Nishma →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: Features Grid */}
+      <section className="py-32 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-6xl mx-auto px-6">
           <div className="reveal text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">

@@ -22,6 +22,8 @@ export default async function middleware(req: NextRequest) {
     "/forgot-password",
     "/company-signup",
     "/join-company",
+    "/student-signup",
+    "/join-campus",
     "/reset-password",
     "/onboarding",
     "/onboarding/corporate",

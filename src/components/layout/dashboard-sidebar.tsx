@@ -11,7 +11,7 @@ import {
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
   Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign,
   Sparkles, Eye, Sun, Moon, Clock, TrendingUp, Lock, MapPin,
-  Target, Send, Shield, AlertTriangle,
+  Target, Send, Shield, AlertTriangle, Briefcase,
 } from "lucide-react";
 
 interface NavItem {
@@ -42,6 +42,11 @@ const patientNav: NavItem[] = [
   { label: "Insights", href: "/patient/insights", icon: <TrendingUp className="w-5 h-5" /> },
   { label: "Assessments", href: "/patient/assessments", icon: <ClipboardList className="w-5 h-5" /> },
   { label: "Achievements", href: "/patient/achievements", icon: <Award className="w-5 h-5" /> },
+  // Career & Student
+  { label: "Career", href: "", icon: <></>, section: "CAREER" },
+  { label: "Career Explorer", href: "/patient/career", icon: <Target className="w-5 h-5" /> },
+  { label: "Interview Prep", href: "/patient/interview-prep", icon: <Briefcase className="w-5 h-5" /> },
+  { label: "Academic Tools", href: "/patient/academic", icon: <BookOpen className="w-5 h-5" /> },
   // Community
   { label: "Connect", href: "", icon: <></>, section: "CONNECT" },
   { label: "Groups", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
