@@ -165,8 +165,8 @@ export default function DashboardSidebar() {
   };
 
   const sidebar = (
-    <div className={`flex flex-col h-full bg-white dark:bg-[#12112a] border-r border-[#e8e6f0] dark:border-[#2a2845] ${collapsed ? "w-16" : "w-64"} transition-all duration-300`}>
-      <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
+    <div className={`flex flex-col h-full bg-white dark:bg-[#12112a] border-r border-[#eeecf5] dark:border-[#2a2845] ${collapsed ? "w-16" : "w-64"} transition-all duration-300`}>
+      <div className="flex items-center justify-between p-4">
         {!collapsed ? (
           <Link href="/" className="flex items-center">
             <img src="/logo.png" alt="Nishma" className="h-12 max-w-[180px] object-contain" />
@@ -178,21 +178,21 @@ export default function DashboardSidebar() {
         )}
         <button
           onClick={() => { setCollapsed(!collapsed); setMobileOpen(false); }}
-          className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className="p-1.5 hover:bg-primary-50 dark:hover:bg-primary-950 rounded-lg text-gray-400"
         >
           {collapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5 md:hidden" />}
           {!collapsed && <Menu className="w-5 h-5 hidden md:block" />}
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto py-2 px-2.5 space-y-0.5">
         {navItems.map((item) => {
           // Section header
           if (item.section) {
             if (collapsed) return null;
             return (
-              <div key={item.section} className="pt-5 pb-1 px-3 first:pt-0">
-                <p className="text-[10px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">{item.section}</p>
+              <div key={item.section} className="pt-6 pb-1.5 px-3 first:pt-1">
+                <p className="text-[10px] font-semibold text-gray-300 dark:text-gray-600 uppercase tracking-[0.15em]">{item.section}</p>
               </div>
             );
           }
@@ -201,27 +201,25 @@ export default function DashboardSidebar() {
             key={item.href + item.label}
             href={item.href}
             onClick={() => setMobileOpen(false)}
-            className={`flex items-center ${collapsed ? "justify-center" : ""} px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`flex items-center ${collapsed ? "justify-center" : ""} px-3 py-2 rounded-xl text-[13px] font-medium transition-all ${
               isActive(item.href)
                 ? "bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300"
-                : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+                : "text-gray-500 dark:text-gray-400 hover:bg-[#f5f3ff] dark:hover:bg-[#1e1d3a] hover:text-gray-900 dark:hover:text-white"
             }`}
           >
-            <span className={isActive(item.href) ? "text-primary-600 dark:text-primary-400" : ""}>{item.icon}</span>
+            <span className={`${isActive(item.href) ? "text-primary-600 dark:text-primary-400" : "text-gray-400"}`}>{item.icon}</span>
             {!collapsed && <span className="ml-3">{item.label}</span>}
           </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t dark:border-gray-800 space-y-2">
-        {!collapsed && <LanguageSelector />}
-        <DarkModeToggle collapsed={collapsed} />
+      <div className="px-3 py-4">
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className={`flex items-center ${collapsed ? "justify-center" : ""} w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition-colors`}
+          className={`flex items-center ${collapsed ? "justify-center" : ""} w-full px-3 py-2 rounded-xl text-sm font-medium text-gray-400 hover:text-red-500 hover:bg-red-50/50 dark:hover:bg-red-950/50 transition-colors`}
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" />
           {!collapsed && <span className="ml-3">Sign Out</span>}
         </button>
       </div>
