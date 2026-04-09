@@ -32,9 +32,9 @@ export default function Footer() {
         </div>
 
         {/* Main footer grid */}
-        <div className="py-16 grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-12">
+        <div className="py-16 grid grid-cols-2 md:grid-cols-12 gap-8 lg:gap-10">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-4">
+          <div className="col-span-2 md:col-span-3">
             <div className="mb-5">
               <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
             </div>
@@ -60,13 +60,11 @@ export default function Footer() {
                 { label: "AI Therapy", href: "/ai-chat" },
                 { label: "Video Sessions", href: "/book" },
                 { label: "Programs", href: "/programs" },
-                { label: "Exercises", href: "/register" },
                 { label: "AI Avatar", href: "/register" },
+                { label: "TwinClone AI", href: "/register" },
               ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -80,40 +78,49 @@ export default function Footer() {
                 { label: "Corporate Wellness", href: "/company-signup" },
                 { label: "Burnout Prediction", href: "/company-signup" },
                 { label: "HR Dashboard", href: "/company-signup" },
-                { label: "Campus Plans", href: "/company-signup" },
-                { label: "Pricing", href: "/company-signup" },
+                { label: "Team Leaderboard", href: "/company-signup" },
+                { label: "Join Your Company", href: "/join-company" },
               ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Company */}
+          {/* For Students */}
           <div className="col-span-1 md:col-span-2">
-            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Company</h4>
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">For Students</h4>
             <ul className="space-y-3">
+              {[
+                { label: "Student Signup", href: "/student-signup" },
+                { label: "Career Explorer", href: "/register" },
+                { label: "Interview Prep", href: "/register" },
+                { label: "Campus Plans", href: "/join-campus" },
+                { label: "Academic Wellness", href: "/register" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company & Contact */}
+          <div className="col-span-2 md:col-span-2">
+            <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Company</h4>
+            <ul className="space-y-3 mb-6">
               {[
                 { label: "About", href: "/#about" },
                 { label: "Blog", href: "/blog" },
-                { label: "Careers", href: "/register" },
                 { label: "Privacy", href: "/privacy" },
                 { label: "Terms", href: "/terms" },
               ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-sm text-gray-500 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Contact */}
-          <div className="col-span-1 md:col-span-2">
             <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Contact</h4>
             <ul className="space-y-3">
               <li className="flex items-center space-x-2.5 text-sm">

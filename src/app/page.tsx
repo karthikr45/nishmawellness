@@ -176,7 +176,8 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: Session 47 Comparison — THE KEY USP */}
-      <section className="py-32 bg-white dark:bg-gray-950">
+      <section className="py-32 bg-gradient-to-b from-[#f8f7ff] to-white dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-[#D3D3FF]/20 rounded-full blur-[120px]" />
         <div className="max-w-6xl mx-auto px-6">
           <div className="reveal text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
@@ -226,8 +227,9 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: For Companies — Burnout Prediction */}
-      <section className="py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-32 bg-gradient-to-b from-white to-[#f0f4ff] dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[400px] bg-[#80A8FF]/10 rounded-full blur-[120px]" />
+        <div className="max-w-6xl mx-auto px-6 relative">
           <div className="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="inline-flex items-center px-3 py-1.5 bg-accent-100 dark:bg-accent-950 rounded-full text-accent-700 dark:text-accent-300 text-sm font-medium mb-6">
@@ -298,8 +300,9 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: For Students */}
-      <section className="py-32 bg-white dark:bg-gray-950">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-32 bg-gradient-to-b from-[#f0f4ff] to-[#f8f5ff] dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-[#CEB5FF]/15 rounded-full blur-[120px]" />
+        <div className="max-w-6xl mx-auto px-6 relative">
           <div className="reveal grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Visual */}
             <div className="reveal bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-950 dark:to-primary-950 rounded-3xl p-8 order-2 lg:order-1">
@@ -376,7 +379,8 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: Features Grid */}
-      <section className="py-32 bg-gray-50 dark:bg-gray-900">
+      <section className="py-32 bg-gradient-to-b from-[#f8f5ff] to-white dark:from-gray-900 dark:to-gray-950 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#8EC1DE]/10 rounded-full blur-[120px]" />
         <div className="max-w-6xl mx-auto px-6">
           <div className="reveal text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
@@ -408,8 +412,9 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: Social Proof */}
-      <section className="py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-32 bg-gradient-to-b from-white to-[#f0f4ff] dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
+        <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-[#D3D3FF]/15 rounded-full blur-[120px]" />
+        <div className="max-w-6xl mx-auto px-6 relative">
           <div className="reveal text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
               What people <span className="gradient-text">say.</span>
@@ -445,7 +450,7 @@ export default function HomePage() {
       </section>
 
       {/* SECTION: CTA */}
-      <section className="py-32 bg-white dark:bg-gray-950">
+      <section className="py-32 bg-gradient-to-b from-[#f0f4ff] to-white dark:from-gray-900 dark:to-gray-950">
         <div className="max-w-4xl mx-auto px-6">
           <div className="reveal gradient-bg rounded-[2rem] p-16 text-center text-white relative overflow-hidden">
             <div className="absolute inset-0 opacity-10">
