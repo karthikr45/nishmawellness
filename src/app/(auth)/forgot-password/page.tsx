@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
+          <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
         </div>
 
         <div className="bg-white p-8 rounded-2xl shadow-sm border">

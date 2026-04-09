@@ -169,7 +169,7 @@ export default function DashboardSidebar() {
       <div className="flex items-center justify-between p-4">
         {!collapsed ? (
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma" className="h-12 max-w-[180px] object-contain" />
+            <img src="/logo.png" alt="Nishma" className="w-[180px] object-contain" />
           </Link>
         ) : (
           <Link href="/">

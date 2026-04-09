@@ -127,7 +127,7 @@ export default function StudentSignupPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center space-x-2 mb-8">
-            <img src="/logo.png" alt="Nishma Wellness" className="h-14 max-w-[200px] object-contain" />
+            <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
           </div>
 
           {/* Progress */}
