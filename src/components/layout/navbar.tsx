@@ -52,7 +52,11 @@ export default function Navbar() {
               { label: "Blog", href: "/blog" },
             ].map((link) => (
               <Link key={link.label} href={link.href}
-                className="px-4 py-2 text-[13px] font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100/50 dark:hover:bg-gray-800/50">
+                className={`px-4 py-2 text-[13px] font-semibold transition-colors rounded-lg ${
+                  scrolled
+                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100/50"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                }`}>
                 {link.label}
               </Link>
             ))}
@@ -94,7 +98,9 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href="/login"
-                  className="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                  className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                    scrolled ? "text-gray-600 hover:text-gray-900" : "text-white/80 hover:text-white"
+                  }`}>
                   Sign In
                 </Link>
                 <Link href="/register"
