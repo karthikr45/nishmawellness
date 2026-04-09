@@ -59,10 +59,11 @@ export default function ProgramsPage() {
   return (
     <main>
       <Navbar />
-      <div className="pt-24 pb-16 bg-gradient-to-b from-primary-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Wellness Training Programs</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+      <div className="pt-24 pb-16 bg-gradient-to-b from-[#f0f4ff] via-[#f8f7ff] to-[#fafaff] relative overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-[400px] h-[300px] bg-[#CEB5FF]/15 rounded-full blur-[100px]" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Wellness Training Programs</h1>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
             Expert-designed programs to transform your mental and physical well-being
           </p>
         </div>

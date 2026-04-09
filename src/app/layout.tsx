@@ -32,7 +32,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased min-h-screen bg-gray-50 dark:bg-gray-950">
+      <body className="antialiased min-h-screen bg-[#fafaff] dark:bg-[#0f0e1a]">
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

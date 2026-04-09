@@ -165,7 +165,7 @@ export default function DashboardSidebar() {
   };
 
   const sidebar = (
-    <div className={`flex flex-col h-full bg-white dark:bg-gray-900 border-r dark:border-gray-800 ${collapsed ? "w-16" : "w-64"} transition-all duration-300`}>
+    <div className={`flex flex-col h-full bg-white dark:bg-[#12112a] border-r border-[#e8e6f0] dark:border-[#2a2845] ${collapsed ? "w-16" : "w-64"} transition-all duration-300`}>
       <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
         {!collapsed ? (
           <Link href="/" className="flex items-center">

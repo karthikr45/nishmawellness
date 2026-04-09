@@ -85,10 +85,11 @@ export default function BookPage() {
   return (
     <main>
       <Navbar />
-      <div className="pt-24 pb-16 bg-gradient-to-b from-secondary-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Book a Therapy Session</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+      <div className="pt-24 pb-16 bg-gradient-to-b from-[#f8f5ff] via-[#f0f4ff] to-[#fafaff] relative overflow-hidden">
+        <div className="absolute top-0 left-1/3 w-[400px] h-[300px] bg-[#80A8FF]/10 rounded-full blur-[100px]" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Book a Therapy Session</h1>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
             Find the right therapist and schedule a session that works for you
           </p>
           <div className="max-w-md mx-auto mt-8 relative">

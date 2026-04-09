@@ -77,7 +77,7 @@ export default function PublicAIChat() {
     return (
       <main>
         <Navbar />
-        <div className="pt-24 min-h-screen bg-gradient-to-b from-secondary-50 to-white">
+        <div className="pt-24 min-h-screen bg-gradient-to-b from-[#f8f5ff] via-[#f0f4ff] to-[#fafaff]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
             <div className="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
               <Brain className="w-10 h-10 text-white" />
