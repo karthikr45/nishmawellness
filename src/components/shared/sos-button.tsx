@@ -50,10 +50,10 @@ export default function SOSButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg shadow-red-200 flex items-center justify-center transition-all hover:scale-110"
+        className="fixed bottom-5 right-5 z-40 w-10 h-10 bg-red-500/80 hover:bg-red-600 text-white rounded-full shadow-md flex items-center justify-center transition-all hover:scale-110 opacity-60 hover:opacity-100"
         aria-label="Emergency Help"
       >
-        <AlertTriangle className="w-6 h-6" />
+        <AlertTriangle className="w-4 h-4" />
       </button>
 
       {isOpen && (
