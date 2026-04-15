@@ -57,13 +57,35 @@ export async function POST(req: NextRequest) {
       type: type || "VIDEO",
       notes,
       status: "SCHEDULED",
-      meetingUrl: `/video-session/room-${Date.now()}`,
+      // meetingUrl is the in-app session URL; the actual Jitsi room is
+      // derived from the appointment ID inside /video-session/[id].
+      meetingUrl: "",
     },
     include: {
       patient: { select: { id: true, name: true, email: true } },
       therapist: { select: { id: true, name: true, email: true } },
     },
   });
+
+  // Now that we have the real id, set the meeting URL to the in-app room.
+  await prisma.appointment.update({
+    where: { id: appointment.id },
+    data: { meetingUrl: `/video-session/${appointment.id}` },
+  });
+  appointment.meetingUrl = `/video-session/${appointment.id}`;
+
+  // Send confirmation email to patient (no-op if no provider key set)
+  try {
+    const { sendEmail, appointmentReminderEmail } = await import("@/lib/email");
+    const tpl = appointmentReminderEmail(
+      appointment.patient.name,
+      appointment.therapist.name,
+      new Date(appointment.dateTime).toLocaleString()
+    );
+    await sendEmail({ to: appointment.patient.email, subject: tpl.subject, html: tpl.html });
+  } catch (err) {
+    console.error("[appointments] email failed:", err);
+  }
 
   // Create notification for therapist
   await prisma.notification.create({

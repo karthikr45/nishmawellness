@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 import { checkMessageSafety } from "@/lib/ai-safety";
 import { extractDeepMemories, getMemoryContext, generateProactiveOpening, enrichResponseWithMemory } from "@/lib/deep-memory";
 import { getCulturalEnrichment, getStudentEnrichment } from "@/lib/cultural-context";
+import { generateLLMResponse, isLLMConfigured } from "@/lib/llm";
 
 // Extract key topics from user messages and store as memories
 async function extractAndStoreMemories(userId: string, message: string) {
@@ -345,23 +346,68 @@ export async function POST(req: NextRequest) {
     if (sessionMessages <= 1 && message.toLowerCase().match(/^(hi|hello|hey|good|start|begin)/)) {
       aiResponse = generateProactiveOpening(memoryCtx);
     } else {
-      // Generate context-aware AI response
-      aiResponse = await generateContextAwareResponse(session.user.id, message);
-      // Enrich with deep memory references
-      aiResponse = enrichResponseWithMemory(aiResponse, memoryCtx, message);
-
-      // Add cultural context based on user's region
+      // Get user region/type once for both LLM and fallback
       const userRegion = await prisma.user.findUnique({
         where: { id: session.user.id },
-        select: { region: true, userType: true },
+        select: { region: true, userType: true, name: true },
       });
-      const culturalAddition = getCulturalEnrichment(message, userRegion?.region || "US");
-      if (culturalAddition) aiResponse += culturalAddition;
 
-      // Add student-specific context
-      if (userRegion?.userType === "STUDENT") {
-        const studentAddition = getStudentEnrichment(message);
-        if (studentAddition) aiResponse += studentAddition;
+      // Try real LLM first when configured
+      let llmResult = null;
+      if (isLLMConfigured()) {
+        // Recent conversation history (last 10 turns) for the LLM context window
+        const history = await prisma.aIChat.findMany({
+          where: { userId: session.user.id, sessionId },
+          orderBy: { createdAt: "desc" },
+          take: 10,
+        });
+
+        llmResult = await generateLLMResponse({
+          userName: userRegion?.name?.split(" ")[0] || "",
+          memoryContext: {
+            topics: memoryCtx.topTopics?.map((t) => t.content) || [],
+            events: memoryCtx.recentEvents?.map((e) => e.content) || [],
+            coping: memoryCtx.copingTools?.map((c) => c.content) || [],
+          },
+          avgMood: memoryCtx.avgMood,
+          region: userRegion?.region || "US",
+          userType: userRegion?.userType || "INDIVIDUAL",
+          recentMessages: history.reverse().map((c) => ({
+            role: c.role as "user" | "assistant",
+            content: c.content,
+          })),
+          userMessage: message,
+        });
+
+        // Track LLM token usage for cost monitoring
+        if (llmResult) {
+          await prisma.userActivity.create({
+            data: {
+              userId: session.user.id,
+              type: "LLM_USAGE",
+              metadata: JSON.stringify({
+                inputTokens: llmResult.inputTokens,
+                outputTokens: llmResult.outputTokens,
+                cacheReadTokens: llmResult.cacheReadTokens,
+                cacheCreationTokens: llmResult.cacheCreationTokens,
+              }),
+            },
+          }).catch(console.error);
+        }
+      }
+
+      if (llmResult) {
+        aiResponse = llmResult.text;
+      } else {
+        // Fallback: rule-based generator
+        aiResponse = await generateContextAwareResponse(session.user.id, message);
+        aiResponse = enrichResponseWithMemory(aiResponse, memoryCtx, message);
+        const culturalAddition = getCulturalEnrichment(message, userRegion?.region || "US");
+        if (culturalAddition) aiResponse += culturalAddition;
+        if (userRegion?.userType === "STUDENT") {
+          const studentAddition = getStudentEnrichment(message);
+          if (studentAddition) aiResponse += studentAddition;
+        }
       }
     }
   }

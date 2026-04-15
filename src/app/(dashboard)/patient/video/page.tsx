@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Video, Calendar, Clock, Mail, Info } from "lucide-react";
+import { Video, Calendar, Clock, Info } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
@@ -61,17 +61,18 @@ export default function PatientVideoSessions() {
                   </div>
                 </div>
               </div>
-              <Badge variant="info">Confirmed</Badge>
+              <Link href={`/video-session/${s.id}`}>
+                <Button size="lg"><Video className="w-5 h-5 mr-2" /> Join Session</Button>
+              </Link>
             </div>
           ))}
-          {/* Pilot notice — real video room is wired post-pilot */}
           <div className="mt-5 p-4 bg-white border border-primary-100 rounded-xl flex items-start space-x-3">
-            <Mail className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+            <Info className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-gray-700">
-              <p className="font-medium text-gray-900 mb-1">How to join during the pilot</p>
+              <p className="font-medium text-gray-900 mb-1">Before you join</p>
               <p className="text-gray-600 leading-relaxed">
-                Your therapist will email you the secure meeting link about 15 minutes before your session.
-                In-app video calling is rolling out shortly.
+                Your browser will ask permission to use your camera and microphone.
+                Sessions are private — only you and your therapist can join via the unique link.
               </p>
             </div>
           </div>
