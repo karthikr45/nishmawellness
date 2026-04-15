@@ -99,7 +99,7 @@ export default function PatientAppointments() {
                   <div>
                     <h3 className="font-semibold text-gray-900">{apt.therapist.name}</h3>
                     <p className="text-sm text-gray-500">{apt.therapist.specialization}</p>
-                    <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-gray-500">
                       <span className="flex items-center"><Calendar className="w-4 h-4 mr-1" />{new Date(apt.dateTime).toLocaleDateString()}</span>
                       <span className="flex items-center"><Clock className="w-4 h-4 mr-1" />{new Date(apt.dateTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
                       <span>{apt.duration} min</span>

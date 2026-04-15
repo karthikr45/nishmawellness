@@ -6,6 +6,7 @@ import { MessageSquare, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import EmptyState from "@/components/ui/empty-state";
 
 interface Feedback {
   id: string; category: string; message: string; severity: string; status: string; createdAt: string; adminNotes?: string;
@@ -72,7 +73,13 @@ export default function FeedbackPage() {
         </Card>
       ))}
       {feedbacks.length === 0 && (
-        <Card className="p-12 text-center"><MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300" /><p className="text-gray-500">No feedback in this category</p></Card>
+        <Card>
+          <EmptyState
+            icon={<MessageSquare className="w-12 h-12" />}
+            title="No feedback in this category"
+            description="When employees submit anonymous feedback under this status, it will appear here. Encourage your team to share — feedback is fully anonymous and only HR sees it."
+          />
+        </Card>
       )}
     </div>
   );

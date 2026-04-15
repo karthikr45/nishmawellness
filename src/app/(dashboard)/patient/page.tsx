@@ -113,7 +113,7 @@ export default function PatientDashboard() {
 
           {/* Mood snapshot */}
           {returnContext && returnContext.moodSnapshot.current !== null && (
-            <div className="flex items-center space-x-4 mt-4">
+            <div className="flex flex-wrap items-center gap-3 mt-4">
               <div className="flex items-center space-x-2 bg-white/20 rounded-full px-4 py-2">
                 <Heart className="w-4 h-4" />
                 <span className="text-sm">Mood: {returnContext.moodSnapshot.current}%</span>

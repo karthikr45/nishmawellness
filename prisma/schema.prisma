@@ -71,17 +71,18 @@ model User {
 }
 
 model Appointment {
-  id          String   @id @default(uuid())
-  patientId   String
-  therapistId String
-  dateTime    DateTime
-  duration    Int      @default(60) // minutes
-  type        String   @default("VIDEO") // VIDEO, IN_PERSON, AI_SESSION
-  status      String   @default("SCHEDULED") // SCHEDULED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
-  notes       String?
-  meetingUrl  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String    @id @default(uuid())
+  patientId      String
+  therapistId    String
+  dateTime       DateTime
+  duration       Int       @default(60) // minutes
+  type           String    @default("VIDEO") // VIDEO, IN_PERSON, AI_SESSION
+  status         String    @default("SCHEDULED") // SCHEDULED, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
+  notes          String?
+  meetingUrl     String?
+  reminderSentAt DateTime? // 24-hr reminder timestamp; null = not yet sent
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
   patient     User     @relation("PatientAppointments", fields: [patientId], references: [id])
   therapist   User     @relation("TherapistAppointments", fields: [therapistId], references: [id])

@@ -8,6 +8,7 @@ import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Modal from "@/components/ui/modal";
 import Input from "@/components/ui/input";
+import EmptyState from "@/components/ui/empty-state";
 
 interface Member {
   id: string;
@@ -158,10 +159,11 @@ export default function EmployeesPage() {
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <div className="p-12 text-center">
-            <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p className="text-gray-500">No employees yet. Invite your team to get started.</p>
-          </div>
+          <EmptyState
+            icon={<Users className="w-12 h-12" />}
+            title="No employees yet"
+            description="Invite your team via the buttons above. Once they accept, they appear here with anonymised session usage and join date — never their personal wellness data."
+          />
         )}
       </Card>
 

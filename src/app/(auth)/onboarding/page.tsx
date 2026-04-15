@@ -290,11 +290,11 @@ export default function OnboardingPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-3">What therapeutic approach interests you?</label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { value: "CBT", label: "Cognitive Behavioral (CBT)", desc: "Practical, thought-pattern focused" },
-                    { value: "MINDFULNESS", label: "Mindfulness-Based", desc: "Present-moment awareness" },
-                    { value: "HOLISTIC", label: "Holistic / Integrative", desc: "Mind-body-spirit approach" },
-                    { value: "TALK_THERAPY", label: "Talk Therapy", desc: "Traditional conversational" },
-                    { value: "UNSURE", label: "Not Sure Yet", desc: "Help me decide" },
+                    { value: "CBT", label: "Cognitive Behavioral (CBT)", desc: "Reshape unhelpful thought patterns. Strong fit for anxiety and depression." },
+                    { value: "MINDFULNESS", label: "Mindfulness-Based", desc: "Non-judgemental awareness of the present. Helps with stress and sleep." },
+                    { value: "HOLISTIC", label: "Holistic / Integrative", desc: "Combines therapy with body, lifestyle, and meaning work." },
+                    { value: "TALK_THERAPY", label: "Talk Therapy", desc: "Open conversations to explore your story over time." },
+                    { value: "UNSURE", label: "Not Sure Yet", desc: "We will recommend an approach based on your goals." },
                   ].map((opt) => (
                     <button key={opt.value} onClick={() => setForm((p) => ({ ...p, preferredStyle: opt.value }))}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${

@@ -6,6 +6,7 @@ import { AlertTriangle, CheckCircle, Clock, Shield, ArrowRight } from "lucide-re
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import EmptyState from "@/components/ui/empty-state";
 
 interface Incident {
   id: string; type: string; severity: string; description: string; status: string;
@@ -84,9 +85,12 @@ export default function IncidentsPage() {
       ))}
 
       {incidents.length === 0 && (
-        <Card className="p-12 text-center">
-          <Shield className="w-16 h-16 mx-auto mb-4 text-green-300" />
-          <p className="text-gray-500">No critical incidents. Your organization is in good shape!</p>
+        <Card>
+          <EmptyState
+            icon={<Shield className="w-16 h-16 text-green-300" />}
+            title="No critical incidents"
+            description="When the AI safety layer detects a serious wellness signal — like a high-severity assessment, a crisis flag, or sustained burnout risk — it will appear here so HR can intervene with care. Quiet right now is a good sign."
+          />
         </Card>
       )}
     </div>
