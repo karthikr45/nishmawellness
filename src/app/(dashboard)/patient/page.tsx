@@ -12,6 +12,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import GettingStartedChecklist from "@/components/patient/getting-started-checklist";
 
 interface ReturnContext {
   greeting: string;
@@ -123,6 +124,9 @@ export default function PatientDashboard() {
           )}
         </div>
       </div>
+
+      {/* Getting Started Checklist — auto-hides when complete or dismissed */}
+      <GettingStartedChecklist />
 
       {/* Smart Suggested Actions */}
       {returnContext?.suggestedActions && returnContext.suggestedActions.length > 0 && (

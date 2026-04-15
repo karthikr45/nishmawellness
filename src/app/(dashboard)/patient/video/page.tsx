@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Video, Calendar, Clock } from "lucide-react";
+import { Video, Calendar, Clock, Mail, Info } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
@@ -46,7 +46,7 @@ export default function PatientVideoSessions() {
 
       {upcoming.length > 0 && (
         <Card className="p-6 border-2 border-primary-200 bg-primary-50">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Ready to Join</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Your next session</h2>
           {upcoming.slice(0, 1).map((s) => (
             <div key={s.id} className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -61,11 +61,35 @@ export default function PatientVideoSessions() {
                   </div>
                 </div>
               </div>
-              <Link href={`/video-session/${s.id}`}>
-                <Button size="lg"><Video className="w-5 h-5 mr-2" /> Join Session</Button>
-              </Link>
+              <Badge variant="info">Confirmed</Badge>
             </div>
           ))}
+          {/* Pilot notice — real video room is wired post-pilot */}
+          <div className="mt-5 p-4 bg-white border border-primary-100 rounded-xl flex items-start space-x-3">
+            <Mail className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-gray-700">
+              <p className="font-medium text-gray-900 mb-1">How to join during the pilot</p>
+              <p className="text-gray-600 leading-relaxed">
+                Your therapist will email you the secure meeting link about 15 minutes before your session.
+                In-app video calling is rolling out shortly.
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {upcoming.length === 0 && (
+        <Card className="p-8 text-center">
+          <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 mx-auto mb-4">
+            <Info className="w-7 h-7" />
+          </div>
+          <h3 className="font-semibold text-gray-900 mb-2">No video sessions scheduled</h3>
+          <p className="text-sm text-gray-500 mb-5 max-w-sm mx-auto">
+            Book a video session to talk with a licensed therapist. We will match you based on your goals.
+          </p>
+          <Link href="/patient/appointments">
+            <Button>Book a Session</Button>
+          </Link>
         </Card>
       )}
 

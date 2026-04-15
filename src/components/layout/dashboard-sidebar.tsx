@@ -10,7 +10,7 @@ import {
   BookOpen, BarChart3, Users, Settings, LogOut, Menu, X,
   Video, ClipboardList, Bell, FileText, UserPlus, Star,
   Award, Building2, PenLine, Wind, Heart, CreditCard, DollarSign,
-  Sparkles, Eye, Sun, Moon, Clock, TrendingUp, Lock, MapPin,
+  Eye, Sun, Moon, Clock, TrendingUp, Lock, MapPin,
   Target, Send, Shield, AlertTriangle, Briefcase,
 } from "lucide-react";
 
@@ -27,7 +27,8 @@ const patientNav: NavItem[] = [
   { label: "Therapy", href: "", icon: <></>, section: "THERAPY" },
   { label: "Book Session", href: "/patient/appointments", icon: <Calendar className="w-5 h-5" /> },
   { label: "AI Chat", href: "/patient/ai-chat", icon: <Brain className="w-5 h-5" /> },
-  { label: "AI Avatar", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
+  // AI Avatar hidden during pilot — responses are mocked. Re-enable when D-ID/ElevenLabs are wired.
+  // { label: "AI Avatar", href: "/patient/avatar-session", icon: <Sparkles className="w-5 h-5" /> },
   { label: "TwinClone", href: "/patient/twinclone", icon: <Users className="w-5 h-5" /> },
   { label: "Messages", href: "/patient/messages", icon: <MessageSquare className="w-5 h-5" /> },
   // Wellness

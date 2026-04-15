@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import { useToast } from "@/components/providers/toast-provider";
 
 interface JournalEntry {
   id: string;
@@ -28,6 +29,7 @@ const moodEmoji = (val: number) => val >= 8 ? "😄" : val >= 6 ? "🙂" : val >
 
 export default function PatientJournal() {
   const { status } = useSession();
+  const toast = useToast();
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -51,11 +53,16 @@ export default function PatientJournal() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (!res.ok) throw new Error("save failed");
       const entry = await res.json();
       setEntries((prev) => [entry, ...prev]);
       setShowForm(false);
       setForm({ mood: 7, energy: 6, anxiety: 3, sleep: 7, gratitude: "", highlight: "", challenge: "", freeWrite: "", tags: [] });
-    } catch (err) { console.error(err); }
+      toast.success("Journal entry saved");
+    } catch (err) {
+      console.error(err);
+      toast.error("Couldn't save your entry. Please try again.");
+    }
     setSaving(false);
   };
 

@@ -6,6 +6,7 @@ import { ClipboardList, TrendingUp, AlertTriangle, CheckCircle, ArrowRight, Cale
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import { useToast } from "@/components/providers/toast-provider";
 
 interface AssessmentResult {
   id: string;
@@ -54,6 +55,7 @@ const severityColors: Record<string, string> = {
 
 export default function PatientAssessments() {
   const { status } = useSession();
+  const toast = useToast();
   const [history, setHistory] = useState<AssessmentResult[]>([]);
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -75,7 +77,10 @@ export default function PatientAssessments() {
   };
 
   const submit = async () => {
-    if (answers.some((a) => a === -1)) return;
+    if (answers.some((a) => a === -1)) {
+      toast.warning("Please answer all questions before submitting.");
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/assessments", {
@@ -83,10 +88,15 @@ export default function PatientAssessments() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: activeAssessment, responses: answers }),
       });
+      if (!res.ok) throw new Error("submit failed");
       const data = await res.json();
       setResult(data);
       setHistory((prev) => [data, ...prev]);
-    } catch (err) { console.error(err); }
+      toast.success("Assessment submitted — see your results below.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Couldn't submit. Please try again.");
+    }
     setSubmitting(false);
   };
 

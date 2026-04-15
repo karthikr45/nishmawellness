@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import {
-  CreditCard, CheckCircle, Star, Zap, Crown,
-  ArrowRight, Shield, Calendar, Download,
+  CheckCircle, Star, Zap, Crown, Shield, Sparkles, Calendar, Download,
 } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
@@ -22,33 +22,12 @@ interface Plan {
 export default function PatientBilling() {
   const { status } = useSession();
   const [plans, setPlans] = useState<Plan[]>([]);
-  const [currentPlan, setCurrentPlan] = useState("free");
-  const [subscribing, setSubscribing] = useState<string | null>(null);
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (status === "authenticated") {
       fetch("/api/billing/plans").then((r) => r.json()).then(setPlans).catch(console.error);
     }
   }, [status]);
-
-  const subscribe = async (planId: string) => {
-    setSubscribing(planId);
-    try {
-      const res = await fetch("/api/billing/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ planId }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setCurrentPlan(planId);
-        setSuccess(data.message);
-        setTimeout(() => setSuccess(""), 5000);
-      }
-    } catch (err) { console.error(err); }
-    setSubscribing(null);
-  };
 
   const planIcons: Record<string, React.ReactNode> = {
     free: <Shield className="w-6 h-6" />,
@@ -72,120 +51,96 @@ export default function PatientBilling() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Billing & Subscription</h1>
-          <p className="text-gray-500 mt-1">Manage your plan and payment methods</p>
+          <h1 className="text-2xl font-bold text-gray-900">Billing &amp; Plans</h1>
+          <p className="text-gray-500 mt-1">Your plan, upcoming features, and payment options</p>
         </div>
         <Button variant="outline" onClick={exportCalendar}>
           <Download className="w-4 h-4 mr-2" /> Export Calendar
         </Button>
       </div>
 
-      {success && (
-        <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm flex items-center">
-          <CheckCircle className="w-4 h-4 mr-2" /> {success}
-        </div>
-      )}
-
-      {/* Current Plan */}
-      <Card className="p-6 border-2 border-primary-200 bg-primary-50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${planColors[currentPlan] || "bg-gray-100"}`}>
-              {planIcons[currentPlan] || <Shield className="w-6 h-6" />}
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Current Plan</p>
-              <p className="text-xl font-bold text-gray-900 capitalize">{currentPlan}</p>
-            </div>
+      {/* Pilot status banner */}
+      <Card className="p-6 border-2 border-primary-300 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950 dark:border-primary-700">
+        <div className="flex items-start space-x-4">
+          <div className="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center text-white shadow-md flex-shrink-0">
+            <Sparkles className="w-6 h-6" />
           </div>
-          <Badge variant="success">Active</Badge>
+          <div className="flex-1">
+            <div className="flex items-center space-x-3 mb-2">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">You&apos;re on the Free Pilot Plan</h2>
+              <Badge variant="success">Active</Badge>
+            </div>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              All features unlocked, no charges. We are running an early-access pilot — your feedback is helping us shape the product.
+              Paid plans below are previews of what is coming. We will reach out before any plan goes live for you.
+            </p>
+          </div>
         </div>
       </Card>
 
-      {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {plans.map((plan) => (
-          <Card key={plan.id} className={`p-6 relative ${plan.popular ? "border-2 border-primary-500 shadow-lg" : ""}`}>
-            {plan.popular && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Badge className="bg-primary-600 text-white px-3">Most Popular</Badge>
+      {/* Plans Preview */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Plans coming soon</h2>
+            <p className="text-sm text-gray-500 mt-0.5">Preview only — billing is disabled during the pilot.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {plans.map((plan) => (
+            <Card key={plan.id} className={`p-6 relative ${plan.popular ? "border-2 border-primary-500 shadow-lg" : ""}`}>
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-primary-600 text-white px-3">Most Popular</Badge>
+                </div>
+              )}
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${planColors[plan.id] || "bg-gray-100"}`}>
+                {planIcons[plan.id] || <Shield className="w-5 h-5" />}
               </div>
-            )}
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${planColors[plan.id] || "bg-gray-100"}`}>
-              {planIcons[plan.id] || <Shield className="w-5 h-5" />}
-            </div>
-            <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
-            <div className="mt-2 mb-4">
-              <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
-              <span className="text-gray-500 text-sm">/{plan.interval}</span>
-            </div>
-            <ul className="space-y-2 mb-6">
-              {plan.features.map((f) => (
-                <li key={f} className="text-sm text-gray-600 flex items-start">
-                  <CheckCircle className="w-4 h-4 text-primary-500 mr-2 mt-0.5 flex-shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            {currentPlan === plan.id ? (
-              <Button variant="outline" className="w-full" disabled>Current Plan</Button>
-            ) : (
-              <Button
-                variant={plan.popular ? "primary" : "outline"}
-                className="w-full"
-                loading={subscribing === plan.id}
-                onClick={() => subscribe(plan.id)}
-              >
-                {plan.price === 0 ? "Downgrade" : "Upgrade"} <ArrowRight className="w-4 h-4 ml-1" />
+              <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
+              <div className="mt-2 mb-4">
+                <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
+                <span className="text-gray-500 text-sm">/{plan.interval}</span>
+              </div>
+              <ul className="space-y-2 mb-6">
+                {plan.features.map((f) => (
+                  <li key={f} className="text-sm text-gray-600 flex items-start">
+                    <CheckCircle className="w-4 h-4 text-primary-500 mr-2 mt-0.5 flex-shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Button variant="outline" className="w-full" disabled>
+                Available after pilot
               </Button>
-            )}
-          </Card>
-        ))}
-      </div>
-
-      {/* Payment Method */}
-      <Card className="p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <CreditCard className="w-5 h-5 mr-2" /> Payment Method
-        </h2>
-        <div className="p-4 bg-gray-50 rounded-xl flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">
-              VISA
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-900">**** **** **** 4242</p>
-              <p className="text-xs text-gray-500">Expires 12/28</p>
-            </div>
-          </div>
-          <Button size="sm" variant="outline">Update</Button>
-        </div>
-        <p className="text-xs text-gray-400 mt-3 flex items-center">
-          <Shield className="w-3 h-3 mr-1" /> Payments are secured with 256-bit SSL encryption via Stripe.
-        </p>
-      </Card>
-
-      {/* Billing History */}
-      <Card className="p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <Calendar className="w-5 h-5 mr-2" /> Billing History
-        </h2>
-        <div className="space-y-3">
-          {[
-            { date: "Mar 1, 2026", amount: "$0.00", plan: "Free", status: "Paid" },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl text-sm">
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-500">{item.date}</span>
-                <span className="font-medium text-gray-900">{item.plan} Plan</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="font-medium text-gray-900">{item.amount}</span>
-                <Badge variant="success">{item.status}</Badge>
-              </div>
-            </div>
+            </Card>
           ))}
         </div>
+      </div>
+
+      {/* Calendar Export */}
+      <Card className="p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <Calendar className="w-5 h-5 mr-2" /> Calendar Export
+        </h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Download your appointments as an iCal file to add them to Google Calendar, Outlook, or Apple Calendar.
+        </p>
+        <Button variant="outline" onClick={exportCalendar}>
+          <Download className="w-4 h-4 mr-2" /> Download .ics
+        </Button>
+      </Card>
+
+      {/* Pilot info */}
+      <Card className="p-6 bg-gray-50 dark:bg-gray-900/50">
+        <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-3">Want enterprise pricing?</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+          If you are an HR leader or company admin exploring Nishma for your team, our sales team is happy to walk you through pricing and a tailored pilot.
+        </p>
+        <Link href="/request-demo">
+          <Button variant="primary">Request a Demo</Button>
+        </Link>
       </Card>
     </div>
   );
