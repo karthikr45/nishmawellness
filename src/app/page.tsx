@@ -6,7 +6,7 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import {
   Brain, ArrowRight, Building2, Sparkles, Shield, GraduationCap,
-  Heart, Star, CheckCircle, Clock, Users, Video, ChevronRight,
+  Heart, CheckCircle, Clock, Users, Video,
 } from "lucide-react";
 import Button from "@/components/ui/button";
 
@@ -48,7 +48,7 @@ export default function HomePage() {
             <div className="animate-fade-in-up">
               <div className="inline-flex items-center px-4 py-2 bg-white/5 border border-white/10 rounded-full text-primary-400 text-sm font-medium mb-8 backdrop-blur-sm">
                 <Sparkles className="w-4 h-4 mr-2" />
-                Trusted by 200+ organizations worldwide
+                Early Access — Join the first cohort
               </div>
 
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05]">
@@ -78,12 +78,12 @@ export default function HomePage() {
 
               <div className="flex items-center gap-8 mt-12">
                 {[
-                  { value: "10K+", label: "Active Users" },
-                  { value: "200+", label: "Companies" },
-                  { value: "98%", label: "Satisfaction" },
+                  { value: "Memory-First", label: "AI Architecture" },
+                  { value: "10 Languages", label: "India + Global" },
+                  { value: "Privacy-First", label: "By Design" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-2xl font-extrabold text-white">{stat.value}</p>
+                    <p className="text-lg font-extrabold text-white">{stat.value}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
                   </div>
                 ))}
@@ -395,7 +395,7 @@ export default function HomePage() {
               { icon: <Brain className="w-6 h-6" />, title: "AI TwinClone", desc: "Your therapist's digital twin. Available 24/7. Remembers everything.", color: "bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-400" },
               { icon: <Video className="w-6 h-6" />, title: "Video Therapy", desc: "Face-to-face sessions with licensed therapists from anywhere.", color: "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400" },
               { icon: <Heart className="w-6 h-6" />, title: "Guided Exercises", desc: "Breathing, meditation, body scan — with interactive timers.", color: "bg-pink-50 text-pink-600 dark:bg-pink-950 dark:text-pink-400" },
-              { icon: <Shield className="w-6 h-6" />, title: "HIPAA Compliant", desc: "End-to-end encryption. Your data stays yours.", color: "bg-green-50 text-green-600 dark:bg-green-950 dark:text-green-400" },
+              { icon: <Shield className="w-6 h-6" />, title: "Privacy-First Design", desc: "Built with GDPR and DPDP best practices. Your data stays yours — export or delete anytime.", color: "bg-green-50 text-green-600 dark:bg-green-950 dark:text-green-400" },
               { icon: <Users className="w-6 h-6" />, title: "Family & Groups", desc: "Family wellness plans. Group therapy sessions. Community forum.", color: "bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400" },
               { icon: <Clock className="w-6 h-6" />, title: "Progress Tracking", desc: "Weekly reports, mood charts, achievements. See your growth.", color: "bg-accent-50 text-accent-600 dark:bg-accent-950 dark:text-accent-400" },
             ].map((feature) => (
@@ -411,40 +411,60 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION: Social Proof */}
-      <section className="py-32 bg-gradient-to-b from-white to-[#f0f4ff] dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
+      {/* SECTION: Founders / Who We Are */}
+      <section id="about" className="py-32 bg-gradient-to-b from-white to-[#f0f4ff] dark:from-gray-950 dark:to-gray-900 relative overflow-hidden">
         <div className="absolute bottom-0 left-1/4 w-[600px] h-[400px] bg-[#D3D3FF]/15 rounded-full blur-[120px]" />
         <div className="max-w-6xl mx-auto px-6 relative">
           <div className="reveal text-center mb-16">
+            <div className="inline-flex items-center px-3 py-1.5 bg-primary-100 dark:bg-primary-950 rounded-full text-primary-700 dark:text-primary-300 text-sm font-medium mb-6">
+              <Heart className="w-4 h-4 mr-2" /> Built With Purpose
+            </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-              What people <span className="gradient-text">say.</span>
+              Meet the <span className="gradient-text">founders.</span>
             </h2>
+            <p className="mt-6 text-lg text-gray-500 max-w-2xl mx-auto">
+              Nishma Wellness was built by a team that believes mental wellness should be
+              continuous, personal, and accessible — not reset every session.
+            </p>
           </div>
 
-          <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
-              { name: "Sarah M.", role: "Patient", text: "The AI remembers my boss's name, my sleep problems, even the breathing exercise that helped. It's like talking to someone who actually knows me.", rating: 5 },
-              { name: "Dr. Priya K.", role: "Therapist", text: "The Patient Brief feature means I walk into every session prepared. My patients notice the difference — they feel heard.", rating: 5 },
-              { name: "Rajesh T.", role: "HR Director", text: "The burnout prediction alerted us about our QA team 3 weeks before anyone would have noticed. That saved us 4 resignations.", rating: 5 },
-            ].map((t) => (
-              <div key={t.name} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div className="flex mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-accent-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-                <div className="mt-6 flex items-center space-x-3">
-                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {t.name[0]}
+              {
+                name: "Sesha Sai Nishma Kurapati",
+                role: "Co-Founder",
+                initials: "SN",
+                bio: "Driving the product vision for a wellness platform that truly remembers — so every user feels heard from day one to day 1,000.",
+              },
+              {
+                name: "Karthik Reddycharla",
+                role: "Co-Founder",
+                initials: "KR",
+                bio: "Leading engineering and AI — building the memory architecture, safety layer, and enterprise infrastructure that powers Nishma.",
+              },
+            ].map((f) => (
+              <div key={f.name} className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 hover-lift">
+                <div className="flex items-start space-x-5">
+                  <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0">
+                    {f.initials}
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 dark:text-white text-sm">{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.role}</p>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{f.name}</h3>
+                    <p className="text-sm text-primary-600 dark:text-primary-400 font-medium mt-0.5">{f.role}</p>
+                    <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">{f.bio}</p>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Powered by */}
+          <div className="reveal mt-16 flex flex-col items-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500 mb-4">Powered By</p>
+            <div className="inline-flex items-center space-x-2 px-6 py-3 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+              <Sparkles className="w-5 h-5 text-primary-500" />
+              <span className="text-lg font-bold text-gray-900 dark:text-white">MK Tech Monk</span>
+            </div>
           </div>
         </div>
       </section>

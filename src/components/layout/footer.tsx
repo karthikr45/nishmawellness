@@ -111,6 +111,8 @@ export default function Footer() {
             <h4 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.15em] mb-5">Company</h4>
             <ul className="space-y-3 mb-6">
               {[
+                { label: "How It Works", href: "/how-it-works" },
+                { label: "Pricing", href: "/pricing" },
                 { label: "About", href: "/#about" },
                 { label: "Blog", href: "/blog" },
                 { label: "Privacy", href: "/privacy" },
@@ -142,9 +144,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="py-8 border-t border-gray-800/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-600">
-              &copy; {new Date().getFullYear()} Nishma Wellness. All rights reserved.
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-x-3 gap-y-1 text-xs text-gray-600">
+              <p>&copy; {new Date().getFullYear()} Nishma Wellness. All rights reserved.</p>
+              <span className="hidden md:inline text-gray-700">&middot;</span>
+              <p>Founded by <span className="text-gray-400 font-medium">Sesha Sai Nishma Kurapati</span> &amp; <span className="text-gray-400 font-medium">Karthik Reddycharla</span></p>
+            </div>
             <div className="flex items-center space-x-1.5 text-xs text-gray-600">
               <span>Powered by</span>
               <span className="font-bold text-gray-400 flex items-center">

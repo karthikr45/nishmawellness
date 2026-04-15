@@ -45,10 +45,10 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-1">
             {[
-              { label: "Platform", href: "/programs" },
+              { label: "How It Works", href: "/how-it-works" },
               { label: "For Companies", href: "/company-signup" },
               { label: "For Students", href: "/student-signup" },
-              { label: "Pricing", href: "/programs" },
+              { label: "Pricing", href: "/pricing" },
               { label: "Blog", href: "/blog" },
             ].map((link) => (
               <Link key={link.label} href={link.href}
@@ -123,10 +123,10 @@ export default function Navbar() {
         <div className="md:hidden bg-white dark:bg-gray-950 border-t dark:border-gray-800">
           <div className="px-6 py-6 space-y-1">
             {[
-              { label: "Platform", href: "/programs" },
+              { label: "How It Works", href: "/how-it-works" },
               { label: "For Companies", href: "/company-signup" },
               { label: "For Students", href: "/student-signup" },
-              { label: "Pricing", href: "/programs" },
+              { label: "Pricing", href: "/pricing" },
               { label: "Blog", href: "/blog" },
             ].map((link) => (
               <Link key={link.label} href={link.href}
