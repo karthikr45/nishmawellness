@@ -65,6 +65,19 @@ export default function AdminUsers() {
       </div>
 
       <Card className="overflow-hidden">
+        {filtered.length === 0 ? (
+          <div className="text-center py-16">
+            <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p className="text-gray-700 font-medium">
+              {users.length === 0 ? "No users yet" : "No users match your filter"}
+            </p>
+            <p className="text-sm text-gray-400 mt-1 max-w-sm mx-auto">
+              {users.length === 0
+                ? "User accounts will appear here as people sign up to the platform."
+                : "Try changing the role filter or clearing your search."}
+            </p>
+          </div>
+        ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -117,6 +130,7 @@ export default function AdminUsers() {
             </tbody>
           </table>
         </div>
+        )}
       </Card>
     </div>
   );

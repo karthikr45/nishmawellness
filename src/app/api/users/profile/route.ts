@@ -25,10 +25,14 @@ export async function GET() {
       onboardingDone: true,
       familyId: true,
       familyRole: true,
+      organizationId: true,
+      campusMemberships: { take: 1, select: { campusId: true } },
     },
   });
 
-  return NextResponse.json(user);
+  // Flatten campusId so the client doesn't need to dig into the relation.
+  const campusId = user?.campusMemberships?.[0]?.campusId ?? null;
+  return NextResponse.json({ ...user, campusId, campusMemberships: undefined });
 }
 
 export async function PATCH(req: NextRequest) {

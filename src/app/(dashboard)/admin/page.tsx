@@ -87,32 +87,42 @@ export default function AdminDashboard() {
             View All <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b text-left text-gray-500">
-                <th className="pb-3 font-medium">Patient</th>
-                <th className="pb-3 font-medium">Therapist</th>
-                <th className="pb-3 font-medium">Date</th>
-                <th className="pb-3 font-medium">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stats.recentAppointments.map((apt) => (
-                <tr key={apt.id} className="border-b last:border-0">
-                  <td className="py-3 font-medium text-gray-900">{apt.patient.name}</td>
-                  <td className="py-3 text-gray-600">{apt.therapist.name}</td>
-                  <td className="py-3 text-gray-600">{new Date(apt.dateTime).toLocaleDateString()}</td>
-                  <td className="py-3">
-                    <Badge variant={apt.status === "COMPLETED" ? "success" : apt.status === "CANCELLED" ? "danger" : "info"}>
-                      {apt.status}
-                    </Badge>
-                  </td>
+        {stats.recentAppointments.length === 0 ? (
+          <div className="text-center py-10">
+            <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p className="text-gray-500 font-medium">No appointments yet</p>
+            <p className="text-sm text-gray-400 mt-1 max-w-xs mx-auto">
+              Once patients start booking sessions with therapists, they will appear here.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b text-left text-gray-500">
+                  <th className="pb-3 font-medium">Patient</th>
+                  <th className="pb-3 font-medium">Therapist</th>
+                  <th className="pb-3 font-medium">Date</th>
+                  <th className="pb-3 font-medium">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {stats.recentAppointments.map((apt) => (
+                  <tr key={apt.id} className="border-b last:border-0">
+                    <td className="py-3 font-medium text-gray-900">{apt.patient.name}</td>
+                    <td className="py-3 text-gray-600">{apt.therapist.name}</td>
+                    <td className="py-3 text-gray-600">{new Date(apt.dateTime).toLocaleDateString()}</td>
+                    <td className="py-3">
+                      <Badge variant={apt.status === "COMPLETED" ? "success" : apt.status === "CANCELLED" ? "danger" : "info"}>
+                        {apt.status}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </Card>
 
       {/* Quick Links */}

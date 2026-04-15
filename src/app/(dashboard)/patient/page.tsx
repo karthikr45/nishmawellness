@@ -13,6 +13,8 @@ import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import GettingStartedChecklist from "@/components/patient/getting-started-checklist";
+import WelcomeModal from "@/components/patient/welcome-modal";
+import PrivacyBanner from "@/components/patient/privacy-banner";
 
 interface ReturnContext {
   greeting: string;
@@ -124,6 +126,12 @@ export default function PatientDashboard() {
           )}
         </div>
       </div>
+
+      {/* First-run welcome modal — self-hides after first close */}
+      <WelcomeModal />
+
+      {/* Privacy banner for users who joined via company / campus */}
+      <PrivacyBanner />
 
       {/* Getting Started Checklist — auto-hides when complete or dismissed */}
       <GettingStartedChecklist />

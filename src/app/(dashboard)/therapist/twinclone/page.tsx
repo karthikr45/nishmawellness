@@ -10,6 +10,7 @@ import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Modal from "@/components/ui/modal";
+import Tooltip from "@/components/ui/tooltip";
 
 interface SampleResponse {
   question: string;
@@ -117,7 +118,13 @@ export default function TwinClonePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">AI TwinClone Studio</h1>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            AI TwinClone Studio
+            <Tooltip
+              maxWidth={320}
+              content="TwinClone is your personalised AI assistant — trained on your therapeutic approach, tone, and signature techniques. It supports your patients between sessions, while you remain in full control: review every conversation, refine its responses, and disable it any time."
+            />
+          </h1>
           <p className="text-gray-500 mt-1">Train and configure your digital twin therapist</p>
         </div>
         <div className="flex items-center space-x-3">

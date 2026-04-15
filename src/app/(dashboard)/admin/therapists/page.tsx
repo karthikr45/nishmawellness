@@ -74,26 +74,36 @@ export default function AdminTherapists() {
 
       <Card className="p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Active Therapists ({active.length})</h2>
-        <div className="space-y-3">
-          {active.map((t) => (
-            <div key={t.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-              <div className="flex items-center space-x-4">
-                <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-medium">
-                  {t.name.charAt(0)}
+        {active.length === 0 ? (
+          <div className="text-center py-10">
+            <UserPlus className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <p className="text-gray-700 font-medium">No active therapists yet</p>
+            <p className="text-sm text-gray-400 mt-1 max-w-sm mx-auto">
+              Therapists who sign up will appear in pending review above. Approve them to make them visible to patients.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {active.map((t) => (
+              <div key={t.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center space-x-4">
+                  <div className="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-medium">
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{t.name}</p>
+                    <p className="text-sm text-gray-500">{t.specialization}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-gray-900">{t.name}</p>
-                  <p className="text-sm text-gray-500">{t.specialization}</p>
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm text-gray-500">{t._count.therapistAppointments} sessions</span>
+                  <Badge variant="success">Active</Badge>
+                  <Button size="sm" variant="danger" onClick={() => toggleActive(t.id, true)}>Deactivate</Button>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="text-sm text-gray-500">{t._count.therapistAppointments} sessions</span>
-                <Badge variant="success">Active</Badge>
-                <Button size="sm" variant="danger" onClick={() => toggleActive(t.id, true)}>Deactivate</Button>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </Card>
     </div>
   );

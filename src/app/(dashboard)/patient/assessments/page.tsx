@@ -7,6 +7,7 @@ import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import { useToast } from "@/components/providers/toast-provider";
+import Tooltip from "@/components/ui/tooltip";
 
 interface AssessmentResult {
   id: string;
@@ -152,8 +153,15 @@ export default function PatientAssessments() {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center">
             {activeAssessment === "PHQ9" ? "PHQ-9: Depression Screening" : "GAD-7: Anxiety Screening"}
+            <Tooltip
+              content={
+                activeAssessment === "PHQ9"
+                  ? "PHQ-9 (Patient Health Questionnaire-9) is a validated 9-question depression screening tool used by clinicians worldwide. Scores range 0-27 and indicate severity from minimal to severe."
+                  : "GAD-7 (Generalised Anxiety Disorder-7) is a validated 7-question anxiety screening tool used widely in clinical practice. Scores range 0-21 and indicate severity from minimal to severe."
+              }
+            />
           </h1>
           <p className="text-gray-500 mt-1">Over the last 2 weeks, how often have you been bothered by the following?</p>
           <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
