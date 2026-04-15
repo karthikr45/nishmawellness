@@ -5,6 +5,7 @@ import { Moon, Play, Pause, Volume2, Clock, Star, Wind, Cloud, Waves, TreePine }
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface SoundscapeTrack {
   id: string;
@@ -215,6 +216,26 @@ export default function SleepStoriesPage() {
         </div>
       </div>
 
+      {/* How to use — auto-adapts to active tab */}
+      <Card className="p-5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 border-indigo-200 dark:border-indigo-800">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+          {activeTab === "stories" ? "When to use Sleep Stories" : "When to use Soundscapes"}
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          {activeTab === "stories" ? (
+            <>
+              Best for bedtime. Get into bed, dim the lights, put your phone on silent, and let the narrator guide you through a calming scene.
+              The voice and imagery gradually slow your thoughts so you drift off naturally. Pick one story — do not browse.
+            </>
+          ) : (
+            <>
+              Best for focus, relaxation, or masking distracting noise. Play a soundscape in the background while you work, meditate, or sleep.
+              You can play multiple at once — try Rain + Campfire for a cosy atmosphere. Use the sleep timer to auto-stop after you drift off.
+            </>
+          )}
+        </p>
+      </Card>
+
       {/* Tabs */}
       <div className="flex space-x-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl max-w-sm">
         <button onClick={() => setActiveTab("stories")}
@@ -295,30 +316,55 @@ export default function SleepStoriesPage() {
 
       {/* Soundscapes Tab */}
       {activeTab === "sounds" && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {SOUNDSCAPES.map((track) => {
-            const isActive = activeSounds.has(track.id);
-            return (
-              <Card key={track.id} hover
-                className={`p-6 text-center cursor-pointer transition-all ${isActive ? "ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-950" : ""}`}
-                onClick={() => toggleSound(track)}>
-                <div className={`w-16 h-16 ${track.color} rounded-2xl flex items-center justify-center mx-auto mb-3 ${isActive ? "animate-pulse" : ""}`}>
-                  {track.icon}
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{track.name}</h3>
-                <p className="text-xs text-gray-400 mt-1">{isActive ? "Playing" : "Tap to play"}</p>
-                {isActive && (
-                  <div className="flex items-center justify-center space-x-0.5 mt-3 h-4">
-                    {Array.from({ length: 8 }).map((_, i) => (
-                      <div key={i} className="w-1 bg-primary-500 rounded-full animate-bounce"
-                        style={{ height: `${8 + Math.random() * 10}px`, animationDelay: `${i * 0.1}s` }} />
-                    ))}
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {SOUNDSCAPES.map((track) => {
+              const isActive = activeSounds.has(track.id);
+              const noiseHint: Record<string, string> = {
+                brown: "Brown noise — deep, rumbly. Great for blocking low-frequency noise and sleep.",
+                pink: "Pink noise — balanced and gentle. Often used to improve deep sleep quality.",
+                white: "White noise — high-pitched hiss. Best for masking sudden sharp sounds like chatter.",
+                binaural: "Binaural beats — two slightly different tones played in each ear. Research suggests they may help the brain enter relaxed states. Requires headphones.",
+              };
+              return (
+                <div key={track.id} className="relative">
+                  <Card hover
+                    className={`p-6 text-center cursor-pointer transition-all ${isActive ? "ring-2 ring-primary-500 bg-primary-50 dark:bg-primary-950" : ""}`}
+                    onClick={() => toggleSound(track)}>
+                    <div className={`w-16 h-16 ${track.color} rounded-2xl flex items-center justify-center mx-auto mb-3 ${isActive ? "animate-pulse" : ""}`}>
+                      {track.icon}
+                    </div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white flex items-center justify-center">
+                      {track.name}
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-1 capitalize">
+                      {isActive ? "Playing" : `${track.type} noise`}
+                    </p>
+                    {isActive && (
+                      <div className="flex items-center justify-center space-x-0.5 mt-3 h-4">
+                        {Array.from({ length: 8 }).map((_, i) => (
+                          <div key={i} className="w-1 bg-primary-500 rounded-full animate-bounce"
+                            style={{ height: `${8 + Math.random() * 10}px`, animationDelay: `${i * 0.1}s` }} />
+                        ))}
+                      </div>
+                    )}
+                  </Card>
+                  {/* Info tooltip pinned to top-right corner so it doesn't block card click */}
+                  <div className="absolute top-3 right-3" onClick={(e) => e.stopPropagation()}>
+                    <Tooltip content={noiseHint[track.type]} position="left" maxWidth={260} />
                   </div>
-                )}
-              </Card>
-            );
-          })}
-        </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <Card className="p-5 bg-gray-50 dark:bg-gray-900/50">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <strong>Tip:</strong> Combine sounds. Rain + Campfire is a classic. Use headphones for Deep Sleep (Binaural).
+              Set a sleep timer so audio auto-stops after you drift off.
+            </p>
+          </Card>
+        </>
       )}
     </div>
   );

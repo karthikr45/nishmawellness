@@ -27,12 +27,55 @@ interface JournalEntry {
 
 const moodEmoji = (val: number) => val >= 8 ? "😄" : val >= 6 ? "🙂" : val >= 4 ? "😐" : val >= 2 ? "😔" : "😢";
 
+// Rotating prompts for the Free Write section — gives stuck users a starting point.
+const FREE_WRITE_PROMPTS = [
+  "Write freely about your thoughts and feelings...",
+  "What surprised you today, good or bad?",
+  "If you could tell one person anything right now, who and what?",
+  "Describe a moment today where you felt most like yourself.",
+  "What is one thing you are worrying about — and is it in your control?",
+  "What is a small win from today that is easy to overlook?",
+  "If today had a weather forecast for your mood, what would it say?",
+  "What would you tell a friend in your exact situation right now?",
+];
+
+const GRATITUDE_EXAMPLES = [
+  "What are you grateful for today?",
+  "A small thing that made you smile?",
+  "Someone whose support you felt today?",
+  "Something about your body that worked well today?",
+];
+
+const HIGHLIGHT_EXAMPLES = [
+  "Best part of your day?",
+  "When did you feel most awake or present?",
+  "A moment that you would happily relive?",
+];
+
+const CHALLENGE_EXAMPLES = [
+  "Biggest challenge today?",
+  "What drained you the most?",
+  "Where did you feel stuck?",
+];
+
+const TAG_SUGGESTIONS = ["work", "family", "sleep", "anxiety", "breakthrough", "relationship", "health", "self-care"];
+
+// Pick a random-but-stable-for-the-session prompt from each list
+const pickPrompt = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
 export default function PatientJournal() {
   const { status } = useSession();
   const toast = useToast();
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  // Prompts are picked once per page load so they don't jitter as the user types
+  const [prompts] = useState(() => ({
+    gratitude: pickPrompt(GRATITUDE_EXAMPLES),
+    highlight: pickPrompt(HIGHLIGHT_EXAMPLES),
+    challenge: pickPrompt(CHALLENGE_EXAMPLES),
+    freeWrite: pickPrompt(FREE_WRITE_PROMPTS),
+  }));
   const [form, setForm] = useState({
     mood: 7, energy: 6, anxiety: 3, sleep: 7,
     gratitude: "", highlight: "", challenge: "", freeWrite: "", tags: [] as string[],
@@ -132,37 +175,59 @@ export default function PatientJournal() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center"><Heart className="w-4 h-4 mr-1 text-pink-500" /> Gratitude</label>
-                <input type="text" placeholder="What are you grateful for today?" value={form.gratitude}
+                <input type="text" placeholder={prompts.gratitude} value={form.gratitude}
                   onChange={(e) => setForm((p) => ({ ...p, gratitude: e.target.value }))}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center"><Star className="w-4 h-4 mr-1 text-yellow-500" /> Highlight</label>
-                <input type="text" placeholder="Best part of your day?" value={form.highlight}
+                <input type="text" placeholder={prompts.highlight} value={form.highlight}
                   onChange={(e) => setForm((p) => ({ ...p, highlight: e.target.value }))}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center"><AlertTriangle className="w-4 h-4 mr-1 text-orange-500" /> Challenge</label>
-                <input type="text" placeholder="Biggest challenge today?" value={form.challenge}
+                <input type="text" placeholder={prompts.challenge} value={form.challenge}
                   onChange={(e) => setForm((p) => ({ ...p, challenge: e.target.value }))}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500" />
               </div>
             </div>
           </div>
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center"><PenLine className="w-4 h-4 mr-1" /> Free Write</label>
-            <textarea rows={4} placeholder="Write freely about your thoughts and feelings..." value={form.freeWrite}
+            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+              <PenLine className="w-4 h-4 mr-1" /> Free Write
+              <span className="ml-2 text-xs text-gray-400 italic font-normal">optional — skip if nothing to add</span>
+            </label>
+            <textarea rows={4} placeholder={prompts.freeWrite} value={form.freeWrite}
               onChange={(e) => setForm((p) => ({ ...p, freeWrite: e.target.value }))}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500" />
+            <p className="text-xs text-gray-400 mt-1">
+              💡 No right way to do this. Even one sentence counts. Your journal is 100% private.
+            </p>
           </div>
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+            <p className="text-xs text-gray-500 mb-2">Tags help you spot patterns later — e.g. &ldquo;what days mention <em>work</em>?&rdquo;</p>
             <div className="flex items-center space-x-2">
               <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
                 placeholder="Add tag..." className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500" />
               <Button size="sm" variant="outline" onClick={addTag}>Add</Button>
             </div>
+            {form.tags.length === 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                <span className="text-xs text-gray-400 mr-1">Try:</span>
+                {TAG_SUGGESTIONS.map((sug) => (
+                  <button
+                    key={sug}
+                    type="button"
+                    onClick={() => setForm((p) => ({ ...p, tags: [...p.tags, sug] }))}
+                    className="text-xs px-2 py-0.5 rounded-full border border-gray-200 text-gray-500 hover:bg-gray-50 hover:border-gray-300"
+                  >
+                    + {sug}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="flex flex-wrap gap-2 mt-2">
               {form.tags.map((tag) => (
                 <Badge key={tag}>{tag} <button className="ml-1" onClick={() => setForm((p) => ({ ...p, tags: p.tags.filter((t) => t !== tag) }))}>&times;</button></Badge>
@@ -214,10 +279,15 @@ export default function PatientJournal() {
       </div>
 
       {entries.length === 0 && !showForm && (
-        <Card className="p-12 text-center">
-          <BookOpen className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500 mb-4">Start your wellness journal today</p>
-          <Button onClick={() => setShowForm(true)}><Plus className="w-4 h-4 mr-2" /> Write First Entry</Button>
+        <Card className="p-10 text-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950">
+          <BookOpen className="w-14 h-14 mx-auto mb-4 text-primary-500" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Your first journal entry</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed mb-5">
+            Takes under 2 minutes. Rate your mood, energy, anxiety, and sleep on a simple slider.
+            Add one line about what you are grateful for, your highlight, or your challenge.
+            That&apos;s it. Over a week you will start seeing patterns — and so will your AI companion.
+          </p>
+          <Button onClick={() => setShowForm(true)}><Plus className="w-4 h-4 mr-2" /> Write Your First Entry</Button>
         </Card>
       )}
     </div>
