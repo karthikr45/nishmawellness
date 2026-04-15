@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface GuidedExercise {
   id: string;
@@ -44,6 +45,19 @@ const categoryColors: Record<string, string> = {
   VISUALIZATION: "bg-pink-100 text-pink-600",
   PMR: "bg-red-100 text-red-600",
 };
+
+// Human-readable label + short explanation for the filter chips.
+const categoryLabels: Record<string, { label: string; explain: string }> = {
+  ALL: { label: "All", explain: "Every technique we offer." },
+  BREATHING: { label: "Breathing", explain: "Controlled breath patterns that calm the nervous system in 2–5 minutes. Best first choice." },
+  MEDITATION: { label: "Meditation", explain: "Guided attention practices that build focus and emotional resilience over time." },
+  GROUNDING: { label: "Grounding", explain: "Use your senses to anchor in the present. Helpful for panic, anxiety, or dissociation." },
+  BODY_SCAN: { label: "Body Scan", explain: "Slowly move attention through each part of your body to notice and release tension." },
+  PMR: { label: "PMR", explain: "Progressive Muscle Relaxation — tense and release muscle groups one by one to let go of physical stress." },
+  VISUALIZATION: { label: "Visualization", explain: "Guided imagery — picture a calming scene to shift your emotional state." },
+};
+
+const formatCategory = (cat: string) => categoryLabels[cat]?.label ?? cat;
 
 export default function PatientExercises() {
   const { status } = useSession();
@@ -124,9 +138,18 @@ export default function PatientExercises() {
 
         <Card className="p-8 text-center">
           <Badge className={categoryColors[activeExercise.category] || ""}>
-            {activeExercise.category.replace("_", " ")}
+            {formatCategory(activeExercise.category)}
           </Badge>
           <h1 className="text-2xl font-bold text-gray-900 mt-3">{activeExercise.title}</h1>
+          {!completed && !isRunning && timer === 0 && currentStep === 0 && (
+            <div className="mt-5 p-4 bg-blue-50 dark:bg-blue-950 border border-blue-100 dark:border-blue-900 rounded-xl text-left">
+              <p className="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Settle in first</p>
+              <p className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+                Sit comfortably. Put your phone on silent. Take one slow breath in, and a longer breath out.
+                When you are ready, press Start.
+              </p>
+            </div>
+          )}
 
           {!completed ? (
             <>
@@ -213,18 +236,41 @@ export default function PatientExercises() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Guided Exercises</h1>
-        <p className="text-gray-500 mt-1">Breathing, meditation, and relaxation exercises</p>
+        <p className="text-gray-500 mt-1">Breathing, meditation, and relaxation exercises — all under 15 minutes.</p>
       </div>
 
+      {/* New-user hint */}
+      <Card className="p-5 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950 border-primary-200 dark:border-primary-800">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-1 flex items-center">
+          <Wind className="w-4 h-4 mr-2 text-primary-500" /> New to this? Start with Breathing.
+        </h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          Breathing exercises are the fastest, most research-backed way to calm your nervous system.
+          Try the <strong>4-7-8 breath</strong> or <strong>Box breathing</strong> first — each takes under 5 minutes and needs no preparation.
+          Move to meditation or body scans once you are comfortable.
+        </p>
+      </Card>
+
       <div className="flex flex-wrap gap-2">
-        {categories.map((cat) => (
-          <button key={cat} onClick={() => setFilter(cat)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              filter === cat ? "bg-primary-600 text-white" : "bg-white text-gray-600 hover:bg-gray-100 border"
-            }`}>
-            {cat === "ALL" ? "All" : cat.replace("_", " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
-          </button>
-        ))}
+        {categories.map((cat) => {
+          const info = categoryLabels[cat];
+          const chip = (
+            <button
+              onClick={() => setFilter(cat)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                filter === cat ? "bg-primary-600 text-white" : "bg-white text-gray-600 hover:bg-gray-100 border"
+              }`}
+            >
+              {info?.label ?? cat}
+            </button>
+          );
+          if (cat === "ALL") return <span key={cat}>{chip}</span>;
+          return (
+            <Tooltip key={cat} content={info?.explain ?? cat} maxWidth={260}>
+              {chip}
+            </Tooltip>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

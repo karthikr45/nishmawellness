@@ -5,15 +5,63 @@ import { Play, Pause, RotateCcw, Clock, CheckCircle, Coffee, Brain, Zap } from "
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 type TimerMode = "focus" | "break" | "longBreak";
 
 const PRESETS = [
-  { name: "Classic Pomodoro", focus: 25, break: 5, longBreak: 15, rounds: 4 },
-  { name: "Short Focus", focus: 15, break: 3, longBreak: 10, rounds: 4 },
-  { name: "Deep Work", focus: 50, break: 10, longBreak: 20, rounds: 3 },
-  { name: "Quick Burst", focus: 10, break: 2, longBreak: 5, rounds: 6 },
+  {
+    name: "Classic Pomodoro",
+    focus: 25, break: 5, longBreak: 15, rounds: 4,
+    useCase: "Best for studying, reading, or knowledge work.",
+  },
+  {
+    name: "Short Focus",
+    focus: 15, break: 3, longBreak: 10, rounds: 4,
+    useCase: "Best when you are distracted or returning after a long break.",
+  },
+  {
+    name: "Deep Work",
+    focus: 50, break: 10, longBreak: 20, rounds: 3,
+    useCase: "Best for writing, coding, or complex problem solving.",
+  },
+  {
+    name: "Quick Burst",
+    focus: 10, break: 2, longBreak: 5, rounds: 6,
+    useCase: "Best for chores, admin, or low-energy days.",
+  },
 ];
+
+// Contextual guidance shown below the timer, adapts to the current mode.
+const MODE_GUIDANCE: Record<TimerMode, { title: string; tips: string[] }> = {
+  focus: {
+    title: "During focus time",
+    tips: [
+      "Pick ONE task before you hit play",
+      "Phone on silent and face down",
+      "Close tabs you do not need",
+      "If a thought pulls you away, note it on paper and return",
+    ],
+  },
+  break: {
+    title: "During this short break",
+    tips: [
+      "Stand up and stretch for 30 seconds",
+      "Look at something 20 feet away for 20 seconds (helps your eyes)",
+      "Drink water",
+      "Do NOT check social media — it is harder to come back",
+    ],
+  },
+  longBreak: {
+    title: "During this long break",
+    tips: [
+      "Step outside if you can, even for 2 minutes",
+      "Walk around or do a short body-scan meditation",
+      "Have a snack if you are hungry",
+      "Reflect: was the last block focused, or did you drift?",
+    ],
+  },
+};
 
 export default function FocusTimerPage() {
   const [preset, setPreset] = useState(PRESETS[0]);
@@ -109,8 +157,14 @@ export default function FocusTimerPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Focus Timer</h1>
-        <p className="text-gray-500 mt-1">Pomodoro-style timer for productive focus sessions</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+          Focus Timer
+          <Tooltip
+            maxWidth={320}
+            content="The Pomodoro Technique alternates short focused sprints (typically 25 minutes) with short breaks. It works because your brain focuses best in short bursts, and regular breaks prevent burnout. Complete 4 focus sprints, then take a longer break."
+          />
+        </h1>
+        <p className="text-gray-500 mt-1">Short focused sprints with planned breaks — proven to boost concentration.</p>
       </div>
 
       {/* Stats */}
@@ -193,10 +247,24 @@ export default function FocusTimerPage() {
         </div>
       </Card>
 
+      {/* Contextual guidance — adapts to current mode */}
+      <Card className="p-6 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950">
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{MODE_GUIDANCE[mode].title}</h3>
+        <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+          {MODE_GUIDANCE[mode].tips.map((tip) => (
+            <li key={tip} className="flex items-start">
+              <span className="mr-2 text-primary-500">•</span>
+              <span>{tip}</span>
+            </li>
+          ))}
+        </ul>
+      </Card>
+
       {/* Presets */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Timer Presets</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Timer Presets</h2>
+        <p className="text-sm text-gray-500 mb-4">New here? Start with <strong>Classic Pomodoro</strong> — it is the most studied and widely used.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {PRESETS.map((p) => (
             <button key={p.name} onClick={() => selectPreset(p)}
               className={`p-4 rounded-xl border-2 text-left transition-all ${
@@ -204,25 +272,18 @@ export default function FocusTimerPage() {
                   ? "border-primary-500 bg-primary-50 dark:bg-primary-950"
                   : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
               }`}>
-              <p className="font-medium text-gray-900 dark:text-white text-sm">{p.name}</p>
+              <div className="flex items-center justify-between">
+                <p className="font-medium text-gray-900 dark:text-white text-sm">{p.name}</p>
+                {preset.name === p.name && (
+                  <Badge variant="info">Selected</Badge>
+                )}
+              </div>
               <p className="text-xs text-gray-500 mt-1">
                 {p.focus}m focus / {p.break}m break / {p.rounds} rounds
               </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">{p.useCase}</p>
             </button>
           ))}
-        </div>
-      </Card>
-
-      {/* Tips */}
-      <Card className="p-6 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950">
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Focus Tips</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300">
-          <p>&bull; Put your phone on silent during focus periods</p>
-          <p>&bull; Close unnecessary browser tabs</p>
-          <p>&bull; Have water nearby to stay hydrated</p>
-          <p>&bull; During breaks, stand up and stretch</p>
-          <p>&bull; Use the long break for a mindful walk</p>
-          <p>&bull; Pair with ambient sounds from Sleep & Relaxation</p>
         </div>
       </Card>
     </div>
