@@ -113,7 +113,10 @@ export default function Footer() {
               {[
                 { label: "How It Works", href: "/how-it-works" },
                 { label: "Pricing", href: "/pricing" },
-                { label: "About", href: "/#about" },
+                { label: "About", href: "/about" },
+                { label: "FAQ", href: "/faq" },
+                { label: "Security", href: "/security" },
+                { label: "Request Demo", href: "/request-demo" },
                 { label: "Blog", href: "/blog" },
                 { label: "Privacy", href: "/privacy" },
                 { label: "Terms", href: "/terms" },

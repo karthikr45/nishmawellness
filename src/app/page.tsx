@@ -70,7 +70,7 @@ export default function HomePage() {
                   className="px-8 py-4 bg-gradient-to-r from-[#6690f5] to-[#8560d4] text-white font-bold text-base rounded-2xl hover:from-[#4d73e0] hover:to-[#6d48b8] transition-all shadow-2xl shadow-[#80A8FF]/25 flex items-center">
                   Start Free — No Card Required <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                <Link href="/company-signup"
+                <Link href="/request-demo"
                   className="px-8 py-4 border border-white/20 text-white font-semibold text-base rounded-2xl hover:bg-white/5 transition-all flex items-center backdrop-blur-sm">
                   <Building2 className="w-5 h-5 mr-2 text-primary-400" /> For Companies
                 </Link>
@@ -489,7 +489,7 @@ export default function HomePage() {
                   className="px-8 py-4 bg-white text-gray-900 font-bold text-base rounded-2xl hover:bg-gray-100 transition-colors flex items-center shadow-xl">
                   Get Started Free <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
-                <Link href="/company-signup"
+                <Link href="/request-demo"
                   className="px-8 py-4 border-2 border-white/40 text-white font-bold text-base rounded-2xl hover:bg-white/10 transition-colors flex items-center">
                   <Building2 className="w-5 h-5 mr-2" /> For Companies
                 </Link>
