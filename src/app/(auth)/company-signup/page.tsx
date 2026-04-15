@@ -12,6 +12,7 @@ import {
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Card from "@/components/ui/card";
+import Logo from "@/components/ui/logo";
 
 export default function CompanySignupPage() {
   const router = useRouter();
@@ -131,7 +132,7 @@ export default function CompanySignupPage() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-lg">
           <div className="lg:hidden flex items-center space-x-2 mb-8">
-            <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+            <Logo size="xl" href="/" />
           </div>
 
           {/* Progress Steps */}

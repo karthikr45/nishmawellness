@@ -8,6 +8,7 @@ import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Modal from "@/components/ui/modal";
 import Input from "@/components/ui/input";
+import EmptyState from "@/components/ui/empty-state";
 
 interface OrgData {
   id: string;
@@ -91,10 +92,17 @@ export default function LocationsPage() {
       </div>
 
       {org?.locations.length === 0 && (
-        <Card className="p-12 text-center">
-          <MapPin className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500 mb-4">No locations yet. Add your first office or branch.</p>
-          <Button onClick={() => setShowAddLoc(true)}><Plus className="w-4 h-4 mr-2" /> Add Location</Button>
+        <Card>
+          <EmptyState
+            icon={<MapPin className="w-16 h-16" />}
+            title="No locations yet"
+            description="Add your offices, branches, plants, hospitals, stores, or campuses. Each location can have divisions and departments — useful for breaking down anonymous wellness analytics by team."
+            action={
+              <Button onClick={() => setShowAddLoc(true)}>
+                <Plus className="w-4 h-4 mr-2" /> Add Your First Location
+              </Button>
+            }
+          />
         </Card>
       )}
 

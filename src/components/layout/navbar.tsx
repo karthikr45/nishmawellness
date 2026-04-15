@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { Menu, X, ChevronDown, LogOut, User, LayoutDashboard, ArrowRight } from "lucide-react";
-import Logo from "@/components/ui/logo";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -39,7 +39,14 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-[80px]">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma Wellness" className="w-[240px] object-contain" />
+            <Image
+              src="/logo.png"
+              alt="Nishma Wellness"
+              width={240}
+              height={160}
+              className="w-[240px] h-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}

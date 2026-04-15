@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
 
 export default function Footer() {
@@ -36,7 +37,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-3">
             <div className="mb-5">
-              <img src="/logo.png" alt="Nishma Wellness" className="w-[240px] object-contain" />
+              <Image
+                src="/logo.png"
+                alt="Nishma Wellness"
+                width={240}
+                height={160}
+                className="w-[240px] h-auto object-contain"
+              />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
               AI-powered wellness platform that remembers your journey.

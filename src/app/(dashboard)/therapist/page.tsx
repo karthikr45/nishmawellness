@@ -11,6 +11,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import TherapistWelcomeTour from "@/components/therapist/welcome-tour";
 
 interface Appointment {
   id: string;
@@ -58,6 +59,9 @@ export default function TherapistDashboard() {
 
   return (
     <div className="space-y-8">
+      {/* First-login 60-second tour explaining TwinClone, Patient Brief, Continuity Score */}
+      <TherapistWelcomeTour />
+
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Welcome, {session?.user?.name?.split(" ")[0]}!</h1>

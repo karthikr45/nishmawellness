@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Leaf, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
+import Logo from "@/components/ui/logo";
 
 function LoginForm() {
   const router = useRouter();
@@ -107,7 +108,7 @@ function LoginForm() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center space-x-2 mb-8">
-            <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+            <Logo size="xl" href="/" />
           </div>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Sign in to your account</h2>

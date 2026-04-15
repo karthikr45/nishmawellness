@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface Plan {
   id: string;
@@ -66,8 +67,14 @@ export default function PatientBilling() {
             <Sparkles className="w-6 h-6" />
           </div>
           <div className="flex-1">
-            <div className="flex items-center space-x-3 mb-2">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">You&apos;re on the Free Pilot Plan</h2>
+            <div className="flex items-center space-x-3 mb-2 flex-wrap">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center">
+                You&apos;re on the Free Pilot Plan
+                <Tooltip
+                  maxWidth={300}
+                  content="During our early-access pilot, every feature is unlocked at no cost. We will give you 30 days notice before any plan goes live for you, and you can cancel anytime."
+                />
+              </h2>
               <Badge variant="success">Active</Badge>
             </div>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">

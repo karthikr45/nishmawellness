@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { Clock, Save } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
+import Tooltip from "@/components/ui/tooltip";
 
 interface AvailabilitySlot {
   dayOfWeek: number;
@@ -72,7 +73,13 @@ export default function TherapistAvailability() {
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Availability</h1>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            Availability
+            <Tooltip
+              maxWidth={300}
+              content="Toggle days you take bookings, then set start and end times. Patients can only book within these hours. Times are in your local timezone. Block specific dates with the Cancel option on individual appointments."
+            />
+          </h1>
           <p className="text-gray-500 mt-1">Set your weekly schedule for patient bookings</p>
         </div>
         <Button onClick={save} loading={saving}>

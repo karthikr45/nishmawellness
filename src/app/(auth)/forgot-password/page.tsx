@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Leaf, Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
+import Logo from "@/components/ui/logo";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+          <Logo size="xl" href="/" />
         </div>
 
         <div className="bg-white p-8 rounded-2xl shadow-sm border">

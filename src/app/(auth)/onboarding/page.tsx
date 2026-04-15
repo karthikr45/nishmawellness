@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import Logo from "@/components/ui/logo";
 
 const STEPS = [
   "Welcome",
@@ -134,7 +135,7 @@ export default function OnboardingPage() {
         {/* Progress */}
         <div className="mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+            <Logo size="xl" href="/" />
           </div>
           <div className="flex items-center justify-center space-x-1">
             {STEPS.map((_, i) => (

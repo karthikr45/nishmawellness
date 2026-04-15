@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { Activity, AlertTriangle, CheckCircle, MapPin, Users } from "lucide-react";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
+import EmptyState from "@/components/ui/empty-state";
 
 interface HeatmapEntry {
   name: string; type: string; parentName?: string; members: number;
@@ -101,9 +102,12 @@ export default function HeatmapPage() {
       </div>
 
       {data.length === 0 && (
-        <Card className="p-12 text-center">
-          <Activity className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500">Add locations and employees to see the wellness heatmap</p>
+        <Card>
+          <EmptyState
+            icon={<Activity className="w-16 h-16" />}
+            title="Heatmap is waiting on data"
+            description="Once you add locations and employees, this view will show wellness scores by department in red/yellow/green so you can spot at-risk teams at a glance — without seeing any individual data."
+          />
         </Card>
       )}
     </div>

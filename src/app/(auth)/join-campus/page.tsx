@@ -7,6 +7,7 @@ import Link from "next/link";
 import { GraduationCap, Leaf, CheckCircle, ArrowRight, Shield } from "lucide-react";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import Logo from "@/components/ui/logo";
 
 export default function JoinCampusPage() {
   const { data: session } = useSession();
@@ -43,7 +44,7 @@ export default function JoinCampusPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-secondary-50 to-white dark:from-gray-950 dark:to-gray-950 p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+          <Logo size="xl" href="/" />
         </div>
 
         {success ? (

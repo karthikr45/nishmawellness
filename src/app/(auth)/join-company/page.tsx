@@ -8,6 +8,7 @@ import { Building2, Leaf, CheckCircle, ArrowRight, Shield, Users } from "lucide-
 import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Card from "@/components/ui/card";
+import Logo from "@/components/ui/logo";
 
 export default function JoinCompanyPage() {
   const { data: session } = useSession();
@@ -53,7 +54,7 @@ export default function JoinCompanyPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white p-4">
       <div className="w-full max-w-md">
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <img src="/logo.png" alt="Nishma Wellness" className="w-[200px] object-contain" />
+          <Logo size="xl" href="/" />
         </div>
 
         {success ? (

@@ -8,6 +8,7 @@ import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Modal from "@/components/ui/modal";
 import Input from "@/components/ui/input";
+import EmptyState from "@/components/ui/empty-state";
 
 interface Challenge {
   id: string; title: string; description: string; type: string; target: number; unit: string;
@@ -52,10 +53,17 @@ export default function ChallengesPage() {
         <Button onClick={() => setShowCreate(true)}><Plus className="w-4 h-4 mr-2" /> Create Challenge</Button>
       </div>
       {challenges.length === 0 ? (
-        <Card className="p-12 text-center">
-          <Target className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500 mb-4">No challenges yet. Start one to boost team wellness!</p>
-          <Button onClick={() => setShowCreate(true)}><Plus className="w-4 h-4 mr-2" /> Create First Challenge</Button>
+        <Card>
+          <EmptyState
+            icon={<Target className="w-16 h-16" />}
+            title="No challenges yet"
+            description="Run team challenges like a step-count week, a 7-day meditation streak, or a journal habit. Friendly competition is one of the best drivers of sustained wellness engagement."
+            action={
+              <Button onClick={() => setShowCreate(true)}>
+                <Plus className="w-4 h-4 mr-2" /> Create Your First Challenge
+              </Button>
+            }
+          />
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

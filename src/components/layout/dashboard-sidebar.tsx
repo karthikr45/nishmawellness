@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import LanguageSelector from "@/components/shared/language-selector";
 import { useSession, signOut } from "next-auth/react";
@@ -170,11 +171,24 @@ export default function DashboardSidebar() {
       <div className="flex items-center justify-between p-4">
         {!collapsed ? (
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Nishma" className="w-[180px] object-contain" />
+            <Image
+              src="/logo.png"
+              alt="Nishma"
+              width={180}
+              height={120}
+              className="w-[180px] h-auto object-contain"
+              priority
+            />
           </Link>
         ) : (
           <Link href="/">
-            <img src="/logo-square.png" alt="Nishma" className="w-10 h-10 rounded-xl object-cover" />
+            <Image
+              src="/logo-square.png"
+              alt="Nishma"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-xl object-cover"
+            />
           </Link>
         )}
         <button
