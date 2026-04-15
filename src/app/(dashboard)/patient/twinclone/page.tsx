@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface TherapistClone {
   therapistId: string;
@@ -100,9 +101,24 @@ export default function PatientTwinClone() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Choose Your AI Therapist</h1>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            Choose Your AI Therapist
+            <Tooltip
+              maxWidth={340}
+              content="A TwinClone is an AI assistant trained on a real therapist's approach, tone, and techniques. It supports you between sessions — but it is not a replacement for real therapy. Everything you share with a TwinClone can be reviewed by that therapist."
+            />
+          </h1>
           <p className="text-gray-500 mt-1">Each AI clone is trained on a specific therapist&apos;s approach and style</p>
         </div>
+
+        <Card className="p-5 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-950 dark:to-secondary-950 border-primary-200 dark:border-primary-800">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1">What is a TwinClone?</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            Think of it as your therapist&apos;s AI understudy. They configure how it sounds and what techniques it uses.
+            It is great for <strong>between-session support</strong> (when stress hits on a Tuesday night, for example),
+            but it is not a licensed clinician and cannot diagnose or prescribe. Your real therapist sees a summary before each session.
+          </p>
+        </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {therapists.map((clone) => (
@@ -150,8 +166,19 @@ export default function PatientTwinClone() {
         {therapists.length === 0 && (
           <Card className="p-12 text-center">
             <Brain className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-500 mb-2">No AI clones available yet</p>
-            <p className="text-sm text-gray-400">Your therapists are setting up their AI twins. Check back soon!</p>
+            <p className="text-gray-700 font-semibold mb-2">No AI clones available yet</p>
+            <p className="text-sm text-gray-500 max-w-md mx-auto leading-relaxed mb-5">
+              TwinClone becomes available once you book a session with a therapist who has enabled their AI assistant.
+              For immediate support in the meantime, our general AI Chat works the same way — it just doesn&apos;t have a specific therapist&apos;s style.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Button variant="outline" onClick={() => window.location.assign("/patient/appointments")}>
+                Book a Therapist
+              </Button>
+              <Button onClick={() => window.location.assign("/patient/ai-chat")}>
+                Use General AI Chat
+              </Button>
+            </div>
           </Card>
         )}
       </div>

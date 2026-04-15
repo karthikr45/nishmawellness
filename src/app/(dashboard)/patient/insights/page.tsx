@@ -11,6 +11,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface WeeklyReport {
   period: { label: string };
@@ -85,7 +86,13 @@ export default function InsightsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Wellness Insights</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            Wellness Insights
+            <Tooltip
+              maxWidth={320}
+              content="Weekly rollups of your mood, energy, anxiety, sleep, and engagement data. Scores update each time you log a journal entry, complete an exercise, or take an assessment. Trends compare the current week to the previous week."
+            />
+          </h1>
           <p className="text-gray-500 mt-1">{weekly?.period.label || "This week"}</p>
         </div>
         <Link href="/patient/achievements">

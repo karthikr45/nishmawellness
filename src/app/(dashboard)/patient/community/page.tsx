@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface ForumPost {
   id: string;
@@ -100,7 +101,13 @@ export default function CommunityPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Community</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            Community
+            <Tooltip
+              maxWidth={340}
+              content="A moderated forum where users share experiences and support each other. Posts default to your display name — use an alias in your profile if you prefer anonymity. All posts are reviewed for safety; crisis signals are escalated to moderators."
+            />
+          </h1>
           <p className="text-gray-500 mt-1">A safe space to share, support, and connect</p>
         </div>
         <Button onClick={() => setShowCompose(true)}>

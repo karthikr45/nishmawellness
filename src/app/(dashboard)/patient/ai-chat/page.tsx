@@ -139,29 +139,34 @@ export default function PatientAIChat() {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {messages.length === 0 && (
-            <div className="text-center py-16">
+            <div className="text-center py-10">
               <div className="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
                 <Brain className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">AI Wellness Assistant</h3>
-              <p className="text-gray-500 max-w-md mx-auto mb-8">
-                I&apos;m your AI wellness companion, modeled after expert therapeutic approaches.
-                Share what&apos;s on your mind - I&apos;m here to help.
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Your AI wellness companion</h3>
+              <p className="text-gray-500 max-w-md mx-auto mb-3 leading-relaxed">
+                Talk about what is on your mind — anything from stress to sleep to relationships.
+                The AI remembers your story across sessions, so you never have to start over.
               </p>
+              <p className="text-xs text-gray-400 max-w-md mx-auto mb-8">
+                🔒 Your conversations are private. Not a replacement for therapy — if you are in crisis, the AI will direct you to 988 (US) / 1860-2662-345 (India).
+              </p>
+              <p className="text-xs text-gray-400 uppercase tracking-widest mb-3">Try one of these to start</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-lg mx-auto">
                 {[
-                  "I've been feeling anxious lately",
-                  "Help me with a meditation exercise",
-                  "I'm having trouble sleeping",
-                  "I need stress management tips",
+                  "Hi — it&apos;s my first time here",
+                  "I&apos;ve been feeling anxious lately",
+                  "Help me with a quick breathing exercise",
+                  "I had a rough day at work",
+                  "I&apos;m having trouble sleeping",
+                  "Can you help me think through something?",
                 ].map((prompt) => (
                   <button
                     key={prompt}
-                    onClick={() => { setInput(prompt); }}
+                    onClick={() => { setInput(prompt.replace(/&apos;/g, "'")); }}
                     className="text-left p-3 bg-gray-50 rounded-xl text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors"
-                  >
-                    {prompt}
-                  </button>
+                    dangerouslySetInnerHTML={{ __html: prompt }}
+                  />
                 ))}
               </div>
             </div>

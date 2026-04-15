@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface GamificationData {
   xp: number;
@@ -61,8 +62,14 @@ export default function AchievementsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Achievements & Rewards</h1>
-        <p className="text-gray-500 mt-1">Track your wellness milestones</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+          Achievements &amp; Rewards
+          <Tooltip
+            maxWidth={320}
+            content="Milestones unlock automatically as you use the platform — logging journal entries, completing exercises, maintaining streaks, taking assessments. The goal is gentle motivation, not pressure. Skipping a day is fine; wellness is not a game you can lose."
+          />
+        </h1>
+        <p className="text-gray-500 mt-1">Celebrate the small wins — they add up.</p>
       </div>
 
       {/* XP & Level Card */}

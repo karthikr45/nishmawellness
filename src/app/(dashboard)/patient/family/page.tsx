@@ -11,6 +11,7 @@ import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Modal from "@/components/ui/modal";
 import Input from "@/components/ui/input";
+import Tooltip from "@/components/ui/tooltip";
 
 interface FamilyGroup {
   id: string;
@@ -141,7 +142,13 @@ export default function PatientFamily() {
   if (!family) {
     return (
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">Family Wellness</h1>
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+          Family Wellness
+          <Tooltip
+            maxWidth={340}
+            content="Share wellness goals and selected progress with up to 5 family members on a single plan. Each member has their own private account — you only see what they explicitly opt to share. Minors get extra age-appropriate protections by default."
+          />
+        </h1>
         <Card className="p-12 text-center">
           <div className="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Users className="w-10 h-10 text-pink-500" />

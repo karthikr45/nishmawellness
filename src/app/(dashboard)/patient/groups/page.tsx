@@ -9,6 +9,7 @@ import {
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
+import Tooltip from "@/components/ui/tooltip";
 
 interface GroupSession {
   id: string;
@@ -82,8 +83,14 @@ export default function PatientGroups() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Group Sessions & Workshops</h1>
-        <p className="text-gray-500 mt-1">Join group therapy, workshops, and wellness circles</p>
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+          Group Sessions &amp; Workshops
+          <Tooltip
+            maxWidth={340}
+            content="Therapist-hosted group video sessions — support groups, meditation circles, skill workshops. You stay on mute and camera-off unless you choose to participate. Some groups are free; others charge a small fee set by the host."
+          />
+        </h1>
+        <p className="text-gray-500 mt-1">Join group therapy, workshops, and wellness circles — you can stay camera-off.</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -194,7 +201,8 @@ export default function PatientGroups() {
       {filtered.length === 0 && (
         <Card className="p-12 text-center">
           <Users className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500">No group sessions available right now</p>
+          <p className="text-gray-700 font-semibold mb-1">No group sessions in this category yet</p>
+          <p className="text-sm text-gray-400 max-w-sm mx-auto">Therapists host groups on their own schedule. Check other categories or come back next week — new sessions post regularly.</p>
         </Card>
       )}
     </div>

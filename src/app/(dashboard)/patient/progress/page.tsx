@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { BarChart3, TrendingUp, Smile, Moon, Dumbbell, Brain } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
+import Tooltip from "@/components/ui/tooltip";
 
 interface ProgressRecord {
   id: string;
@@ -76,7 +77,13 @@ export default function PatientProgress() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">My Progress</h1>
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+          My Progress
+          <Tooltip
+            maxWidth={320}
+            content="Long-term trend charts for mood, sleep, exercise, and mindfulness. Where Insights shows your current week at a glance, Progress shows patterns across weeks and months — useful for seeing whether things are genuinely improving."
+          />
+        </h1>
         <p className="text-gray-500 mt-1">Track your wellness journey over time</p>
       </div>
 

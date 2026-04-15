@@ -66,12 +66,14 @@ export default function PatientMessages() {
         <Card className="h-full flex flex-col">
           <div className="p-4 border-b">
             <h2 className="font-semibold text-gray-900">Messages</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Direct messages with therapists you have booked.</p>
           </div>
           <div className="flex-1 overflow-y-auto">
             {contacts.length === 0 ? (
               <div className="p-6 text-center text-gray-500 text-sm">
                 <MessageSquare className="w-10 h-10 mx-auto mb-2 text-gray-300" />
-                <p>No conversations yet</p>
+                <p className="font-semibold text-gray-700 mb-1">No conversations yet</p>
+                <p className="text-xs text-gray-400 mb-3">Messages open once you have booked a session with a therapist. They are private 1:1 and support async check-ins between sessions.</p>
                 <p className="mt-1">Book a session to start chatting with a therapist</p>
               </div>
             ) : (
