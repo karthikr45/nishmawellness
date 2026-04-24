@@ -68,6 +68,18 @@ model User {
   campusMemberships     CampusMember[]
   region                String?   @default("US") // US, IN, etc.
   userType              String?   // INDIVIDUAL, STUDENT, EMPLOYEE
+
+  // Couples
+  partnershipAsPartnerA  CouplePartnership? @relation("PartnerA")
+  partnershipAsPartnerB  CouplePartnership? @relation("PartnerB")
+  coupleCheckins         CoupleCheckin[]
+  coupleJournals         CoupleJournal[]
+
+  // Locality
+  localityMemberships    LocalityMember[]
+  localityPosts          LocalityPost[]
+  localityEvents         LocalityEvent[] @relation("EventHost")
+  localityRsvps          LocalityEventRsvp[]
 }
 
 model Appointment {
@@ -932,4 +944,146 @@ model ModerationFlag {
   reviewedAt    DateTime?
 
   user User @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Couples / Partner Wellness
+// ============================================
+
+model CouplePartnership {
+  id              String   @id @default(uuid())
+  partnerAId      String   @unique
+  partnerBId      String   @unique
+  status          String   @default("PENDING") // PENDING, ACTIVE, PAUSED, ENDED
+  anniversary     DateTime?
+  loveLanguageA   String?  // WORDS, ACTS, GIFTS, TIME, TOUCH
+  loveLanguageB   String?
+  sharedGoals     String   @default("[]") // JSON array
+  communicationStyle String? // CBT_BASED, GOTTMAN, NVC, IMAGO
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  partnerA        User     @relation("PartnerA", fields: [partnerAId], references: [id])
+  partnerB        User     @relation("PartnerB", fields: [partnerBId], references: [id])
+  checkins        CoupleCheckin[]
+  journals        CoupleJournal[]
+}
+
+model CoupleCheckin {
+  id              String   @id @default(uuid())
+  partnershipId   String
+  userId          String
+  communication   Int      // 1-10
+  connection      Int      // 1-10
+  conflict        Int      // 1-10 (10 = no conflict)
+  gratitudeNote   String?
+  date            DateTime @default(now())
+
+  partnership     CouplePartnership @relation(fields: [partnershipId], references: [id])
+  user            User              @relation(fields: [userId], references: [id])
+}
+
+model CoupleJournal {
+  id              String   @id @default(uuid())
+  partnershipId   String
+  userId          String
+  type            String   @default("SHARED") // SHARED (both see) or PRIVATE (only me)
+  content         String
+  tags            String   @default("[]") // JSON array
+  createdAt       DateTime @default(now())
+
+  partnership     CouplePartnership @relation(fields: [partnershipId], references: [id])
+  user            User              @relation(fields: [userId], references: [id])
+}
+
+// ============================================
+// FEATURE: Locality / Neighbourhood Community
+// ============================================
+
+model Locality {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  city            String
+  state           String?
+  country         String   @default("IN")
+  pinCode         String?
+  description     String?
+  coverImage      String?
+  isActive        Boolean  @default(true)
+  createdById     String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  members         LocalityMember[]
+  posts           LocalityPost[]
+  events          LocalityEvent[]
+}
+
+model LocalityMember {
+  id              String   @id @default(uuid())
+  localityId      String
+  userId          String
+  role            String   @default("MEMBER") // MEMBER, MODERATOR, ADMIN
+  displayName     String?
+  isAnonymous     Boolean  @default(true)
+  joinedAt        DateTime @default(now())
+
+  locality        Locality @relation(fields: [localityId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
+
+  @@unique([localityId, userId])
+}
+
+model LocalityPost {
+  id              String   @id @default(uuid())
+  localityId      String
+  userId          String
+  type            String   @default("DISCUSSION") // DISCUSSION, TIP, RESOURCE, QUESTION, SUPPORT
+  title           String
+  content         String
+  tags            String   @default("[]") // JSON array
+  likes           Int      @default(0)
+  isPinned        Boolean  @default(false)
+  isAnonymous     Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  locality        Locality @relation(fields: [localityId], references: [id])
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model LocalityEvent {
+  id              String   @id @default(uuid())
+  localityId      String
+  hostId          String
+  title           String
+  description     String
+  type            String   @default("MEETUP") // MEETUP, YOGA, WALK, MEDITATION, WORKSHOP, BOOK_CLUB, SUPPORT_CIRCLE
+  location        String?
+  dateTime        DateTime
+  duration        Int      @default(60)
+  maxParticipants Int      @default(20)
+  isFree          Boolean  @default(true)
+  isRecurring     Boolean  @default(false)
+  recurrence      String?  // WEEKLY, BIWEEKLY, MONTHLY
+  status          String   @default("UPCOMING") // UPCOMING, LIVE, COMPLETED, CANCELLED
+  createdAt       DateTime @default(now())
+
+  locality        Locality @relation(fields: [localityId], references: [id])
+  host            User     @relation("EventHost", fields: [hostId], references: [id])
+  rsvps           LocalityEventRsvp[]
+}
+
+model LocalityEventRsvp {
+  id              String   @id @default(uuid())
+  eventId         String
+  userId          String
+  status          String   @default("GOING") // GOING, MAYBE, NOT_GOING
+  joinedAt        DateTime @default(now())
+
+  event           LocalityEvent @relation(fields: [eventId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, userId])
 }
