@@ -49,13 +49,17 @@ const patientNav: NavItem[] = [
   { label: "Career Explorer", href: "/patient/career", icon: <Target className="w-5 h-5" /> },
   { label: "Interview Prep", href: "/patient/interview-prep", icon: <Briefcase className="w-5 h-5" /> },
   { label: "Academic Tools", href: "/patient/academic", icon: <BookOpen className="w-5 h-5" /> },
+  // Family & Connections
+  { label: "Family", href: "", icon: <></>, section: "FAMILY" },
+  { label: "Family Hub", href: "/patient/family", icon: <Users className="w-5 h-5" /> },
+  { label: "Kids Health", href: "/patient/family-kids", icon: <Heart className="w-5 h-5" /> },
+  { label: "Habits & Goals", href: "/patient/family-habits", icon: <Target className="w-5 h-5" /> },
+  { label: "Partner", href: "/patient/partner", icon: <Heart className="w-5 h-5" /> },
   // Connect
   { label: "Connect", href: "", icon: <></>, section: "CONNECT" },
-  { label: "Partner", href: "/patient/partner", icon: <Heart className="w-5 h-5" /> },
   { label: "Groups", href: "/patient/groups", icon: <Heart className="w-5 h-5" /> },
   { label: "Community", href: "/patient/community", icon: <Users className="w-5 h-5" /> },
   { label: "My Neighbourhood", href: "/patient/my-community", icon: <MapPin className="w-5 h-5" /> },
-  { label: "Family", href: "/patient/family", icon: <Heart className="w-5 h-5" /> },
   // Settings
   { label: "Settings", href: "", icon: <></>, section: "SETTINGS" },
   { label: "Profile", href: "/patient/profile", icon: <Settings className="w-5 h-5" /> },

@@ -83,6 +83,14 @@ model User {
 
   // Community forum
   forumPosts             ForumPost[]
+
+  // Family wellness (kids, habits, goals, gratitude)
+  childProfiles          ChildProfile[]
+  childMoodLogs          ChildMoodLog[]    @relation("MoodLogger")
+  childFoodLogs          ChildFoodLog[]    @relation("FoodLogger")
+  familyHabitLogs        FamilyHabitLog[]
+  familyGratitudes       FamilyGratitude[] @relation("GratitudeFrom")
+  familyGratitudesReceived FamilyGratitude[] @relation("GratitudeTo")
 }
 
 model Appointment {
@@ -1120,4 +1128,176 @@ model SiteConfig {
   key       String   @unique
   value     String
   updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// FEATURE: Family Wellness System
+// Kids health, family habits, goals, gratitude
+// ============================================
+
+model ChildProfile {
+  id            String   @id @default(uuid())
+  parentId      String
+  name          String
+  dateOfBirth   DateTime
+  gender        String?  // MALE, FEMALE, OTHER
+  avatar        String?
+  allergies     String   @default("[]") // JSON array
+  conditions    String   @default("[]") // JSON array (asthma, ADHD, etc.)
+  bloodGroup    String?
+  school        String?
+  grade         String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  parent        User           @relation(fields: [parentId], references: [id])
+  growthLogs    ChildGrowthLog[]
+  moodLogs      ChildMoodLog[]
+  foodLogs      ChildFoodLog[]
+  sleepLogs     ChildSleepLog[]
+  milestones    ChildMilestone[]
+  habitAssigns  FamilyHabitAssign[]
+}
+
+model ChildGrowthLog {
+  id          String   @id @default(uuid())
+  childId     String
+  height      Float?   // cm
+  weight      Float?   // kg
+  headCirc    Float?   // cm (for infants)
+  notes       String?
+  date        DateTime @default(now())
+
+  child       ChildProfile @relation(fields: [childId], references: [id])
+}
+
+model ChildMoodLog {
+  id          String   @id @default(uuid())
+  childId     String
+  loggedById  String
+  mood        String   // emoji: 😄 😊 😐 😢 😡 😰
+  energy      Int?     // 1-5
+  notes       String?
+  date        DateTime @default(now())
+
+  child       ChildProfile @relation(fields: [childId], references: [id])
+  loggedBy    User         @relation("MoodLogger", fields: [loggedById], references: [id])
+}
+
+model ChildFoodLog {
+  id          String   @id @default(uuid())
+  childId     String
+  loggedById  String
+  mealType    String   // BREAKFAST, LUNCH, DINNER, SNACK
+  items       String   // JSON array of food items
+  waterCups   Int?     // glasses of water
+  category    String?  // HEALTHY, MIXED, JUNK
+  notes       String?
+  date        DateTime @default(now())
+
+  child       ChildProfile @relation(fields: [childId], references: [id])
+  loggedBy    User         @relation("FoodLogger", fields: [loggedById], references: [id])
+}
+
+model ChildSleepLog {
+  id          String   @id @default(uuid())
+  childId     String
+  bedtime     String   // "21:00"
+  wakeTime    String   // "07:00"
+  napMinutes  Int?     // total nap duration
+  quality     Int?     // 1-5
+  notes       String?
+  date        DateTime @default(now())
+
+  child       ChildProfile @relation(fields: [childId], references: [id])
+}
+
+model ChildMilestone {
+  id          String   @id @default(uuid())
+  childId     String
+  title       String   // "First steps", "Lost first tooth", "First day of school"
+  category    String   // PHYSICAL, COGNITIVE, SOCIAL, ACADEMIC, HEALTH
+  date        DateTime @default(now())
+  notes       String?
+  photo       String?  // optional image URL
+
+  child       ChildProfile @relation(fields: [childId], references: [id])
+}
+
+model FamilyHabit {
+  id            String   @id @default(uuid())
+  familyGroupId String
+  name          String   // "Brush teeth", "Take vitamins", "30 min exercise", "No screens after 9pm"
+  icon          String?  // emoji
+  frequency     String   @default("DAILY") // DAILY, WEEKDAYS, WEEKENDS, CUSTOM
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  assigns       FamilyHabitAssign[]
+  logs          FamilyHabitLog[]
+}
+
+model FamilyHabitAssign {
+  id          String   @id @default(uuid())
+  habitId     String
+  userId      String?  // adult member
+  childId     String?  // child member
+
+  habit       FamilyHabit   @relation(fields: [habitId], references: [id])
+  child       ChildProfile? @relation(fields: [childId], references: [id])
+
+  @@unique([habitId, userId])
+}
+
+model FamilyHabitLog {
+  id          String   @id @default(uuid())
+  habitId     String
+  userId      String
+  childId     String?  // if logging for a child
+  completed   Boolean  @default(true)
+  date        DateTime @default(now())
+
+  habit       FamilyHabit @relation(fields: [habitId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+}
+
+model FamilyGoal {
+  id            String   @id @default(uuid())
+  familyGroupId String
+  title         String   // "No screens at dinner for 30 days"
+  description   String?
+  category      String   @default("GENERAL") // HEALTH, FITNESS, NUTRITION, SCREEN_TIME, RELATIONSHIP, EDUCATION, SAVINGS
+  targetValue   Int?     // numeric target (e.g., 30 days)
+  currentValue  Int      @default(0)
+  unit          String?  // "days", "times", "km"
+  deadline      DateTime?
+  status        String   @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED, ABANDONED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CoupleGoal {
+  id            String   @id @default(uuid())
+  partnershipId String
+  title         String
+  category      String   @default("RELATIONSHIP") // RELATIONSHIP, HEALTH, FINANCE, TRAVEL, PARENTING
+  deadline      DateTime?
+  status        String   @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED
+  partnerADone  Boolean  @default(false)
+  partnerBDone  Boolean  @default(false)
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model FamilyGratitude {
+  id          String   @id @default(uuid())
+  familyGroupId String
+  fromUserId  String
+  toUserId    String
+  message     String
+  date        DateTime @default(now())
+
+  fromUser    User @relation("GratitudeFrom", fields: [fromUserId], references: [id])
+  toUser      User @relation("GratitudeTo", fields: [toUserId], references: [id])
 }
