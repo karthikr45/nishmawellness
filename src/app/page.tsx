@@ -193,6 +193,135 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ============ TRENDING WELLNESS CONTENT ============ */}
+      <section className="py-24 bg-[#0f0e1a] relative overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] bg-[#80A8FF]/8 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#CEB5FF]/8 rounded-full blur-[150px]" />
+
+        <div className="max-w-6xl mx-auto px-6 relative">
+          <div className="reveal flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+              <div className="inline-flex items-center px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-primary-400 text-sm font-medium mb-4">
+                <Flame className="w-4 h-4 mr-2" /> Trending Now
+              </div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                Wellness that&apos;s<br /><span className="bg-gradient-to-r from-[#80A8FF] via-[#CEB5FF] to-[#8EC1DE] bg-clip-text text-transparent">actually watchable.</span>
+              </h2>
+              <p className="mt-3 text-gray-400 max-w-md">Quick sessions to calm your mind, move your body, and reset your day. New content every week.</p>
+            </div>
+            <Link href="/register" className="mt-6 md:mt-0 text-sm text-primary-400 font-semibold hover:text-primary-300 flex items-center">
+              See all content <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+
+          <div className="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                title: "4-7-8 Breathing for Instant Calm",
+                category: "Breathing",
+                duration: "3 min",
+                views: "12.4K",
+                badge: "Most Popular",
+                gradient: "from-blue-600 to-cyan-500",
+                icon: <Wind className="w-10 h-10" />,
+              },
+              {
+                title: "Morning Anxiety Reset — Start Fresh",
+                category: "Meditation",
+                duration: "7 min",
+                views: "8.7K",
+                badge: "Trending",
+                gradient: "from-purple-600 to-pink-500",
+                icon: <Brain className="w-10 h-10" />,
+              },
+              {
+                title: "Couples Evening Check-In Ritual",
+                category: "Relationships",
+                duration: "5 min",
+                views: "6.2K",
+                badge: "New",
+                gradient: "from-rose-600 to-orange-500",
+                icon: <Heart className="w-10 h-10" />,
+              },
+              {
+                title: "5-Minute Body Scan Before Sleep",
+                category: "Sleep",
+                duration: "5 min",
+                views: "15.1K",
+                badge: "Most Watched",
+                gradient: "from-indigo-600 to-blue-500",
+                icon: <Moon className="w-10 h-10" />,
+              },
+              {
+                title: "Stress-Free Parenting — Daily Reset",
+                category: "Family",
+                duration: "6 min",
+                views: "4.8K",
+                badge: "Trending",
+                gradient: "from-emerald-600 to-teal-500",
+                icon: <Baby className="w-10 h-10" />,
+              },
+              {
+                title: "Focus Flow State — Deep Work Music",
+                category: "Focus",
+                duration: "25 min",
+                views: "9.3K",
+                badge: "Popular",
+                gradient: "from-amber-600 to-yellow-500",
+                icon: <Zap className="w-10 h-10" />,
+              },
+            ].map((video, idx) => (
+              <div key={idx} className="reveal group cursor-pointer" onClick={() => {}}>
+                {/* Thumbnail */}
+                <div className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${video.gradient} aspect-video flex items-center justify-center`}>
+                  {/* Icon as visual */}
+                  <div className="text-white/20 transform group-hover:scale-110 transition-transform duration-300">
+                    {video.icon}
+                  </div>
+
+                  {/* Play button overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
+                      <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1" />
+                    </div>
+                  </div>
+
+                  {/* Duration badge */}
+                  <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-md text-xs text-white font-medium">
+                    {video.duration}
+                  </div>
+
+                  {/* Trending badge */}
+                  <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/15 backdrop-blur-sm rounded-full text-[10px] text-white font-bold uppercase tracking-wider border border-white/20">
+                    {video.badge}
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="mt-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-white/5 border border-white/10 rounded-full text-[11px] text-gray-400 font-medium">{video.category}</span>
+                    <span className="text-[11px] text-gray-500">{video.views} views</span>
+                  </div>
+                  <h3 className="font-semibold text-white group-hover:text-primary-400 transition-colors leading-snug">{video.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom strip */}
+          <div className="reveal mt-12 flex flex-col sm:flex-row items-center justify-between p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
+            <div>
+              <p className="text-white font-semibold">New guided sessions every week</p>
+              <p className="text-sm text-gray-400 mt-0.5">Breathing, meditation, sleep stories, couple rituals, kid-friendly mindfulness — all included in Plus.</p>
+            </div>
+            <Link href="/register" className="mt-4 sm:mt-0 px-6 py-3 gradient-bg text-white font-semibold rounded-xl text-sm hover:opacity-90 transition-opacity flex items-center flex-shrink-0">
+              Start Free <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ============ FEATURES (comprehensive — 12 features) ============ */}
       <section className="py-24 bg-gradient-to-b from-[#f8f7ff] to-white dark:from-gray-950 dark:to-gray-900">
         <div className="max-w-6xl mx-auto px-6">
