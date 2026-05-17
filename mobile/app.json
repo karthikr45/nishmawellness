@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Nishma Wellness",
+    "slug": "nishma-wellness",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#1a1832"
+    },
+    "ios": {
+      "bundleIdentifier": "com.nishmawellness.app",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.nishmawellness.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#1a1832"
+      }
+    },
+    "extra": {
+      "apiUrl": "http://localhost:3000"
+    }
+  }
+}
