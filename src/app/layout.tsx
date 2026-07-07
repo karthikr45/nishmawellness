@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SessionProvider } from "@/components/providers/session-provider";
 import ToastProvider from "@/components/providers/toast-provider";
+import CustomCursor from "@/components/shared/CustomCursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({
         <SessionProvider>
           <ToastProvider>{children}</ToastProvider>
         </SessionProvider>
+        <CustomCursor />
       </body>
     </html>
   );
